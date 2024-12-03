@@ -60,3 +60,4 @@ Por padrão, a pipeline vem com os seguintes estágios:
 - **deploy**: Implanta funções lambdas e APIs na AWS. Atualiza bucket com arquivos da especificação da API e disponibiliza [documentação da API interativa swagger.](https://admin.moreDraw.com.br/docs/)
 - **destroy**: Limpa arquivos binários contidos no bucket.
 # moreDraw
+# moreDraw
