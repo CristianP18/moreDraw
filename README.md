@@ -62,6 +62,9 @@ Por padrão, a pipeline vem com os seguintes estágios:
 # moreDraw
 # moreDraw
 <<<<<<< HEAD
+<<<<<<< HEAD
 # moreDraw
+=======
+>>>>>>> 5c1c2be73b56aa68fbff12c88535ad2738f22b81
 =======
 >>>>>>> 5c1c2be73b56aa68fbff12c88535ad2738f22b81
