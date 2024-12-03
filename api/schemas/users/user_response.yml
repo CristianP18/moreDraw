@@ -1,0 +1,6 @@
+type: object
+properties:
+  message:
+    $ref: '#/components/schemas/Message'
+  content:
+    $ref: '#/components/schemas/User'

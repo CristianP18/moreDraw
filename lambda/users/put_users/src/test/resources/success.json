@@ -1,0 +1,3 @@
+{
+  "body": "{  \"email\": \"nome_sobrenome@mail.com\",\n  \"phone\": \"550012345678\",\n  \"mobilePhone\": \"55000912345678\",\n  \"notify\": true,\n  \"disability\": \"Deficiência visual, auditiva, física\",\n  \"isDriver\": false,\n  \"license\": \"123456789012345\",\n  \"licenseValid\": \"2020-07-15T\",\n  \"category\": \"B\",\n  \"emiter\": \"ABCABC-ABC\",\n  \"locale\": \"PT-BR\",\n  \"modified\": \"2020-07-15T20:45:23.506-0300\"}"
+}

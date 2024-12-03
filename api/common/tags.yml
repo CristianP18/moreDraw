@@ -1,0 +1,101 @@
+- name: Clientes
+  description:
+    |-
+    Os clientes representam uma entidade muito abrangente. 
+    Usuários, equipes, unitizadores, remessas de envio, tarefas, veículos e frota pertencem a um cliente.
+    Além disso, os clientes podem ser vinculados a outros clientes representando a hierarquia de matriz e filial, onde os mesmos podem realizar conexões com trabalhadores por intermédio de tokens de relacionamento.
+- name: Unitizadores
+  description:
+    |-
+    Os unitizadores são entidades que representam um conjunto de embalagens agrupados em um único volume. 
+    Reúnem informacões importantes e únicas, como código de barras, dimensões, nomes e tipos. 
+    Além disso, possuem estado em que se encontra, podendo estar em armazenagem, em movimentação ou em transporte.
+- name: Remessas de envio
+  description:
+    |-
+    As remessas de envio representam uma entidade muito abrangente, reunindo as informações necessárias para interligar as pontas e alimentar o ciclo de vida do unitizador.
+    Eventos na remessa de envio, documentos na remessa de envio, unitizadores, etiquetas e veículos pertencem a uma remessa. 
+    Além disso uma tarefa esta fortemente interligada a uma remessa, formando assim uma entidade de controle das entregas.
+- name: Carga
+  description:
+    |-
+    As cargas representam uma entidade muito abrangente, reunindo as informações necessárias para interligar as pontas e alimentar o ciclo de vida da remessa.
+    Além disso uma carga esta fortemente interligada a uma remessa e unitizadores, formando assim uma entidade de controle das entregas.
+- name: Evento na remessa de envio
+  description:
+    |-
+    Os eventos em uma remessa de envio são entidades nomeadas que reúnem informações dos procedimentos realizados em determinada remessa.
+    Cuja principal finalidade é realizar o rastreamento dos acontecimentos envolvendo determinado unitizador.
+- name: Tarefas
+  description:
+    |-
+    As tarefas são entidades que representam unidades de trabalho, definidas por uma origem e um destino.
+    Atribuição de tarefas, embarque e estados de operação são conceitos importantes que você deve entender bem antes de utilizar uma tarefa.
+- name: Ordens de transporte
+  description:
+    |-
+    As ordens de transporte representam uma entidade cuja finalidade é movimentar internamente um ou mais unitizadores de um ponto A para um ponto B.
+    Uma ordem de transporte pode acontecer em mais de uma etapa, e também pode ser designada como uma solicitação de ordem de transporte.
+- name: Documentos
+  description:
+    |-
+    Os documentos de remessa de envio são entidades nomeadas que reúnem as informações e a documentação crucial de uma remessa.
+- name: Usuários
+  description:
+    |-
+    Os usuários representam a entidade mais simplória de uma pessoa física.
+    Eles podem pertencer a equipes sendo possível executar uma tarefa, realizar operações de remetente e destinatário, realizar a gestão de seus unitizadores, etiquetas e favoritos.
+- name: Veículos
+  description:
+    |-
+    Os veículos são entidades nomeadas que reúnem as informações do veículo utilizado por determinado usuário em uma remessa de envio.
+- name: Frotas
+  description:
+    |-
+    As frotas representam uma entidade cuja finalidade é agrupar todos os veículos de uma empresa.
+    Uma empresa pode ter apenas uma frota. Uma frota pode pertencer a apenas uma empresa. Uma frota pode possuir vários veículos.
+- name: Favoritos
+  description:
+    |-
+    Os favoritos representam uma entidade cuja finalidade é agrupar as principais associações do determinado usuário. 
+    Podendo definir um conjunto padrão de entidades que são constantemente requeridas pelo usuário.
+- name: Notificações
+  description:
+    |-
+    As notificações são eventos que acontecem após alguma ação, servindo como gatilho para disparar notificações respectivas contendo informações do determinado evento.
+    Uma notificação é dada por intermédio de Mensagens SMS ou Push Notifications.
+- name: Equipes
+  description:
+    |-
+    As equipes são entidades nomeadas que reúnem trabalhadores pertencentes a mesma organização.
+    Possuindo centros onde seus trabalhadores podem realizar tarefas de remessa de envio.
+- name: Regiões
+  description:
+    |-
+    As regiões são entidades relacionadas a uma equipe.
+    Possuindo delimitadores de ceps de início e fim para representar uma área de cobertura e atuação.
+- name: Etiquetas
+  description:
+    |-
+    As etiquetas são entidades nomeadas que reúnem as informações cruciais de determinada remessa de envio.
+- name: Impressoras
+  description:
+    |-
+    As impressoras são entidades que reúnem as informações de configuração dos dispositivos que deverão realizar a impressão das etiquetas.
+- name: Avaliações
+  description:
+    |-
+    As avaliações representam uma entidade cuja finalidade é agrupar a reputação dos associados a uma remessa de envio.
+    Podendo realizar avaliações no emitente, motorista e destinatário.
+- name: Localidade de armazenagem
+  description:
+    |-
+    As localidades de armazenagem representam uma entidade cuja finalidade é agrupar a os espaços utilizados para armazenagem durante o processo logístico.
+- name: Zonas
+  description:
+    |-
+    As zonas representam uma entidade diretamente ligada a localidades de armazenagem cuja finalidade é relacionar as áreas delimitadas e os espaços utilizados para armazenagem.
+- name: Integração ativa
+  description:
+    |-
+    Configuração para integração ativa

@@ -1,0 +1,19 @@
+instalar:
+
+* sudo npm install -g multi-file-swagger
+
+*sudo npm install -g yaml-cli
+
+*sudo npm install -g json-minify
+
+causo não funcione use esse formato:
+
+* sudo npm install -g json2yaml minify-json
+
+
+
+
+
+Navegar para pasta moreDraw:
+
+cd /mnt/c/Users/Spark/Desktop/moreDraw-DEV-PRO/backend/scripts

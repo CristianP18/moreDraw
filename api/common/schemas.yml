@@ -1,0 +1,323 @@
+### USER ###
+User:
+  "$ref": "../schemas/users/user.yml"
+UserResponse:
+  "$ref": "../schemas/users/user_response.yml"
+UserHistory:
+  "$ref": "../schemas/users/user_history.yml"
+CreateUser:
+  "$ref": "../schemas/users/create_user.yml"
+UpdateUser:
+  "$ref": "../schemas/users/update_user.yml"
+UpdateUserStatus:
+  "$ref": "../schemas/users/update_user_status.yml"
+UpdateUserDriverMetrics:
+  "$ref": "../schemas/users/user_driver_metrics.yml"
+UserDriverMetricsResponse:
+  "$ref": "../schemas/users/user_driver_metrics_response.yml"
+VerifyUser:
+  "$ref": "../schemas/users/verify_user.yml"
+GenerateOneTimePassword:
+  "$ref": "../schemas/users/generate_one_time_password.yml"
+CreateClientUser:
+  "$ref": "../schemas/users/create_client_user_relation.yml"
+StreamUser:
+  "$ref": "../schemas/users/stream_user.yml"
+VerifyPassword:
+  "$ref": "../schemas/users/verify_password.yml"
+Worker:
+  "$ref": "../schemas/users/worker.yml"
+WorkersResponse:
+  "$ref": "../schemas/users/workers_response.yml"
+SumShipmentsUnitloads:
+  "$ref": "../schemas/users/sum_shipments_unitloads.yml"
+
+### CLIENT ###
+Client:
+  "$ref": "../schemas/clients/clients.yml"
+ClientResponse:
+  "$ref": "../schemas/clients/clients_response.yml"
+ClientResponseList:
+  "$ref": "../schemas/clients/clients_response_list.yml"
+CreateClient:
+  "$ref": "../schemas/clients/create_clients.yml"
+UpdateClient:
+  "$ref": "../schemas/clients/update_clients.yml"
+ClientUser:
+  "$ref": "../schemas/clients/clients_users.yml"
+InterClient:
+  "$ref": "../schemas/clients/inter_client.yml"
+RelationalToken:
+  "$ref": "../schemas/clients/relational_token.yml"
+StreamResponse:
+  "$ref": "../schemas/clients/stream_response.yml"
+
+### LOGIN ###
+LoginUser:
+  "$ref": "../schemas/login/login_user.yml"
+LoginClient:
+  "$ref": "../schemas/login/login_client.yml"
+Token:
+  "$ref": "../schemas/login/token.yml"
+
+### ADDRESS ###
+Address:
+  "$ref": "../schemas/address/address.yml"
+CreateAddress:
+  "$ref": "../schemas/address/create_address.yml"
+UpdateAddress:
+  "$ref": "../schemas/address/update_address.yml"
+
+### UNITLOAD ###
+Unitload:
+  "$ref": "../schemas/unitloads/unitload.yml"
+UnitloadPacklist:
+  "$ref": "../schemas/unitloads/unitload_packlist.yml"
+UnitloadResponse:
+  "$ref": "../schemas/unitloads/unitload_response.yml"
+UnitloadResponseList:
+  "$ref": "../schemas/unitloads/unitload_response_list.yml"
+CreateUnitload:
+  "$ref": "../schemas/unitloads/create_unitload.yml"
+UpdateUnitload:
+  "$ref": "../schemas/unitloads/update_unitload.yml"
+UpdateUnitloadCubi:
+  "$ref": "../schemas/unitloads/update_unitload_cubi.yml"
+OpenedUnitload:
+  "$ref": "../schemas/unitloads/opened_unitload.yml"
+UnitloadShipmentEvent:
+  "$ref": "../schemas/unitloads/unitload_shipment_event.yml"
+Packlist:
+  "$ref": "../schemas/unitloads/packlist.yml"
+
+### SHIPMENT ###
+Shipment:
+  "$ref": "../schemas/shipments/shipment.yml"
+ShipmentResponseSumDelivery:
+  "$ref": "../schemas/shipments/shipment_response_sum_delivery.yml"
+AddressMetrics:
+  "$ref": "../schemas/shipments/address_metrics_list.yml"
+ShipmentPacklist:
+  "$ref": "../schemas/shipments/shipment_packlist.yml"
+ShipmentResponse:
+  "$ref": "../schemas/shipments/shipment_response.yml"
+ShipmentResponseList:
+  "$ref": "../schemas/shipments/shipment_response_list.yml"
+ShipmentPacklistResponseList:
+  "$ref": "../schemas/shipments/shipment_packlist_response_list.yml"
+CreateShipment:
+  "$ref": "../schemas/shipments/create_shipment.yml"
+CreateShipmentMobile:
+  "$ref": "../schemas/shipments/create_shipment_mobile.yml"
+UpdateShipment:
+  "$ref": "../schemas/shipments/update_shipment.yml"
+ShipmentTrackingCode:
+  "$ref": "../schemas/shipments/shipment_tracking_code.yml"
+ShipmentPatchStarted:
+  "$ref": "../schemas/shipments/shipment_patch_started.yml"
+
+### CARGA ###
+CreateBoarding:
+  "$ref": "../schemas/boarding/create_boarding.yml"
+CreateBoardingWms:
+  "$ref": "../schemas/boarding/create_boarding_wms.yml"
+UpdateBoarding:
+  "$ref": "../schemas/boarding/update_boarding.yml"
+ShipmentBoarding:
+  "$ref": "../schemas/boarding/shipment_boarding.yml"
+ShipmentsUnitloads:
+  "$ref": "../schemas/boarding/shipments_unitloads.yml"
+
+### SHIPMENT EVENTS ###
+ShipmentEvents:
+  "$ref": "../schemas/shipment_events/shipment_events.yml"
+ShipmentEventsResponse:
+  "$ref": "../schemas/shipment_events/shipment_events_response.yml"
+CreateShipmentEvents:
+  "$ref": "../schemas/shipment_events/create_shipment_events.yml"
+UpdateShipmentEvents:
+  "$ref": "../schemas/shipment_events/update_shipment_events.yml"
+
+### VEHICLE ###
+Vehicle:
+  "$ref": "../schemas/vehicles/vehicles.yml"
+VehicleResponse:
+  "$ref": "../schemas/vehicles/vehicles_response.yml"
+VehicleResponseList:
+  "$ref": "../schemas/vehicles/vehicle_response_list.yml"
+CreateVehicle:
+  "$ref": "../schemas/vehicles/create_vehicles.yml"
+CreateFleet:
+  "$ref": "../schemas/vehicles/create_fleet.yml"
+UpdateVehicle:
+  "$ref": "../schemas/vehicles/update_vehicles.yml"
+
+### VEHICLE EVENTS ###
+VehicleEvent:
+  "$ref": "../schemas/vehicle_events/vehicle_event.yml"
+CreateVehicleEvent:
+  "$ref": "../schemas/vehicle_events/create_vehicle_event.yml"
+Tires:
+  "$ref": "../schemas/vehicle_events/tires.yml"
+RowTire:
+  "$ref": "../schemas/vehicle_events/row_tire.yml"
+TireInfo:
+  "$ref": "../schemas/vehicle_events/tire_info.yml"
+
+### DOCS ###
+Docs:
+  "$ref": "../schemas/docs/docs.yml"
+DocsResponse:
+  "$ref": "../schemas/docs/docs_response.yml"
+CreateDocs:
+  "$ref": "../schemas/docs/create_docs.yml"
+CreatePodPic:
+  "$ref": "../schemas/docs/create_pod_pic.yml"
+CreatePodSign:
+  "$ref": "../schemas/docs/create_pod_sign.yml"
+PatchDatamatrix:
+  "$ref": "../schemas/docs/patch_datamatrix.yml"
+
+### LABELS ###
+Label:
+  "$ref": "../schemas/labels/labels.yml"
+LabelResponse:
+  "$ref": "../schemas/labels/labels_response.yml"
+LabelLayoutResponse:
+  "$ref": "../schemas/labels/labels_layout_response.yml"
+CreateLabel:
+  "$ref": "../schemas/labels/create_labels.yml"
+CreateLabelConfig:
+  "$ref": "../schemas/labels/create_label_config.yml"
+
+### FAVORITES ###
+Favorites:
+  "$ref": "../schemas/favorites/favorites.yml"
+FavoritesDestinator:
+  "$ref": "../schemas/favorites/favorites_destinator.yml"
+FavoritesTransporter:
+  "$ref": "../schemas/favorites/favorites_transporter.yml"
+FavoritesResponse:
+  "$ref": "../schemas/favorites/favorites_response.yml"
+FavoritesListDestinatorResponse:
+  "$ref": "../schemas/favorites/favorites_list_destinator.yml"
+FavoritesListTransporterResponse:
+  "$ref": "../schemas/favorites/favorites_list_transporter.yml"
+CreateFavorites:
+  "$ref": "../schemas/favorites/create_favorites.yml"
+
+### TEAMS ###
+Team:
+  "$ref": "../schemas/teams/teams.yml"
+TeamResponse:
+  "$ref": "../schemas/teams/teams_response.yml"
+CreateOrUpdateTeam:
+  "$ref": "../schemas/teams/create_or_update_team.yml"
+
+### REGIONS ###
+Region:
+  "$ref": "../schemas/regions/regions.yml"
+RegionResponse:
+  "$ref": "../schemas/regions/regions_response.yml"
+CreateRegion:
+  "$ref": "../schemas/regions/create_region.yml"
+
+### TASKS ###
+Task:
+  "$ref": "../schemas/tasks/tasks.yml"
+SignTasks:
+  "$ref": "../schemas/tasks/sign_tasks.yml"
+TaskResponse:
+  "$ref": "../schemas/tasks/tasks_response.yml"
+DestinatorAddress:
+  "$ref": "../schemas/tasks/destinator_address.yml"
+
+## TRANSPORT ORDERS ###
+TransportOrder:
+  "$ref": "../schemas/transport_order/transport_order.yml"
+TransportOrderResponse:
+  "$ref": "../schemas/transport_order/transport_order_response.yml"
+TransportOrderResponseList:
+  "$ref": "../schemas/transport_order/transport_order_response_list.yml"
+CreateTransportOrder:
+  "$ref": "../schemas/transport_order/create_transport_order.yml"
+CreateTransportOrderRequest:
+  "$ref": "../schemas/transport_order/create_transport_order_request.yml"
+
+### FINGER PRINT ###
+FingerPrint:
+  "$ref": "../schemas/finger_print/finger_print.yml"
+PostFingerPrint:
+  "$ref": "../schemas/finger_print/post_finger_print.yml"
+
+### NOTIFICATIONS ###
+CreateNotificationPicking:
+  "$ref": "../schemas/notifications/create_notification_picking.yml"
+
+### STORLOC ###
+CreateStorloc:
+  "$ref": "../schemas/storloc/create_storloc.yml"
+UpdateStorloc:
+  "$ref": "../schemas/storloc/update_storloc.yml"
+Storloc:
+  "$ref": "../schemas/storloc/storloc.yml"
+StorlocResponse:
+  "$ref": "../schemas/storloc/storloc_response.yml"
+StorlocResponseList:
+  "$ref": "../schemas/storloc/storloc_response_list.yml"
+
+
+### ZONES ###
+CreateZonePicture:
+  "$ref": "../schemas/zones/create_zone_picture.yml"
+CreateZone:
+  "$ref": "../schemas/zones/create_zone.yml"
+Zone:
+  "$ref": "../schemas/zones/zone.yml"
+ZoneResponseList:
+  "$ref": "../schemas/zones/zone_response_list.yml"
+
+### PRINTERS ###
+CreatePrinter:
+  "$ref": "../schemas/printers/create_printer.yml"
+Printers:
+  "$ref": "../schemas/printers/printers.yml"
+UpdatePrinter:
+  "$ref": "../schemas/printers/update_printers.yml"
+PrintersResponse:
+  "$ref": "../schemas/printers/printers_response.yml"
+PrintersResponseList:
+  "$ref": "../schemas/printers/printer_response_list.yml"
+
+### RATING ###
+CreateRating:
+  "$ref": "../schemas/ratings/create_rating.yml"
+
+### BILLING ###
+Billing:
+  "$ref": "../schemas/billing/billing.yml"
+UpdateBilling:
+  "$ref": "../schemas/billing/update_billing.yml"
+BillingResponseList:
+  "$ref": "../schemas/billing/billing_response_list.yml"
+
+### RESPONSES ###
+Message:
+  "$ref": "../schemas/responses/message.yml"
+Ok:
+  "$ref": "../schemas/responses/ok.yml"
+BadRequest:
+  "$ref": "../schemas/responses/bad_request.yml"
+Unauthorized:
+  "$ref": "../schemas/responses/unauthorized.yml"
+Forbidden:
+  "$ref": "../schemas/responses/forbidden.yml"
+NotFound:
+  "$ref": "../schemas/responses/not_found.yml"
+Conflict:
+  "$ref": "../schemas/responses/conflict.yml"
+InternalServer:
+  "$ref": "../schemas/responses/internal_server.yml"
+
+CreateBoardingIntegration:
+  "$ref": "../schemas/active_integration/boarding_integration/create_boarding_integration.yml"

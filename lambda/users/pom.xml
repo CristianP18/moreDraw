@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lambda</artifactId>
+        <groupId>com.moreDraw</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>users</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>configuration_users</module>
+        <module>post_users_verify</module>
+        <module>put_users_verify</module>
+        <module>post_users_forget_password</module>
+        <module>post_users_verify_password</module>
+        <module>post_user</module>
+        <module>post_users_login</module>
+        <module>delete_users</module>
+        <module>put_users</module>
+    </modules>
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+</project>

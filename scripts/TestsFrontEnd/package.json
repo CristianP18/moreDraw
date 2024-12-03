@@ -1,0 +1,25 @@
+{
+  "name": "frontend-web-tests",
+  "version": "1.0.0",
+  "description": "Automated tests for the frontend web application moreDraw.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node main.js",
+    "run-test": "node Testes_Front.js",
+    "pretest": "chromedriver-manager update"
+  },
+  "author": "Cristian Pegoraro",
+  "license": "ISC",
+  "dependencies": {
+    "selenium-webdriver": "4.18.1",
+    "node-prompt": "0.2.2",
+    "node-notifier": "10.0.1",
+    "node-fetch": "v2.7.0"
+  },
+  "devDependencies": {
+    "chromedriver": "121.0.2"
+  }
+}
+
+
+

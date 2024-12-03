@@ -1,0 +1,3 @@
+{
+  "body": "{\n    \"userId\": \"12345678-1234-1234-1234-123456789012\",\n    \"firstName\": \"Nome\",\n    \"lastName\": \"Sobrenome\",\n    \"federalTax\": \"12345678900\",\n    \"RG\": \"1234567890\",\n    \"email\": \"nome_sobrenome@mail.com\",\n    \"phone\": \"5500012345678\",\n    \"mobilePhone\": \"5500912345678\",\n    \"notify\": true,\n    \"locale\": \"PT-BR\",\n    \"avgPunctual\": 4.5,\n    \"avgLabor\": 4.6,\n    \"avgPresentation\": 4.7,\n    \"avgAttitude\": 4.8,\n    \"isDriver\": false,\n    \"license\": \"123456789012345\",\n    \"disability\": \"Deficiência visual, auditiva, física\",\n    \"license_valid\": \"2020-07-15T\",\n    \"category\": \"B\",\n    \"emiter\": \"ABCABC-ABC\"}"
+}

@@ -1,0 +1,20 @@
+.idea/
+../.idea/
+.vscode/
+../.vscode/
+*.iml
+*.jar
+*.class
+*/target/*
+*/target/**
+**/target/*
+./target/
+*.iws
+out/
+../../build-api/*
+../../build-lambda/*mas
+ build-api/
+ build-lambda/
+ build-api/*
+ build-lambda/*
+ build-api/
