@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: moreDraw
+Description: tracebox
 Globals:
   Function:
     Runtime: java11
@@ -18,19 +18,36 @@ Parameters:
     Type: String
 
 Resources:
-  RestApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      Name: !Sub "${Stage} - moreDraw - REST"
-      StageName: !Ref Stage  # Propriedade obrigatória adicionada
-
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
-      Name: !Sub "${Stage} - moreDraw - HTTP"  # Propriedade Variables removida
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: s3://docs.tracebox.com.br/deploy/api_http.json
+      StageName: !Ref Stage
+      StageVariables:
+        Stage: !Ref Stage
+        AwsId: !Ref AwsId
+        Region: !Ref Region
+
+  RestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: s3://docs.tracebox.com.br/deploy/api_rest.json
+      StageName: !Ref Stage
+      Variables:
+        Stage: !Ref Stage
+        AwsId: !Ref AwsId
+        Region: !Ref Region
 
 
-#   Funções Lambda
+  #   Funções Lambda
 
   postUserFunction:
     Type: AWS::Serverless::Function

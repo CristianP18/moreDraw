@@ -1,0 +1,1 @@
+usage: yaml2json [-h] [-v] [-p] [-i INDENTATION] [-s] [-r] [-w] input

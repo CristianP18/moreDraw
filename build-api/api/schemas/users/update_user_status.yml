@@ -1,0 +1,25 @@
+type: object
+properties:
+  state:
+    description: Estado do usuário
+    example: "0: Offline; 1:Idle; 2:On Duty; 3:Online"
+    format: int-32
+    type: number
+    items: 
+      enum: 
+        - 0
+        - 1
+        - 2
+        - 3
+  latitude:
+    description: Latitude do endereço
+    example: "-28.793043370422325"
+    type: string
+  longitude:
+    description: Longitude do endereço
+    example: "-51.605825771273764"
+    type: string
+  modified:
+    example: "2020-07-15T20:45:23.506-0300"
+    format: date-time
+    type: string

@@ -1,0 +1,64 @@
+description: >
+  Esta API é utilizada para excluir uma imagem existente no sistema.
+  É necessário informar o identificador único da imagem no caminho da requisição.
+
+operationId: deleteImage
+summary: Exclui uma imagem existente
+security:
+  - bearerAuth: []
+tags:
+  - Image
+parameters:
+  - name: imageId
+    in: path
+    required: true
+    description: O identificador único da imagem que será excluída.
+    schema:
+      type: string
+x-amazon-apigateway-integration:
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-deleteImage/invocations"
+  passthroughBehavior: "when_no_match"
+  httpMethod: "DELETE"
+  type: "aws_proxy"
+responses:
+  '200':
+    description: Imagem excluída com sucesso.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Imagem excluída com sucesso."
+    headers:
+      Access-Control-Allow-Origin:
+        $ref: '#/components/headers/Access-Control-Allow-Origin'
+      Access-Control-Allow-Methods:
+        $ref: '#/components/headers/Access-Control-Allow-Methods'
+      Access-Control-Allow-Headers:
+        $ref: '#/components/headers/Access-Control-Allow-Headers'
+  '400':
+    description: Requisição inválida. Verifique o ID informado.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/BadRequest'
+  '401':
+    description: Não autorizado. Token de autenticação inválido ou ausente.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Unauthorized'
+  '404':
+    description: Imagem não encontrada.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/NotFound'
+  '500':
+    description: Erro interno do servidor.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InternalServer'

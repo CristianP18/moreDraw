@@ -1,0 +1,57 @@
+title: moreDraw
+description:
+  |-
+  **Bem-vindo à documentação da API do moreDraw.** Este documento foi projetado para ajudar os desenvolvedores e usuários do moreDraw a compreender e integrar totalmente nossas APIs para uma implantação **fácil** e **contínua**.
+
+  Nossas APIs são baseadas na arquitetura [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) e usam os métodos básicos de solicitação [HTTP](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Methods). Para melhor compreensão, os recursos são listados juntamente com seus parâmetros obrigatórios, se houver, e seus exemplos de solicitações e respostas logo abaixo da descrição. As APIs aceitam solicitações de corpo codificado em [JSON](https://www.w3schools.com/whatis/whatis_json.asp) e retornam dados da mesma forma.
+
+  # Guia de utilização
+  - Nossas APIs usam os métodos de solicitação HTTP básicos: _POST_, _GET_, _PATCH_, _PUT_ e _DELETE_.
+  - Você pode selecionar a resposta necessária de acordo com o código de status e visualizar o esquema de cada respectivo objeto.
+
+  # Autenticação
+    - Nos recursos que possuem o ícone de cadeado (🔒), necessariamente é requisitado uma forma de autenticação na solicitação. Essa autenticação é realizada por intermédio do Bearer Token e/ou API Key. Observe que, para usar os modos de autenticação, você precisará passar o token ou a chave da API no seguinte formato no cabeçalho apropriado.
+    - Em casos de autenticação de usuário, será utilizado o `Authorization: Bearer <SEU_TOKEN>`, a cada tentativa de login bem sucedida será gerado um novo token.
+    - Em casos de autenticação de clientes, será utilizado a `x-api-key: <SUA_CHAVE>`, esta por sua vez é estática e única para cada cliente.
+
+  # Paginação
+    - Nos recursos /unitloads e /shipments que possuem o método _GET_, quando a quantidade de items contidos no content for superior a 50, será retornado dentro do content o atributo `next`, que representará o próximo item a ser pesquisado.
+    - Para continuar realizando requisições para capturar as demais informações, deverá ser adicionado ao final do caminho atual `/next/{next}`, onde o `{next}` é o atributo recebido previamente.
+
+  # Estrutura da resposta
+    - Após realizar a requisição, será retornado uma resposta com a seguinte estrutura:
+  ```
+  {
+    "content": {} Objeto que contêm as informações da entidade relacionada.
+    "message": {
+      "text": Mensagem representando a saída da requisição.
+      "type": Tipo da saída da requisição. success / info / warning / error.
+      "status": Código de status da saída da requisição, detalhado na tabela de códigos de resposta.
+    }
+  }
+  ```
+
+  # Códigos de resposta
+    - Ao usar as APIs do moreDraw, você pode encontrar algumas respostas padrão e códigos de erro baseados nos códigos de status [HTTP](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status). Os mais comuns são listados junto com suas descrições da seguinte forma:
+
+  | Código de resposta | Descrição |
+  | -------------------------- | -------------------------- |
+  | **200** - OK | Tudo funcionou conforme o esperado. A resposta é exibida ou o processamento é iniciado. |
+  | **201** - CREATED | Tudo funcionou conforme o esperado e o determinado processo do objeto foi criado. A resposta é exibida ou o processamento é iniciado. |
+  | **204** - NO_CONTENT | Tudo funcionou conforme o esperado. O conteúdo da resposta não é exibida. |
+  | **400** - BAD_REQUEST | A solicitação de requisição é inaceitável ou contém equívocos, geralmente devido à falta de parâmetros ou atributos obrigatórios. |
+  | **401** - UNAUTHORIZED | Existe algum erro na validação. Necessário verificar as credenciais, Bearer token ou API Key. |
+  | **403** - FORBIDDEN | Existe algum erro de permissão, geralmente devido à falta de atribuição de permissionamento para realizar determinada tarefa. |
+  | **404** - NOT_FOUND | Existe algum erro ao buscar determinado objeto, geralmente devido à incoerência de chaves de buscas com chaves previamente já cadastradas. |
+  | **405** - METHOD_NOT_ALLOWED | Existe alguma incoerência ao realizar a solicitação de requisição, geralmente devido ao equívoco do método HTTP utilizado. |
+  | **409** - CONFLICT | Existe algum erro ao cadastrar determinado objeto, geralmente devido à já existência do mesmo no banco de dados. |
+  | **429** - TO_MANY_REQUESTS | O limite de requisições de uma determinada chave foi atingido. Favor verificar o plano de uso atual, se preciso dar continuidade será necessário solicitar uma extensão, e em casos de dúvidas contatar o suporte. |
+  | **500** - INTERNAL_SERVER | Ocorreu algum erro na parte do servidor, geralmente devido à falta de algum parâmetro ou atributos com erros de sintaxe. |
+  | **502** - BAD_GATEWAY | Erro de descrição de caminho na solicitação da requisição, diferentemente do 405 onde o recurso existe mas não foi requisitado com o método correto, o 502 significa que o recurso não existe na API. |
+  | **504** - GATEWAY_TIMEOUT | Erro no parte do servidor, geralmente devido ao tempo execução que foi excedido e não conseguiu retornar uma mensagem a tempo. |
+
+  # Suporte
+  -   Todas as informações necessárias sobre a integração são apresentadas neste documento. Por favor, leia com atenção.
+  -   Para qualquer integração e suporte relacionado à API, sinta-se à vontade para nos enviar uma mensagem no [WhatsApp](https://api.whatsapp.com/send/?phone=555496426629).
+  -   Os termos de serviço do moreDraw estão listados aqui: [Termos de serviço](https://admin.moreDraw.com.br/)
+version: 1.0.0

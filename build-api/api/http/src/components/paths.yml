@@ -1,0 +1,47 @@
+### USER ###
+/users:
+  # Cria usuario
+  post:
+    "$ref": "../paths/users/post_users.yml"
+  # Atualiza usuario
+  put:
+    "$ref": "../paths/users/put_users.yml"
+  # Captura usuario
+  get:
+    "$ref": "../paths/users/get_users.yml"
+  # Remove usuario
+  delete:
+    "$ref": "../paths/users/delete_users.yml"
+  # Cors
+  options:
+    "$ref": "../paths/cors/cors_users.yml"
+
+/users/login:
+  # Login
+  post:
+    "$ref": "../paths/users/post_users_login.yml"
+  # Cors
+  options:
+    "$ref": "../paths/cors/cors_users_login.yml"
+
+/users/verify:
+  # Verificacao dispositivo OTP
+  post:
+    "$ref": "../paths/users/post_users_verify.yml"
+  # Geracao de novo OTP
+  put:
+    "$ref": "../paths/users/put_users_verify.yml"
+  # Cors
+  options:
+    "$ref": "../paths/cors/cors_users_verify.yml"
+
+/users/password/forget:
+  # Inicia processo de recuperação de senha
+  post:
+    "$ref": "../paths/users/post_users_password_forget.yml"
+
+/users/password/verify:
+  # Valida nova senha e código de verificação
+  post:
+    "$ref": "../paths/users/post_users_password_verify.yml"
+

@@ -1,0 +1,74 @@
+description: |
+  Esta API é utilizada para cadastrar uma nova imagem no sistema.
+  É necessário informar os atributos da imagem no corpo da requisição.
+
+  **Atributos Requeridos no Corpo da Requisição:**
+
+  | Atributo       | Descrição                                              | Tipo         | Obrigatório |
+  |----------------|--------------------------------------------------------|--------------|-------------|
+  | imageId        | Identificador único da imagem.                         | String       | Sim         |
+  | imageUrl       | URL da imagem correspondente.                          | String       | Sim         |
+  | title          | Título da imagem.                                      | String       | Sim         |
+  | description    | Descrição detalhada da imagem.                         | String       | Não         |
+  | type           | Tipo do componente gráfico (ex.: "thumbnail").         | String       | Sim         |
+  | tags           | Lista de tags associadas à imagem para busca.          | List<String> | Não         |
+  | language       | Idioma dos dados relacionados à imagem.                | String       | Não         |
+  | modified       | Data/hora da última modificação (formato ISO 8601).    | String       | Não         |
+  | created        | Data/hora de criação da imagem (formato ISO 8601).     | String       | Sim         |
+  | createdBy      | Identificador do criador da imagem.                    | String       | Sim         |
+
+operationId: postImage
+summary: Cadastra uma nova imagem no sistema
+security:
+  - bearerAuth: []
+tags:
+  - Image
+x-amazon-apigateway-integration:
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-postImage/invocations"
+  passthroughBehavior: "when_no_match"
+  httpMethod: "POST"
+  type: "aws_proxy"
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Image'
+responses:
+  '200':
+    description: Imagem cadastrada com sucesso.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Image'
+    headers:
+      Access-Control-Allow-Origin:
+        $ref: '#/components/headers/Access-Control-Allow-Origin'
+      Access-Control-Allow-Methods:
+        $ref: '#/components/headers/Access-Control-Allow-Methods'
+      Access-Control-Allow-Headers:
+        $ref: '#/components/headers/Access-Control-Allow-Headers'
+  '400':
+    description: Requisição inválida. Verifique os atributos informados.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/BadRequest'
+  '401':
+    description: Não autorizado. Token de autenticação inválido ou ausente.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Unauthorized'
+  '404':
+    description: Recurso não encontrado.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/NotFound'
+  '500':
+    description: Erro interno do servidor.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InternalServer'

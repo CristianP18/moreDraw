@@ -29,17 +29,17 @@ BUCKET="moredraw"
 BUCKET_DEPLOY="deploy"
 REGION="us-east-1"
 
-## deploy http api to s3
-#cd ../build-api/api/http/dist || exit
-#echo -e "\nDeploy HTTP API to S3..."
-#aws s3 cp ./index.json s3://${BUCKET}/${BUCKET_DEPLOY}/api_http.json
+# deploy http api to s3
+cd ../build-api/api/http/dist || exit
+echo -e "\nDeploy HTTP API to S3..."
+aws s3 cp ./index.json s3://${BUCKET}/${BUCKET_DEPLOY}/api_http.json
 
-## deploy rest api to s3
-#cd ../../rest/dist || exit
-#echo -e "\nDeploy REST API to S3..."
-#aws s3 cp ./index.json s3://${BUCKET}/${BUCKET_DEPLOY}/api_rest.json
+# deploy rest api to s3
+cd ../../rest/dist || exit
+echo -e "\nDeploy REST API to S3..."
+aws s3 cp ./index.json s3://${BUCKET}/${BUCKET_DEPLOY}/api_rest.json
 
-cd ../lambda || exit
+cd ../../../../lambda || exit
 
 # package binaries
 echo -e "\nPackaging jars..."
