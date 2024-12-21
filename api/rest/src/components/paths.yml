@@ -38,5 +38,3 @@
   # Cors
   options:
     "$ref": "../paths/cors/cors_image.yml"
-
-

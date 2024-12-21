@@ -1,8 +1,0 @@
-type: object
-properties:
-  message:
-    $ref: '#/components/schemas/Message'
-  content:
-    type: array
-    items:
-      $ref: '#/components/schemas/Worker'

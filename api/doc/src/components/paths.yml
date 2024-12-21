@@ -62,4 +62,3 @@
 /image/picture/{imageId}:
   put:
     "$ref": "../../../rest/src/paths/image/put_image_picture.yml"
-

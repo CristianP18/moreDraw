@@ -1,47 +1,38 @@
 type: object
 properties:
   imageId:
-    description: Identificador único da imagem.
+    description: Identificação numérica da imagem.
     example: "ab1cd2ef-34gh-56ij-78kl-mn910opqrs12"
     type: string
-  imageUrl:
-    description: URL da imagem correspondente.
-    example: "https://example.com/images/sample.jpg"
+  imageName:
+    description: Nome da imagem.
+    example: "Pátio02"
     type: string
-  title:
-    description: Título da imagem.
-    example: "Imagem do Armazém Central"
-    type: string
-  description:
-    description: Descrição detalhada da imagem.
-    example: "Imagem ilustrativa do pátio do armazém central."
-    type: string
-  type:
-    description: Tipo do componente gráfico representado pela imagem.
-    example: "Casa"
-    type: string
-  tags:
-    description: Lista de tags associadas à imagem para facilitar buscas.
-    type: array
-    items:
-      type: string
-    example: ["armazém", "pátio", "logística"]
-  language:
-    description: Idioma dos dados associados à imagem.
-    example: "pt-BR"
-    type: string
-  modified:
-    description: Data e hora da última modificação da imagem.
-    example: "2024-10-22T19:50:00.000+0000"
+  groupBy:
+    description: Data de criação.
+    example: "Pátio/Veículos/Docas"
     type: string
     format: date-time
+  description:
+    description: Descrição da Imagem.
+    example: "Mapa de visão superior"
+    type: string
+  imageUrl:
+    description: Especifica o caminho para a imagem.
+    example: "path/to/background.jpg"
+    type: string
   created:
-    description: Data e hora de criação da imagem.
+    description: Data de criação.
     example: "2024-10-20T07:25:00.000+0000"
     type: string
     format: date-time
   createdBy:
-    description: Identificador único do criador do registro.
+    description: ID do cliente que criou o registro.
     example: "ab1cd2ef-34gh-56ij-78kl-mn910opqrs12"
-    type: string
     format: uuid
+    type: string
+  modified:
+    description: Data de modificação.
+    example: "2024-10-22T19:50:00.000+0000"
+    type: string
+    format: date-time

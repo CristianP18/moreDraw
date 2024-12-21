@@ -1,30 +1,43 @@
-description:
-  |-
-  Esta API é utilizada para submeter foto de perfil de um usuário.
-  Necessário informar o a foto no corpo da requisição.
+description: |
+  Esta API é utilizada para submeter foto do imagea.
+  Necessário informar a foto no corpo da requisição.
 
-  | Atributo | Descrição | Tipo(tamanho) | Obrigatório
-  |--|--|--|--|
-  | picUser | Avatar do usuário | MultiPart-Form/Data | Sim |
-operationId: postUsersPicture
-summary: Envio de foto de perfil do usuário
+  | Atributo           | Descrição             | Tipo(tamanho)        | Obrigatório |
+  |--------------------|----------------------|-----------------------|-------------|
+  | picImage       | Imagem               | MultiPart-Form/Data   | Sim         |
+  | imageId        | ID da imagem         | Path (string)         | Sim         |
+operationId: putImagePicture
+summary: Envio de foto da imagem
 security:
   - bearerAuth: []
 tags:
-  - Usuários
-  - Clientes
+  - Image
+parameters:
+  - name: imageId
+    in: path
+    required: true
+    description: O ID único da imagem que será atualizada
+    schema:
+      type: string
 requestBody:
   required: true
   content:
     multipart/form-data:
       schema:
-        "$ref": "#/components/schemas/CreatePodPic"
+        type: object
+        properties:
+          picImage:
+            type: string
+            format: binary
+            description: A imagem que será enviada
+        required:
+          - picImage
+
 x-amazon-apigateway-integration:
-  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-postUsersPicture/invocations"
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576199001204:function:${stageVariables.Stage}-putImagePicture/invocations"
   payloadFormatVersion: "2.0"
   type: "aws_proxy"
   httpMethod: "POST"
-  connectionType: "INTERNET"
 responses:
   '200':
     description: Enviado com sucesso
