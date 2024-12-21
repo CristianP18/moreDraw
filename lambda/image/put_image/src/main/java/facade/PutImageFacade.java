@@ -17,7 +17,7 @@ public class PutImageFacade {
 
      * @param imageId Ean da localidade de armazenagem
      */
-    public Response<?> facade(String imageId, String userId, String input, String locale) throws NotFound {
+    public Response<?> facade(String imageId, String input, String locale) throws NotFound {
         Image image = ImageService.getInstance().getImageById(imageId, locale);
 
         ImageRequestModel request =

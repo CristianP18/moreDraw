@@ -9,7 +9,7 @@
       name: "Usuários"
       description: "Os usuários representam a entidade mais simplória de uma pessoa física.\nEles podem pertencer a equipes sendo possível executar uma tarefa, realizar operações de remetente e destinatário, realizar a gestão de seus unitizadores, etiquetas e favoritos."
     - 
-      name: "Imagem"
+      name: "Image"
       description: "Componentes Gráficos."
   servers: 
     - 
@@ -861,96 +861,6 @@
           - "federalTax"
           - "password"
           - "mobilePhone"
-      UpdateUser: 
-        type: "object"
-        properties: 
-          email: 
-            description: "Email do usuário"
-            example: "nome_sobrenome@mail.com"
-            type: "string"
-          phone: 
-            description: "Telefone do usuário"
-            example: "550012345678"
-            type: "string"
-          mobilePhone: 
-            description: "Telefone celular do usuário"
-            example: "55000912345678"
-            type: "string"
-          notify: 
-            description: "Disponibilidade para enviar notificação"
-            example: true
-            type: "boolean"
-          disability: 
-            description: "Possível deficiência"
-            example: "Deficiência visual, auditiva, física"
-            type: "string"
-          isDriver: 
-            description: "Definição de motorista"
-            example: false
-            type: "boolean"
-          license: 
-            description: "CNH do usuário"
-            example: "123456789012345"
-            type: "string"
-          licenseValid: 
-            description: "Data da validade da CNH do motorista"
-            example: "2020-07-15T"
-            format: "date"
-            type: "string"
-          category: 
-            description: "Categoria da CNH do motorista"
-            example: "B"
-            type: "string"
-          emiter: 
-            description: "Emitente da CNH do motorista"
-            example: "ABCABC-ABC"
-            type: "string"
-          locale: 
-            description: "Linguagem utilizada pelo usuário"
-            example: "PT-BR"
-            type: "string"
-          modified: 
-            example: "2020-07-15T20:45:23.506-0300"
-            format: "date-time"
-            type: "string"
-          address: 
-            description: "Endereco do usuário"
-            type: "object"
-            oneOf: 
-              - 
-                $ref: "#/components/schemas/CreateAddress"
-              - 
-                $ref: "#/components/schemas/UpdateAddress"
-      UpdateUserStatus: 
-        type: "object"
-        properties: 
-          state: 
-            description: "Estado do usuário"
-            example: "0: Offline; 1:Idle; 2:On Duty; 3:Online"
-            format: "int-32"
-            type: "number"
-            items: 
-              enum: 
-                - 0
-                - 1
-                - 2
-                - 3
-          latitude: 
-            description: "Latitude do endereço"
-            example: "-28.793043370422325"
-            type: "string"
-          longitude: 
-            description: "Longitude do endereço"
-            example: "-51.605825771273764"
-            type: "string"
-          modified: 
-            example: "2020-07-15T20:45:23.506-0300"
-            format: "date-time"
-            type: "string"
-      UpdateUserDriverMetrics: 
-        $ref: "../schemas/users/user_driver_metrics.yml"
-      UserDriverMetricsResponse: 
-        $ref: "../schemas/users/user_driver_metrics_response.yml"
       VerifyUser: 
         type: "object"
         properties: 
@@ -995,19 +905,6 @@
           - "federalTax"
           - "password"
           - "oneTimePassword"
-      Worker: 
-        $ref: "../schemas/users/worker.yml"
-      WorkersResponse: 
-        type: "object"
-        properties: 
-          message: 
-            $ref: "#/components/schemas/Message"
-          content: 
-            type: "array"
-            items: 
-              $ref: "#/components/schemas/Worker"
-      SumShipmentsUnitloads: 
-        $ref: "../schemas/users/sum_shipments_unitloads.yml"
       LoginUser: 
         type: "object"
         properties: 

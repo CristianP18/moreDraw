@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>image</artifactId>
+        <artifactId>lambda</artifactId>
         <groupId>com.moreDraw</groupId>
         <version>1.0</version>
     </parent>
@@ -16,11 +16,16 @@
         </dependency>
         <dependency>
             <groupId>com.moreDraw</groupId>
-            <artifactId>configuration_bucketS3</artifactId>
+            <artifactId>configuration_docs</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.moreDraw</groupId>
+            <artifactId>helper</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <modelVersion>4.0.0</modelVersion>
 

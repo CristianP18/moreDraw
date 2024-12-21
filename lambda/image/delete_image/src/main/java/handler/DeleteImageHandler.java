@@ -8,11 +8,10 @@ import configuration.GenericRequestHandler;
 import configuration.Response;
 import exceptions.NotFound;
 import exceptions.Unauthorized;
-import facade.PutImageFacade;
-import helper.JWTHelper;
+import facade.DeleteImageFacade;
 
-public class PutImageHandler extends GenericRequestHandler {
-    private final PutImageFacade putImageFacade = new PutImageFacade();
+public class DeleteImageHandler extends GenericRequestHandler {
+    private final DeleteImageFacade deleteImageFacade = new DeleteImageFacade();
 
     /**
      * @param request
@@ -31,13 +30,9 @@ public class PutImageHandler extends GenericRequestHandler {
     @Override
     public Response<?> execute(APIGatewayProxyRequestEvent request, Context context, String locale)
             throws Unauthorized, NotFound {
-        if (JWTHelper.isValidJwt(JWTHelper.getToken(request))) {
-            return putImageFacade.facade(
+
+            return deleteImageFacade.facade(
                     request.getPathParameters().get(DynamoDBImage.IMAGEYARDID),
-                    request.getBody(),
                     locale);
         }
-        else
-            throw new Unauthorized(Bundle.getInstance().getString("Unauthorized", locale));
-    }
 }

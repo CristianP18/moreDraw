@@ -3,10 +3,10 @@ package service;
 import bundles.Bundle;
 import configuration.Response;
 import exceptions.NotFound;
-import model.Image;
-import model.ImageResponseModel;
-import model.ListImageResponseModel;
+import model.*;
 import repository.ImageRepository;
+import repository.S3;
+import repository.UserRepository;
 import software.amazon.awssdk.enhanced.dynamodb.model.Page;
 
 import java.util.ArrayList;
@@ -24,6 +24,20 @@ public final class ImageService extends Service {
     public static void postImage(Image image) {
         ImageRepository.getInstance().postImage(image);
     }
+
+    public Response<?> response(User user, String text, String type, int status) {
+        MESSAGE.setStatus(status);
+        MESSAGE.setType(type);
+        MESSAGE.setText(text);
+
+        if (user != null) {
+            UserResponseModel content = new UserResponseModel(user);
+            return Response.success(content, MESSAGE);
+        }
+
+        return Response.success(MESSAGE);
+    }
+
 
 
     public Iterator<Page<Image>> getImage(String createdBy, String locale) throws NotFound {
@@ -87,7 +101,19 @@ public final class ImageService extends Service {
         return image;
     }
 
+    public static final String image_GRAY =
+            S3.link("docs.tracebox.com.br/imageyard", "imageyard_gray.jpg");
+
     public void saveImage(Image image) {
         ImageRepository.getInstance().saveImage(image);
+    }
+
+    public void deleteImage(Image image) {
+        ImageRepository.getInstance().deleteImage(image);
+    }
+
+    public String getFilenameFromAvatar(String oldPhoto){
+        // extrai nome da foto dentro da URL
+        return oldPhoto.substring(56);
     }
 }

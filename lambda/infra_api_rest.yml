@@ -18,33 +18,27 @@ Parameters:
     Type: String
 
 Resources:
-  HttpApi:
-    Type: AWS::Serverless::HttpApi
-    Properties:
-      DefinitionBody:
-        'Fn::Transform':
-          Name: 'AWS::Include'
-          Parameters:
-            Location: s3://docs.tracebox.com.br/deploy/api_http.json
-      StageName: !Ref Stage
-      StageVariables:
-        Stage: !Ref Stage
-        AwsId: !Ref AwsId
-        Region: !Ref Region
-
   RestApi:
-    Type: AWS::Serverless::Api
+    Type: AWS::ApiGateway::RestApi
     Properties:
-      DefinitionBody:
+      Name: !Sub "${Stage} - moreDraw - REST"
+      FailOnWarnings: true
+      Body:
         'Fn::Transform':
           Name: 'AWS::Include'
           Parameters:
-            Location: s3://docs.tracebox.com.br/deploy/api_rest.json
-      StageName: !Ref Stage
-      Variables:
-        Stage: !Ref Stage
-        AwsId: !Ref AwsId
-        Region: !Ref Region
+            Location: s3://moredraw/deploy/api_rest.json
+
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub "${Stage} - moreDraw - HTTP"
+      ProtocolType: HTTP
+      Body:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: s3://moredraw/deploy/api_http.json
 
 
   #   Funções Lambda

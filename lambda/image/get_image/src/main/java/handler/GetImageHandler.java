@@ -4,20 +4,21 @@ package handler;
 import bundles.Bundle;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+
 import configuration.DynamoDBImage;
 import configuration.GenericRequestHandler;
 import configuration.Response;
 import exceptions.InvalidRequest;
 import exceptions.NotFound;
 import exceptions.Unauthorized;
-import helper.JWTHelper;
-import helper.JwtApiKeyHelper;
-import service.RoleService;
 import facade.GetImageFacade;
+import helper.JWTHelper;
+
+
 public class GetImageHandler extends GenericRequestHandler {
     private final GetImageFacade getImageFacade = new GetImageFacade();
     /**
-     * <h3>Captura Eventos de pátio.</h3>
+     * <h3>Captura Mapa do Pátio.</h3>
      *
      * @param request <ul>
      *                <li>Api Key no cabeçalho.</li>
@@ -26,7 +27,8 @@ public class GetImageHandler extends GenericRequestHandler {
      * @throws InvalidRequest       caso corpo possuir equívocos, atributos inválidos.
      * @throws Unauthorized         caso Api Key seja nula.
      * @throws Exception            caso aconteça um erro desconhecido.
-     * @author Cristian Pegoraro
+     * @author Rafael Castilhos
+     * @see "https://admin.tracebox.com.br/docs/#/Unitizadores/postUnitloads"
      * @since 0.1
      */
     @Override
@@ -34,11 +36,10 @@ public class GetImageHandler extends GenericRequestHandler {
             throws Unauthorized, NotFound {
         if (JWTHelper.isValidJwt(JWTHelper.getToken(request))) {
             return getImageFacade.facade(
-                    request.getPathParameters().get(DynamoDBImage.IMAGEID),
+                    request.getPathParameters().get(DynamoDBImage.IMAGEYARDID),
                     JWTHelper.decodeRequestId(JWTHelper.getToken(request)),
                     locale);
-        }
-        else
+        } else
             throw new Unauthorized(Bundle.getInstance().getString("Unauthorized", locale));
     }
 }

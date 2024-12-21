@@ -29,7 +29,7 @@ public class PutImagePictureHandler extends GenericRequestHandler {
      * @throws NotFound caso alguma entidade não seja encontrada.
      * @throws Exception caso aconteça um erro desconhecido.
      * @since 0.1
-     * @see "https://admin.moreDraw.com.br/docs/#/Usu%C3%A1rios/postImagePicture"
+     * @see "https://admin.tracebox.com.br/docs/#/Usu%C3%A1rios/postImagePicture"
      * @author Rafael Castilhos
      */
     @Override
@@ -38,9 +38,10 @@ public class PutImagePictureHandler extends GenericRequestHandler {
 
         if (JWTHelper.isValidJwt(JWTHelper.getToken(request))) {
             return putImagePictureFacade.facade(
-                    request.getPathParameters().get(DynamoDBImage.IMAGEID),
+                    request.getPathParameters().get(DynamoDBImage.IMAGEYARDID),
                     request,
                     context,
+                    JWTHelper.decodeRequestId(JWTHelper.getToken(request)),
                     locale);
         }
         else

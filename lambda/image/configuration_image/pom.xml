@@ -4,9 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>image</artifactId>
         <groupId>com.moreDraw</groupId>
+        <artifactId>lambda</artifactId>
         <version>1.0</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>com.moreDraw</groupId>
@@ -15,6 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
@@ -29,19 +31,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-common</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-        <dependency>
             <groupId>com.moreDraw</groupId>
             <artifactId>configuration</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.moreDraw</groupId>
-            <artifactId>helper</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>

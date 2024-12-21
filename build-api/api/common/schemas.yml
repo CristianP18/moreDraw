@@ -7,14 +7,6 @@ UserHistory:
   "$ref": "../schemas/users/user_history.yml"
 CreateUser:
   "$ref": "../schemas/users/create_user.yml"
-UpdateUser:
-  "$ref": "../schemas/users/update_user.yml"
-UpdateUserStatus:
-  "$ref": "../schemas/users/update_user_status.yml"
-UpdateUserDriverMetrics:
-  "$ref": "../schemas/users/user_driver_metrics.yml"
-UserDriverMetricsResponse:
-  "$ref": "../schemas/users/user_driver_metrics_response.yml"
 VerifyUser:
   "$ref": "../schemas/users/verify_user.yml"
 GenerateOneTimePassword:
@@ -25,12 +17,6 @@ StreamUser:
   "$ref": "../schemas/users/stream_user.yml"
 VerifyPassword:
   "$ref": "../schemas/users/verify_password.yml"
-Worker:
-  "$ref": "../schemas/users/worker.yml"
-WorkersResponse:
-  "$ref": "../schemas/users/workers_response.yml"
-SumShipmentsUnitloads:
-  "$ref": "../schemas/users/sum_shipments_unitloads.yml"
 
 ### LOGIN ###
 LoginUser:

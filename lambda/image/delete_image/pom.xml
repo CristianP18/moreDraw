@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.moreDraw</groupId>
-    <artifactId>post_image</artifactId>
+    <artifactId>delete_image</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,11 +29,7 @@
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>6.5.2.Final</version>
-        </dependency>
+
     </dependencies>
 
 </project>

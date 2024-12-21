@@ -15,10 +15,18 @@ import java.util.Iterator;
 public class GetImageFacade {
 
     public Response<?> facade(String imageId, String userId, String locale) throws NotFound {
-        Iterator<Page<Image>> image = ImageService.getInstance().getImage(imageId, locale);
+        Iterator<Page<Image>> imageList = null;
+        if(imageId.length() > 5){
+           Image image = ImageService.getInstance().getImageById(imageId, locale);
+            return ImageService.getInstance().response(image,
+                    Bundle.getInstance().getString("Image", locale),
+                    ResponseType.SUCCESS, ResponseStatusCode.OK);
+        }else{
+//            imageList = ImageService.getInstance().getImage(userId, locale);
 
-        return ImageService.getInstance().responseList(image,
-                Bundle.getInstance().getString("ListImage", locale),
-                ResponseType.SUCCESS, ResponseStatusCode.OK);
+            return ImageService.getInstance().responseList(imageList,
+                    Bundle.getInstance().getString("ListImage", locale),
+                    ResponseType.SUCCESS, ResponseStatusCode.OK);
+        }
     }
 }

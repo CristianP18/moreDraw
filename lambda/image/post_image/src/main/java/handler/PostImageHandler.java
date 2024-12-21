@@ -9,15 +9,14 @@ import exceptions.Conflict;
 import exceptions.InvalidRequest;
 import exceptions.NotFound;
 import exceptions.Unauthorized;
-import helper.JWTHelper;
-import helper.JwtApiKeyHelper;
-import service.RoleService;
 import facade.PostImageFacade;
+import helper.JWTHelper;
+import java.io.IOException;
 
-public class PostImageHandler  extends GenericRequestHandler {
+public class PostImageHandler extends GenericRequestHandler {
     private final PostImageFacade postImageFacade = new PostImageFacade();
     /**
-     * <h3>Cadastra Eventos de pátio.</h3>
+     * <h3>Cadastra localidade de armazenagem.</h3>
      *
      * @param request <ul>
      *                <li>{@link model.ImageRequestModel} no corpo.</li>
@@ -28,19 +27,20 @@ public class PostImageHandler  extends GenericRequestHandler {
      * @throws NullPointerException caso corpo possuir atributos nulos.
      * @throws Unauthorized         caso Api Key ou Token JWT seja nulo ou expirado.
      * @throws Exception            caso aconteça um erro desconhecido.
-     * @author Cristian Pegoraro
+     * @author Rafael Castilhos
+     * @see "https://admin.tracebox.com.br/docs/#/Localidade%20de%20armazenagem/postGateway"
      * @since 0.1
      */
     @Override
     public Response<?> execute(APIGatewayProxyRequestEvent request, Context context, String locale)
-            throws Unauthorized, NotFound, Conflict {
+            throws Unauthorized, NotFound, Conflict, InvalidRequest, IOException {
         if (JWTHelper.isValidJwt(JWTHelper.getToken(request))) {
             return postImageFacade.facade(
+                    request,
+                    context,
                     JWTHelper.decodeRequestId(JWTHelper.getToken(request)),
-                    request.getBody(),
                     locale);
-        }
-        else
+        } else
             throw new Unauthorized(Bundle.getInstance().getString("Unauthorized", locale));
     }
 }
