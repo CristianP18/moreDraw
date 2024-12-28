@@ -871,7 +871,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-getimage"
+                            "-getImage"
                         ]
                     ]
                 },
@@ -996,7 +996,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-postimage"
+                            "-postImage"
                         ]
                     ]
                 },
@@ -1126,7 +1126,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-putimagePicture"
+                            "-putImagePicture"
                         ]
                     ]
                 },
@@ -1255,7 +1255,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-putimage"
+                            "-putImage"
                         ]
                     ]
                 },
@@ -1381,7 +1381,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-deleteimage"
+                            "-deleteImage"
                         ]
                     ]
                 },

@@ -1,0 +1,52 @@
+type: object
+properties:
+  firstName:
+    description: Primeiro nome do usuário
+    example: Nome
+    type: string
+  lastName:
+    description: Sobrenome do usuário
+    example: Sobrenome
+    type: string
+  federalTax:
+    description: CPF do usuário
+    example: "12345678900"
+    type: string
+  password:
+    description: Senha do usuário
+    example: Senh@Exemplo123
+    type: string
+    format: password
+  mobilePhone:
+    description: Telefone celular do usuário
+    example: "5500912345678"
+    type: string
+  notify:
+    description: Disponibilidade para enviar notificação
+    example: true
+    type: boolean
+  disability:
+    description: Possível deficiência
+    example: Deficiência visual, auditiva, física
+    type: string
+  created:
+    example: "2020-07-15T20:45:23.506-0300"
+    format: date-time
+    type: string
+  address:
+    description: Endereco do usuário
+    type: object
+    $ref: '#/components/schemas/CreateAddress'
+  users:
+    description: Lista de usuários
+    type: array
+    items:
+      description: Objeto de criação do usuário
+      type: object
+      $ref: '#/components/schemas/CreateUser'
+required:
+  - firstName
+  - lastName
+  - federalTax
+  - password
+  - mobilePhone

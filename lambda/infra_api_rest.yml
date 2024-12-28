@@ -338,7 +338,7 @@ Resources:
       SnapStart:
         ApplyOn: PublishedVersions
       FunctionName:
-        Fn::Join: [ "", [ !Ref Stage, "-getimage" ] ]
+        Fn::Join: [ "", [ !Ref Stage, "-getImage" ] ]
       Environment:
         Variables:
           ENV: !Ref Env
@@ -374,7 +374,7 @@ Resources:
       SnapStart:
         ApplyOn: PublishedVersions
       FunctionName:
-        Fn::Join: [ "", [ !Ref Stage, "-postimage" ] ]
+        Fn::Join: [ "", [ !Ref Stage, "-postImage" ] ]
       Environment:
         Variables:
           ENV: !Ref Env
@@ -415,7 +415,7 @@ Resources:
       SnapStart:
         ApplyOn: PublishedVersions
       FunctionName:
-        Fn::Join: [ "", [ !Ref Stage, "-putimagePicture" ] ]
+        Fn::Join: [ "", [ !Ref Stage, "-putImagePicture" ] ]
       Environment:
         Variables:
           ENV: !Ref Env
@@ -456,7 +456,7 @@ Resources:
       SnapStart:
         ApplyOn: PublishedVersions
       FunctionName:
-        Fn::Join: [ "", [ !Ref Stage, "-putimage" ] ]
+        Fn::Join: [ "", [ !Ref Stage, "-putImage" ] ]
       Environment:
         Variables:
           ENV: !Ref Env
@@ -494,7 +494,7 @@ Resources:
       SnapStart:
         ApplyOn: PublishedVersions
       FunctionName:
-        Fn::Join: [ "", [ !Ref Stage, "-deleteimage" ] ]
+        Fn::Join: [ "", [ !Ref Stage, "-deleteImage" ] ]
       Environment:
         Variables:
           ENV: !Ref Env

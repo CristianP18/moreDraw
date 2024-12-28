@@ -1,0 +1,38 @@
+type: object
+properties:
+  imageId:
+    description: Identificação numérica da imagem.
+    example: "ab1cd2ef-34gh-56ij-78kl-mn910opqrs12"
+    type: string
+  imageName:
+    description: Nome da imagem.
+    example: "Pátio02"
+    type: string
+  groupBy:
+    description: Data de criação.
+    example: "Pátio/Veículos/Docas"
+    type: string
+    format: date-time
+  description:
+    description: Descrição da Imagem.
+    example: "Mapa de visão superior"
+    type: string
+  imageUrl:
+    description: Especifica o caminho para a imagem.
+    example: "path/to/background.jpg"
+    type: string
+  created:
+    description: Data de criação.
+    example: "2024-10-20T07:25:00.000+0000"
+    type: string
+    format: date-time
+  createdBy:
+    description: ID do cliente que criou o registro.
+    example: "ab1cd2ef-34gh-56ij-78kl-mn910opqrs12"
+    format: uuid
+    type: string
+  modified:
+    description: Data de modificação.
+    example: "2024-10-22T19:50:00.000+0000"
+    type: string
+    format: date-time

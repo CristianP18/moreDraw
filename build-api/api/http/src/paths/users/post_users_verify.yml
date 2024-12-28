@@ -1,0 +1,51 @@
+description: 
+  |-
+  Esta API é utilizada para verificar o dispositivo de telefone celular do novo usuário.
+  Necessário informar os atributos do usuário no corpo da requisição.
+
+  | Atributo | Descrição | Tipo(tamanho) | Obrigatório
+  |--|--|--|--|
+  | mobilePhone | Telefone celular do usuário | String(14) | Sim |
+  | oneTimePassword | Código de verificação do dispositivo telefone celular do usuário | String(6) | Sim |
+operationId: postVerifyUsers
+summary: Verificação dispositivo celular
+tags:
+  - Usuários
+x-amazon-apigateway-integration:
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-postUsersVerify/invocations"
+  payloadFormatVersion: "2.0"
+  type: "aws_proxy"
+  httpMethod: "POST"
+  connectionType: "INTERNET"
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/VerifyUser'
+responses:
+  '200':
+    description: Dispositivo celular autenticado com sucesso
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Ok'
+    headers:
+      Access-Control-Allow-Origin:
+        $ref: '#/components/headers/Access-Control-Allow-Origin'
+      Access-Control-Allow-Methods:
+        $ref: '#/components/headers/Access-Control-Allow-Methods'
+      Access-Control-Allow-Headers:
+        $ref: '#/components/headers/Access-Control-Allow-Headers'
+  '400':
+    description: BadRequest
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/BadRequest'
+  '500':
+    description: InternalServer
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InternalServer'

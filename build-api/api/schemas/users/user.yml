@@ -1,0 +1,96 @@
+type: object
+properties:
+  userId:
+    description: ID do usuário
+    example: "12345678-1234-1234-1234-123456789012"
+    format: uuid
+    type: string
+  firstName:
+    description: Primeiro nome do usuário
+    example: Nome
+    type: string
+  lastName:
+    description: Sobrenome do usuário
+    example: Sobrenome
+    type: string
+  federalTax:
+    description: CPF do usuário
+    example: "12345678900"
+    type: string
+  RG:
+    description: RG do usuário
+    example: "1234567890"
+    type: string
+  email:
+    description: Email do usuário
+    example: nome_sobrenome@mail.com
+    type: string
+  phone:
+    description: Telefone do usuário
+    example: "5500012345678"
+    type: string
+  mobilePhone:
+    description: Telefone celular do usuário
+    example: "5500912345678"
+    type: string
+  notify:
+    description: Disponibilidade para enviar notificação
+    example: true
+    type: boolean
+  locale:
+    description: Linguagem utilizada pelo usuário
+    example: PT-BR
+    type: string
+  sumRatingShipper:
+    description: Média das avaliações de emitente
+    example: "4.6"
+    type: string
+  sumRatingShipment:
+    description: Média das avaliações de remessas
+    example: "4.7"
+    type: string
+  sumRatingDestinator:
+    description: Média das avaliações do destinatario
+    example: "4.8"
+    type: string
+  sumRatingDriver:
+    description: Média das avaliações do motorista
+    example: "4.8"
+    type: string
+  isDriver:
+    description: Definição de motorista
+    example: false
+    type: boolean
+  license:
+    description: CNH do usuário
+    example: "123456789012345"
+    type: string
+  disability:
+    description: Possível deficiência
+    example: Deficiência visual, auditiva, física
+    type: string
+  license_valid:
+    description: Data da validade da CNH do motorista
+    example: "2020-07-15T"
+    format: date
+    type: string
+  category:
+    description: Categoria da CNH do motorista
+    example: B
+    type: string
+  emiter:
+    description: Emitente da CNH do motorista
+    example: ABCABC-ABC
+    type: string
+  birthDate:
+    description: Data de nascimento do usuário
+    example: DD/MM/AAAA
+    type: string
+  vehicle:
+    description: Veículo atual do usuário
+    type: object
+    $ref: '#/components/schemas/Vehicle'
+  address:
+    description: Endereço do usuário
+    type: object
+    $ref: '#/components/schemas/Address'

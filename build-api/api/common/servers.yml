@@ -1,0 +1,7 @@
+- url: https://api.moreDraw.com.br/{environment}
+  variables:
+    environment:
+      default: v1
+      enum:
+        - dev
+        - v1

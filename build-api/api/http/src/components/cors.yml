@@ -1,0 +1,23 @@
+allowMethods:
+  - "DELETE"
+  - "GET"
+  - "HEAD"
+  - "OPTIONS"
+  - "PATCH"
+  - "POST"
+  - "PUT"
+allowHeaders:
+  - "accept-encoding"
+  - "accept-language"
+  - "access-control-allow-headers"
+  - "access-control-allow-methods"
+  - "access-control-allow-origin"
+  - "authorization"
+  - "content-length"
+  - "content-type"
+  - "x-api-key"
+maxAge: 0
+allowCredentials: false
+allowOrigins:
+  - "http://*"
+  - "https://*"

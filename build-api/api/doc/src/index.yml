@@ -1,0 +1,22 @@
+openapi: 3.0.2
+info:
+  "$ref": "./components/info.yml"
+
+tags:
+  "$ref": "../../common/tags.yml"
+
+servers:
+  "$ref": "../../common/servers.yml"
+
+paths:
+  "$ref": "./components/paths.yml"
+
+components:
+  securitySchemes:
+    "$ref": "./components/security_schemes.yml"
+
+  schemas:
+    "$ref": "../../common/schemas.yml"
+
+  headers:
+    "$ref": "../../common/headers.yml"

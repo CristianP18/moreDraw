@@ -1,0 +1,5 @@
+type: object
+properties: 
+  pic:
+    type: string
+    format: binary

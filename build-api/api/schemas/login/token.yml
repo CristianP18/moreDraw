@@ -1,0 +1,238 @@
+type: object
+properties:
+  message:
+    $ref: '#/components/schemas/Message'
+  content:
+    properties:
+      jwt:
+        description: JWT token
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        type: string
+      firstName:
+        description: Primeiro nome do usuário
+        example: Nome
+        type: string
+      lastName:
+        description: Sobrenome do usuário
+        example: Sobrenome
+        type: string
+      federalTax:
+        description: CPF do usuário
+        example: "12345678900"
+        type: string
+      mobilePhone:
+        description: Telefone celular do usuário
+        example: "5500912345678"
+        type: string
+      homePage:
+        description: Página Home
+        example: "Shipments"
+        type: string
+      avgPunctual:
+        description: Média das avaliações do motorista em pontualidade
+        example: 4.5
+        format: double
+        type: number
+      avgLabor:
+        description: Média das avaliações do motorista em qualidade
+        example: 4.6
+        format: double
+        type: number
+      avgPresentation:
+        description: Média das avaliações do motorista em apresentacao
+        example: 4.7
+        format: double
+        type: number
+      avgAttitude:
+        description: Média das avaliações do motorista em comportamento/atitudes
+        example: 4.8
+        format: double
+        type: number
+      isDriver:
+        description: Definição de motorista
+        example: false
+        type: boolean
+      transporterAtShipper:
+        description: Definição se transportador possui como localização o emitente
+        example: false
+        type: boolean
+      radiusDelivery:
+        description: Raio em metros da distância do local de entrega com o local de destino
+        example: 500
+        type: number
+        format: int-32
+      gpsInterval:
+        description: Frequência de atualização da posição geográfica do motorista
+        example: 30
+        type: number
+        format: int-32
+      license:
+        description: CNH do usuário
+        example: "123456789012345"
+        type: string
+      license_valid:
+        description: Data da validade da CNH do motorista
+        example: "2020-07-15T"
+        format: date
+        type: string
+      category:
+        description: Categoria da CNH do motorista
+        example: B
+        type: string
+      emiter:
+        description: Emitente da CNH do motorista
+        example: ABCABC-ABC
+        type: string
+      ratingEmitter:
+        description: Avaliação do remetente. Quem avalia é o motorista ou destinatário
+        example: 3.5
+        format: double
+        type: number
+      ratingShipment:
+        description: Avaliação da qualidade da remessa. Quem avalia é o destinatário
+        example: 4.5
+        format: double
+        type: number
+      ratingDestinator:
+        description: Avaliação do destinatário. Quem avalia é o motorista
+        example: 4.0
+        format: double
+        type: number
+      ratingDriver:
+        description: Avaliação do motorista. Quem avalia é o destinatário
+        example: 5.0
+        format: double
+        type: number
+      vehicle:
+        description: Veículo atual do usuário
+        type: object
+        $ref: '#/components/schemas/Vehicle'
+      fingerPrint:
+        description: Informações de sessão e dispositivo do usuário
+        type: object
+        $ref: '#/components/schemas/FingerPrint'
+      clients:
+        type: array
+        items:
+          properties:
+            companyName:
+              description: Nome da empresa
+              example: Empresa
+              type: string
+            tradeName:
+              description: Nome fantasia da empresa
+              example: Empresa
+              type: string
+            prefixCompany:
+              description: Prefixo do transportador
+              example: CMP
+              type: string
+            federalTax:
+              description: CNPJ da empresa
+              example: "12345678000099"
+              type: string
+            apiKey:
+              description: ApiKey da empresa
+              example: "XXeTewoxUI1d6qpxvbmyl8qBltZi6S251QCpmh4Q"
+              type: string
+            operatorType:
+              description: Tipo do operador
+              example: A
+              type: string
+            successfulDeliveries:
+              description: Quantidade de sucesso em entregas
+              example: 5
+              format: int-32
+              type: number
+            wrongDeliveries:
+              description: Quantidade de entregas com falha
+              example: 1
+              format: int-32
+              type: number
+            isShipper:
+              description: Definição de emitente
+              example: true
+              type: boolean
+            isDestinator:
+              description: Definição de destinatário
+              example: false
+              type: boolean
+            isTransporter:
+              description: Definição de transportador
+              example: true
+              type: boolean
+            ratingEmitter:
+              description: Avaliação do remetente. Quem avalia é o motorista ou destinatário
+              example: 3.5
+              format: double
+              type: number
+            ratingShipment:
+              description: Avaliação da qualidade da remessa. Quem avalia é o destinatário
+              example: 4.5
+              format: double
+              type: number
+            ratingDestinator:
+              description: Avaliação do destinatário. Quem avalia é o motorista
+              example: 4.0
+              format: double
+              type: number
+            isPremium:
+              description: Definição de cliente premium com acesso e visualização do Google Maps
+              example: true
+              type: boolean
+            podRequired:
+              description: Definição de captura de assinatura pelo transportador
+              example: false
+              type: boolean
+            picRequired:
+              description: Definição de captura de foto pelo transportador
+              example: false
+              type: boolean
+            checkRequired:
+              description: Definição de conferência dos unitizadores pelo transportador
+              example: false
+              type: boolean
+            receiverRequired:
+              description: Definição de solicitação de dados pessoais do recebedor pelo transportador.
+              example: false
+              type: boolean
+            validateDataMatrixRequired:
+              description: Definição de permissão para geração de código DataMatrix pelo recebedor.
+              example: false
+              type: boolean
+            enableYard:
+              description: Definição de cliente habilitado para Portaria e Pátio
+              example: false
+              type: boolean
+            enablePfm:
+              description: Definição de cliente habilitado para Movimentação interna
+              example: false
+              type: boolean
+            enableAtm:
+              description: Definição de cliente habilitado para Rastreamento avançado
+              example: false
+              type: boolean
+            enableLp3:
+              description: Definição de cliente habilitado para Montagem e otimização de carga em 3D
+              example: false
+              type: boolean
+            enableFms:
+              description: Definição de cliente habilitado para Sistema de administração de frota
+              example: false
+              type: boolean
+            enableAro:
+              description: Definição de cliente habilitado para Roteirização e otimização avançada de cargas
+              example: false
+              type: boolean
+            enableIds:
+              description: Definição de cliente habilitado para Inspeção e documentos
+              example: false
+              type: boolean
+            enableBia:
+              description: Definição de cliente habilitado para Business inteligence e analytics
+              example: false
+              type: boolean
+            address:
+              description: Endereço da empresa
+              type: object
+              $ref: '#/components/schemas/Address'
