@@ -294,9 +294,9 @@
     },
     "/image/{imageId}": {
       "get": {
-        "description": "Esta API é utilizada para capturar os detalhes de uma imagem associada a um pátio. Ao informar \"all\" como parâmetro, retorna todas as imagens disponíveis.\n",
+        "description": "Esta API é utilizada para capturar os detalhes de um image.\nAo informar \"all\" como parâmetro retorna todas as imagens\n",
         "operationId": "getImage",
-        "summary": "Captura detalhes de uma imagem de pátio",
+        "summary": "Captura detalhes das imagens",
         "security": [
           {
             "bearerAuth": []
@@ -309,29 +309,15 @@
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-getImage/invocations",
           "payloadFormatVersion": "2.0",
           "type": "aws_proxy",
-          "httpMethod": "GET"
+          "httpMethod": "POST"
         },
-        "parameters": [
-          {
-            "name": "imageId",
-            "in": "query",
-            "required": false,
-            "description": "O identificador único da imagem a ser capturada. Use \"all\" para listar todas as imagens.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "Imagem ou lista de imagens capturada(s) com sucesso.",
+            "description": "Imagea capturado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Image"
-                  }
+                  "$ref": "#/components/schemas/Image"
                 }
               }
             },
@@ -358,7 +344,7 @@
             }
           },
           "404": {
-            "description": "Recurso não encontrado",
+            "description": "Não encontrado",
             "content": {
               "application/json": {
                 "schema": {
@@ -380,7 +366,7 @@
         }
       },
       "put": {
-        "description": "Esta API é utilizada para atualizar uma imagem existente no sistema. É necessário informar o identificador único da imagem no caminho da requisição. Os atributos atualizáveis da imagem devem ser fornecidos no corpo da requisição.\n",
+        "description": "Esta API é utilizada para atualizar uma imagem existente.\nNecessário informar o identificador da imagem no caminho da requisição.\nOs atributos atualizáveis da imagem devem ser fornecidos no corpo da requisição.\n\n| Atributo               | Descrição                                                               | Tipo(tamanho)       | Obrigatório |\n|------------------------|-------------------------------------------------------------------------|---------------------|-------------|\n| imageId                | Identificação numérica do imagea                                        | Integer             | Sim         |\n| imageName              | Nome do imagea                                                          | String(3-255)       | Sim         |\n| groupBy                | Grupo ao qual a Imagem pertence                                         | String(3-255)       | Sim         |\n| description            | Descrição da Imagem                                                     | String(3-255)       | Sim         |\n| imageUrl               | Url da Imagem                                                           | String(3-255)       | Sim         |\n| created                | Data de criação                                                         | DateTime<String>    | Não         |\n| createdBy              | ID do cliente que criou o registro                                      | String              | Não         |\n| modified               | Data de modificação                                                     | DateTime<String>    | Não         |\n",
         "operationId": "putImage",
         "summary": "Atualiza uma imagem existente",
         "security": [
@@ -396,7 +382,7 @@
             "name": "imageId",
             "in": "path",
             "required": true,
-            "description": "O identificador único da imagem que será atualizado.",
+            "description": "O ID único da image que será atualizada",
             "schema": {
               "type": "string"
             }
@@ -405,7 +391,7 @@
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-putImage/invocations",
           "passthroughBehavior": "when_no_match",
-          "httpMethod": "PUT",
+          "httpMethod": "POST",
           "type": "aws_proxy"
         },
         "requestBody": {
@@ -420,7 +406,7 @@
         },
         "responses": {
           "200": {
-            "description": "Imagem atualizada com sucesso.",
+            "description": "Imagea de pátio atualizado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -441,7 +427,7 @@
             }
           },
           "400": {
-            "description": "Requisição inválida. Verifique os atributos informados.",
+            "description": "BadRequest",
             "content": {
               "application/json": {
                 "schema": {
@@ -451,7 +437,7 @@
             }
           },
           "401": {
-            "description": "Não autorizado. Token de autenticação inválido ou ausente.",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -461,7 +447,7 @@
             }
           },
           "404": {
-            "description": "Recurso não encontrado.",
+            "description": "NotFound",
             "content": {
               "application/json": {
                 "schema": {
@@ -471,7 +457,7 @@
             }
           },
           "500": {
-            "description": "Erro interno do servidor.",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -483,9 +469,9 @@
         }
       },
       "delete": {
-        "description": "Esta API é utilizada para excluir uma imagem existente no sistema. É necessário informar o identificador único da imagem no caminho da requisição.\n",
+        "description": "Esta API é utilizada para excluir uma imagem de pátio existente.\nNecessário informar o identificador da image no caminho da requisição.\n",
         "operationId": "deleteImage",
-        "summary": "Exclui uma imagem existente",
+        "summary": "Exclui um imagea de pátio existente",
         "security": [
           {
             "bearerAuth": []
@@ -499,7 +485,7 @@
             "name": "imageId",
             "in": "path",
             "required": true,
-            "description": "O identificador único da imagem que será excluída.",
+            "description": "O ID único do imagea que será excluído",
             "schema": {
               "type": "string"
             }
@@ -508,22 +494,16 @@
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-deleteImage/invocations",
           "passthroughBehavior": "when_no_match",
-          "httpMethod": "DELETE",
+          "httpMethod": "POST",
           "type": "aws_proxy"
         },
         "responses": {
           "200": {
-            "description": "Imagem excluída com sucesso.",
+            "description": "Imagea de pátio excluído com sucesso",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Imagem excluída com sucesso."
-                    }
-                  }
+                  "$ref": "#/components/schemas/Image"
                 }
               }
             },
@@ -540,7 +520,7 @@
             }
           },
           "400": {
-            "description": "Requisição inválida. Verifique o ID informado.",
+            "description": "BadRequest",
             "content": {
               "application/json": {
                 "schema": {
@@ -550,7 +530,7 @@
             }
           },
           "401": {
-            "description": "Não autorizado. Token de autenticação inválido ou ausente.",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -560,7 +540,7 @@
             }
           },
           "404": {
-            "description": "Imagem não encontrada.",
+            "description": "NotFound",
             "content": {
               "application/json": {
                 "schema": {
@@ -570,7 +550,7 @@
             }
           },
           "500": {
-            "description": "Erro interno do servidor.",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -693,9 +673,9 @@
     },
     "/image/picture/{imageId}": {
       "put": {
-        "description": "Esta API é utilizada para submeter foto da Image.\nNecessário informar a foto no corpo da requisição.\n\n| Atributo        | Descrição          | Tipo(tamanho)        | Obrigatório |\n|------------------|--------------------|-----------------------|-------------|\n| picImage       | Imagem do mapa     | MultiPart-Form/Data   | Sim         |\n| imageId        | ID do mapa         | Path (string)         | Sim         |\n",
+        "description": "Esta API é utilizada para submeter foto do imagea.\nNecessário informar a foto no corpo da requisição.\n\n| Atributo           | Descrição             | Tipo(tamanho)        | Obrigatório |\n|--------------------|----------------------|-----------------------|-------------|\n| picImage       | Imagem               | MultiPart-Form/Data   | Sim         |\n| imageId        | ID da imagem         | Path (string)         | Sim         |\n",
         "operationId": "putImagePicture",
-        "summary": "Envio de foto do mapa",
+        "summary": "Envio de foto da imagem",
         "security": [
           {
             "bearerAuth": []
@@ -709,7 +689,7 @@
             "name": "imageId",
             "in": "path",
             "required": true,
-            "description": "O ID único da Image que será atualizada",
+            "description": "O ID único da imagem que será atualizada",
             "schema": {
               "type": "string"
             }
@@ -917,9 +897,9 @@
     },
     "/image": {
       "post": {
-        "description": "Esta API é utilizada para cadastrar uma nova imagem no sistema.\nÉ necessário informar os atributos da imagem no corpo da requisição.\n\n**Atributos Requeridos no Corpo da Requisição:**\n\n| Atributo       | Descrição                                              | Tipo         | Obrigatório |\n|----------------|--------------------------------------------------------|--------------|-------------|\n| imageId        | Identificador único da imagem.                         | String       | Sim         |\n| imageUrl       | URL da imagem correspondente.                          | String       | Sim         |\n| title          | Título da imagem.                                      | String       | Sim         |\n| description    | Descrição detalhada da imagem.                         | String       | Não         |\n| type           | Tipo do componente gráfico (ex.: \"thumbnail\").         | String       | Sim         |\n| tags           | Lista de tags associadas à imagem para busca.          | List<String> | Não         |\n| language       | Idioma dos dados relacionados à imagem.                | String       | Não         |\n| modified       | Data/hora da última modificação (formato ISO 8601).    | String       | Não         |\n| created        | Data/hora de criação da imagem (formato ISO 8601).     | String       | Sim         |\n| createdBy      | Identificador do criador da imagem.                    | String       | Sim         |\n",
+        "description": "Esta API é utilizada para cadastrar um novo imagea de pátio.\nNecessário informar os atributos do imagea no corpo da requisição.\n\n| Atributo               | Descrição                                                               | Tipo(tamanho)       | Obrigatório |\n|------------------------|-------------------------------------------------------------------------|---------------------|-------------|\n| imageId                | Identificação numérica do imagea                                        | Integer             | Sim         |\n| imageName              | Nome do imagea                                                          | String(3-255)       | Sim         |\n| groupBy                | Grupo ao qual a Imagem pertence                                         | String(3-255)       | Sim         |\n| description            | Descrição da Imagem                                                     | String(3-255)       | Sim         |\n| imageUrl               | Url da Imagem                                                           | String(3-255)       | Sim         |\n| created                | Data de criação                                                         | DateTime<String>    | Não         |\n| createdBy              | ID do cliente que criou o registro                                      | String              | Não         |\n| modified               | Data de modificação                                                     | DateTime<String>    | Não         |\n",
         "operationId": "postImage",
-        "summary": "Cadastra uma nova imagem no sistema",
+        "summary": "Cadastra uma nova imagem",
         "security": [
           {
             "bearerAuth": []
@@ -937,16 +917,46 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Image"
+                "type": "object",
+                "properties": {
+                  "picImage": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "A imagem que será enviada"
+                  },
+                  "jsonImage": {
+                    "type": "string",
+                    "description": "Os metadados da imagem no formato JSON:\n```json\n{\n  \"imageId\": 123,\n  \"imageName\": \"Exemplo de Imagem\",\n  \"groupBy\": \"Grupo Teste\",\n  \"description\": \"Uma descrição de teste\"\n}\n```\n"
+                  }
+                },
+                "required": [
+                  "picImage",
+                  "jsonImage"
+                ]
+              },
+              "encoding": {
+                "jsonImage": {
+                  "contentType": "application/json"
+                }
+              },
+              "examples": {
+                "exemplo1": {
+                  "summary": "Requisição de exemplo",
+                  "description": "Um exemplo com JSON e arquivo",
+                  "value": {
+                    "picImage": "(Arquivo binário)",
+                    "jsonImage": "{\n  \"imageId\": 123,\n  \"imageName\": \"Exemplo de Imagem\",\n  \"groupBy\": \"Grupo Teste\",\n  \"description\": \"Uma descrição de teste\"\n}\n"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Imagem cadastrada com sucesso.",
+            "description": "Imagea de pátio cadastrado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -967,7 +977,7 @@
             }
           },
           "400": {
-            "description": "Requisição inválida. Verifique os atributos informados.",
+            "description": "BadRequest",
             "content": {
               "application/json": {
                 "schema": {
@@ -977,7 +987,7 @@
             }
           },
           "401": {
-            "description": "Não autorizado. Token de autenticação inválido ou ausente.",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -987,7 +997,7 @@
             }
           },
           "404": {
-            "description": "Recurso não encontrado.",
+            "description": "NotFound",
             "content": {
               "application/json": {
                 "schema": {
@@ -997,7 +1007,7 @@
             }
           },
           "500": {
-            "description": "Erro interno do servidor.",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1316,6 +1326,84 @@
           }
         }
       },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "description": "Email do usuário",
+            "example": "nome_sobrenome@mail.com",
+            "type": "string"
+          },
+          "phone": {
+            "description": "Telefone do usuário",
+            "example": "550012345678",
+            "type": "string"
+          },
+          "mobilePhone": {
+            "description": "Telefone celular do usuário",
+            "example": "55000912345678",
+            "type": "string"
+          },
+          "notify": {
+            "description": "Disponibilidade para enviar notificação",
+            "example": true,
+            "type": "boolean"
+          },
+          "disability": {
+            "description": "Possível deficiência",
+            "example": "Deficiência visual, auditiva, física",
+            "type": "string"
+          },
+          "isDriver": {
+            "description": "Definição de motorista",
+            "example": false,
+            "type": "boolean"
+          },
+          "license": {
+            "description": "CNH do usuário",
+            "example": "123456789012345",
+            "type": "string"
+          },
+          "licenseValid": {
+            "description": "Data da validade da CNH do motorista",
+            "example": "2020-07-15T",
+            "format": "date",
+            "type": "string"
+          },
+          "category": {
+            "description": "Categoria da CNH do motorista",
+            "example": "B",
+            "type": "string"
+          },
+          "emiter": {
+            "description": "Emitente da CNH do motorista",
+            "example": "ABCABC-ABC",
+            "type": "string"
+          },
+          "locale": {
+            "description": "Linguagem utilizada pelo usuário",
+            "example": "PT-BR",
+            "type": "string"
+          },
+          "modified": {
+            "example": "2020-07-15T20:45:23.506-0300",
+            "format": "date-time",
+            "type": "string"
+          },
+          "address": {
+            "description": "Endereco do usuário",
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreateAddress"
+              },
+              {
+                "$ref": "#/components/schemas/UpdateAddress"
+              }
+            ]
+          }
+        }
+      },
       "UserResponse": {
         "type": "object",
         "properties": {
@@ -1326,9 +1414,6 @@
             "$ref": "#/components/schemas/User"
           }
         }
-      },
-      "UserHistory": {
-        "$ref": "../schemas/users/user_history.yml"
       },
       "CreateUser": {
         "type": "object",
@@ -1423,12 +1508,6 @@
           }
         }
       },
-      "CreateClientUser": {
-        "$ref": "../schemas/users/create_client_user_relation.yml"
-      },
-      "StreamUser": {
-        "$ref": "../schemas/users/stream_user.yml"
-      },
       "VerifyPassword": {
         "type": "object",
         "properties": {
@@ -1478,13 +1557,388 @@
         }
       },
       "LoginClient": {
-        "$ref": "../schemas/login/login_client.yml"
+        "type": "object",
+        "properties": {
+          "federalTax": {
+            "description": "CNPJ da empresa",
+            "example": "12345678000099",
+            "type": "string"
+          },
+          "mobilePhone": {
+            "description": "Telefone celular do usuário",
+            "example": "5500912345678",
+            "type": "string"
+          },
+          "password": {
+            "description": "Senha da empresa",
+            "example": "Senh@Exemplo123",
+            "type": "string",
+            "format": "password"
+          },
+          "type": {
+            "description": "Tipo do dispositivo",
+            "example": "mob/web",
+            "type": "string"
+          }
+        }
       },
       "Token": {
-        "$ref": "../schemas/login/token.yml"
+        "type": "object",
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/Message"
+          },
+          "content": {
+            "properties": {
+              "jwt": {
+                "description": "JWT token",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                "type": "string"
+              },
+              "firstName": {
+                "description": "Primeiro nome do usuário",
+                "example": "Nome",
+                "type": "string"
+              },
+              "lastName": {
+                "description": "Sobrenome do usuário",
+                "example": "Sobrenome",
+                "type": "string"
+              },
+              "federalTax": {
+                "description": "CPF do usuário",
+                "example": "12345678900",
+                "type": "string"
+              },
+              "mobilePhone": {
+                "description": "Telefone celular do usuário",
+                "example": "5500912345678",
+                "type": "string"
+              },
+              "homePage": {
+                "description": "Página Home",
+                "example": "Shipments",
+                "type": "string"
+              },
+              "avgPunctual": {
+                "description": "Média das avaliações do motorista em pontualidade",
+                "example": 4.5,
+                "format": "double",
+                "type": "number"
+              },
+              "avgLabor": {
+                "description": "Média das avaliações do motorista em qualidade",
+                "example": 4.6,
+                "format": "double",
+                "type": "number"
+              },
+              "avgPresentation": {
+                "description": "Média das avaliações do motorista em apresentacao",
+                "example": 4.7,
+                "format": "double",
+                "type": "number"
+              },
+              "avgAttitude": {
+                "description": "Média das avaliações do motorista em comportamento/atitudes",
+                "example": 4.8,
+                "format": "double",
+                "type": "number"
+              },
+              "isDriver": {
+                "description": "Definição de motorista",
+                "example": false,
+                "type": "boolean"
+              },
+              "transporterAtShipper": {
+                "description": "Definição se transportador possui como localização o emitente",
+                "example": false,
+                "type": "boolean"
+              },
+              "radiusDelivery": {
+                "description": "Raio em metros da distância do local de entrega com o local de destino",
+                "example": 500,
+                "type": "number",
+                "format": "int-32"
+              },
+              "gpsInterval": {
+                "description": "Frequência de atualização da posição geográfica do motorista",
+                "example": 30,
+                "type": "number",
+                "format": "int-32"
+              },
+              "license": {
+                "description": "CNH do usuário",
+                "example": "123456789012345",
+                "type": "string"
+              },
+              "license_valid": {
+                "description": "Data da validade da CNH do motorista",
+                "example": "2020-07-15T",
+                "format": "date",
+                "type": "string"
+              },
+              "category": {
+                "description": "Categoria da CNH do motorista",
+                "example": "B",
+                "type": "string"
+              },
+              "emiter": {
+                "description": "Emitente da CNH do motorista",
+                "example": "ABCABC-ABC",
+                "type": "string"
+              },
+              "ratingEmitter": {
+                "description": "Avaliação do remetente. Quem avalia é o motorista ou destinatário",
+                "example": 3.5,
+                "format": "double",
+                "type": "number"
+              },
+              "ratingShipment": {
+                "description": "Avaliação da qualidade da remessa. Quem avalia é o destinatário",
+                "example": 4.5,
+                "format": "double",
+                "type": "number"
+              },
+              "ratingDestinator": {
+                "description": "Avaliação do destinatário. Quem avalia é o motorista",
+                "example": 4,
+                "format": "double",
+                "type": "number"
+              },
+              "ratingDriver": {
+                "description": "Avaliação do motorista. Quem avalia é o destinatário",
+                "example": 5,
+                "format": "double",
+                "type": "number"
+              },
+              "vehicle": {
+                "description": "Veículo atual do usuário",
+                "type": "object",
+                "$ref": "#/components/schemas/Vehicle"
+              },
+              "fingerPrint": {
+                "description": "Informações de sessão e dispositivo do usuário",
+                "type": "object",
+                "$ref": "#/components/schemas/FingerPrint"
+              },
+              "clients": {
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "companyName": {
+                      "description": "Nome da empresa",
+                      "example": "Empresa",
+                      "type": "string"
+                    },
+                    "tradeName": {
+                      "description": "Nome fantasia da empresa",
+                      "example": "Empresa",
+                      "type": "string"
+                    },
+                    "prefixCompany": {
+                      "description": "Prefixo do transportador",
+                      "example": "CMP",
+                      "type": "string"
+                    },
+                    "federalTax": {
+                      "description": "CNPJ da empresa",
+                      "example": "12345678000099",
+                      "type": "string"
+                    },
+                    "apiKey": {
+                      "description": "ApiKey da empresa",
+                      "example": "XXeTewoxUI1d6qpxvbmyl8qBltZi6S251QCpmh4Q",
+                      "type": "string"
+                    },
+                    "operatorType": {
+                      "description": "Tipo do operador",
+                      "example": "A",
+                      "type": "string"
+                    },
+                    "successfulDeliveries": {
+                      "description": "Quantidade de sucesso em entregas",
+                      "example": 5,
+                      "format": "int-32",
+                      "type": "number"
+                    },
+                    "wrongDeliveries": {
+                      "description": "Quantidade de entregas com falha",
+                      "example": 1,
+                      "format": "int-32",
+                      "type": "number"
+                    },
+                    "isShipper": {
+                      "description": "Definição de emitente",
+                      "example": true,
+                      "type": "boolean"
+                    },
+                    "isDestinator": {
+                      "description": "Definição de destinatário",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "isTransporter": {
+                      "description": "Definição de transportador",
+                      "example": true,
+                      "type": "boolean"
+                    },
+                    "ratingEmitter": {
+                      "description": "Avaliação do remetente. Quem avalia é o motorista ou destinatário",
+                      "example": 3.5,
+                      "format": "double",
+                      "type": "number"
+                    },
+                    "ratingShipment": {
+                      "description": "Avaliação da qualidade da remessa. Quem avalia é o destinatário",
+                      "example": 4.5,
+                      "format": "double",
+                      "type": "number"
+                    },
+                    "ratingDestinator": {
+                      "description": "Avaliação do destinatário. Quem avalia é o motorista",
+                      "example": 4,
+                      "format": "double",
+                      "type": "number"
+                    },
+                    "isPremium": {
+                      "description": "Definição de cliente premium com acesso e visualização do Google Maps",
+                      "example": true,
+                      "type": "boolean"
+                    },
+                    "podRequired": {
+                      "description": "Definição de captura de assinatura pelo transportador",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "picRequired": {
+                      "description": "Definição de captura de foto pelo transportador",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "checkRequired": {
+                      "description": "Definição de conferência dos unitizadores pelo transportador",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "receiverRequired": {
+                      "description": "Definição de solicitação de dados pessoais do recebedor pelo transportador.",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "validateDataMatrixRequired": {
+                      "description": "Definição de permissão para geração de código DataMatrix pelo recebedor.",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "enableYard": {
+                      "description": "Definição de cliente habilitado para Portaria e Pátio",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "enablePfm": {
+                      "description": "Definição de cliente habilitado para Movimentação interna",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "enableAtm": {
+                      "description": "Definição de cliente habilitado para Rastreamento avançado",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "enableLp3": {
+                      "description": "Definição de cliente habilitado para Montagem e otimização de carga em 3D",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "enableFms": {
+                      "description": "Definição de cliente habilitado para Sistema de administração de frota",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "enableAro": {
+                      "description": "Definição de cliente habilitado para Roteirização e otimização avançada de cargas",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "enableIds": {
+                      "description": "Definição de cliente habilitado para Inspeção e documentos",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "enableBia": {
+                      "description": "Definição de cliente habilitado para Business inteligence e analytics",
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "address": {
+                      "description": "Endereço da empresa",
+                      "type": "object",
+                      "$ref": "#/components/schemas/Address"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       "CreatePodPic": {
-        "$ref": "../schemas/docs/create_pod_pic.yml"
+        "type": "object",
+        "properties": {
+          "pic": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "imageId": {
+            "description": "Identificação numérica da imagem.",
+            "example": "ab1cd2ef-34gh-56ij-78kl-mn910opqrs12",
+            "type": "string"
+          },
+          "imageName": {
+            "description": "Nome da imagem.",
+            "example": "Pátio02",
+            "type": "string"
+          },
+          "groupBy": {
+            "description": "Data de criação.",
+            "example": "Pátio/Veículos/Docas",
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "description": "Descrição da Imagem.",
+            "example": "Mapa de visão superior",
+            "type": "string"
+          },
+          "imageUrl": {
+            "description": "Especifica o caminho para a imagem.",
+            "example": "path/to/background.jpg",
+            "type": "string"
+          },
+          "created": {
+            "description": "Data de criação.",
+            "example": "2024-10-20T07:25:00.000+0000",
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "description": "ID do cliente que criou o registro.",
+            "example": "ab1cd2ef-34gh-56ij-78kl-mn910opqrs12",
+            "format": "uuid",
+            "type": "string"
+          },
+          "modified": {
+            "description": "Data de modificação.",
+            "example": "2024-10-22T19:50:00.000+0000",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
       },
       "Message": {
         "properties": {
@@ -1673,9 +2127,6 @@
             }
           }
         }
-      },
-      "CreateBoardingIntegration": {
-        "$ref": "../schemas/active_integration/boarding_integration/create_boarding_integration.yml"
       }
     },
     "headers": {

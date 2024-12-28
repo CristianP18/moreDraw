@@ -1,6 +1,7 @@
 description: |
-  Esta API é utilizada para cadastrar um novo imagea de pátio.
-  Necessário informar os atributos do imagea no corpo da requisição.
+  Esta API é utilizada para atualizar uma imagem existente.
+  Necessário informar o identificador da imagem no caminho da requisição.
+  Os atributos atualizáveis da imagem devem ser fornecidos no corpo da requisição.
   
   | Atributo               | Descrição                                                               | Tipo(tamanho)       | Obrigatório |
   |------------------------|-------------------------------------------------------------------------|---------------------|-------------|
@@ -13,63 +14,33 @@ description: |
   | createdBy              | ID do cliente que criou o registro                                      | String              | Não         |
   | modified               | Data de modificação                                                     | DateTime<String>    | Não         |
 
-operationId: postImage
-summary: Cadastra uma nova imagem
+operationId: putImage
+summary: Atualiza uma imagem existente
 security:
   - bearerAuth: []
 tags:
   - Image
+parameters:
+  - name: imageId
+    in: path
+    required: true
+    description: O ID único da image que será atualizada
+    schema:
+      type: string
 x-amazon-apigateway-integration:
-  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576199001204:function:${stageVariables.Stage}-postImage/invocations"
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-putImage/invocations"
   passthroughBehavior: "when_no_match"
   httpMethod: "POST"
   type: "aws_proxy"
 requestBody:
   required: true
   content:
-    multipart/form-data:
+    application/json:
       schema:
-        type: object
-        properties:
-          picImage:
-            type: string
-            format: binary
-            description: A imagem que será enviada
-          jsonImage:
-            type: string
-            description: |
-              Os metadados da imagem no formato JSON:
-              ```json
-              {
-                "imageId": 123,
-                "imageName": "Exemplo de Imagem",
-                "groupBy": "Grupo Teste",
-                "description": "Uma descrição de teste"
-              }
-              ```
-        required:
-          - picImage
-          - jsonImage
-      encoding:
-        jsonImage:
-          contentType: application/json
-      examples:
-        exemplo1:
-          summary: Requisição de exemplo
-          description: Um exemplo com JSON e arquivo
-          value:
-            picImage: (Arquivo binário)
-            jsonImage: |
-              {
-                "imageId": 123,
-                "imageName": "Exemplo de Imagem",
-                "groupBy": "Grupo Teste",
-                "description": "Uma descrição de teste"
-              }
-
+        $ref: '#/components/schemas/Image'
 responses:
   '200':
-    description: Imagea de pátio cadastrado com sucesso
+    description: Imagea de pátio atualizado com sucesso
     content:
       application/json:
         schema:

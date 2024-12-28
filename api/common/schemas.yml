@@ -1,20 +1,16 @@
 ### USER ###
 User:
   "$ref": "../schemas/users/user.yml"
+UpdateUser:
+  "$ref": "../schemas/users/update_user.yml"
 UserResponse:
   "$ref": "../schemas/users/user_response.yml"
-UserHistory:
-  "$ref": "../schemas/users/user_history.yml"
 CreateUser:
   "$ref": "../schemas/users/create_user.yml"
 VerifyUser:
   "$ref": "../schemas/users/verify_user.yml"
 GenerateOneTimePassword:
   "$ref": "../schemas/users/generate_one_time_password.yml"
-CreateClientUser:
-  "$ref": "../schemas/users/create_client_user_relation.yml"
-StreamUser:
-  "$ref": "../schemas/users/stream_user.yml"
 VerifyPassword:
   "$ref": "../schemas/users/verify_password.yml"
 
@@ -28,6 +24,9 @@ Token:
 
 CreatePodPic:
   "$ref": "../schemas/docs/create_pod_pic.yml"
+
+Image:
+  "$ref": "../schemas/image/image.yml"
 
 ### RESPONSES ###
 Message:
@@ -47,5 +46,3 @@ Conflict:
 InternalServer:
   "$ref": "../schemas/responses/internal_server.yml"
 
-CreateBoardingIntegration:
-  "$ref": "../schemas/active_integration/boarding_integration/create_boarding_integration.yml"

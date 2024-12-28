@@ -47,10 +47,6 @@
         "HttpApi": {
             "Type": "AWS::ApiGatewayV2::Api",
             "Properties": {
-                "Name": {
-                    "Fn::Sub": "${Stage} - moreDraw - HTTP"
-                },
-                "ProtocolType": "HTTP",
                 "Body": {
                     "Fn::Transform": {
                         "Name": "AWS::Include",
@@ -92,7 +88,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/de7ce2e543bcda96ca1071ecd27f311a",
+                "CodeUri": "s3://moredraw/deploy/bdf6780071facbb2171b2d2b8cb505b4",
                 "Handler": "handler.PostUsersHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -199,7 +195,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/cce7fa122fc20fe9c5b9df5659e3e990",
+                "CodeUri": "s3://moredraw/deploy/6f75062a6df3d0c3387a8711659c5915",
                 "Handler": "handler.PostUsersLoginHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -305,7 +301,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/4af4a4e117fe40f77638d9a11c653c25",
+                "CodeUri": "s3://moredraw/deploy/4655d3fbb232f432b68e2a849655cd22",
                 "Handler": "handler.PostUsersVerifyHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -415,7 +411,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/bfe0b221e8246d83c3b04e2e98029612",
+                "CodeUri": "s3://moredraw/deploy/8159ade3a8b8d7f0b636ba9cb25f3f37",
                 "Handler": "handler.PutUsersVerifyHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -428,7 +424,8 @@
                             }
                         }
                     }
-                }
+                },
+                "Role": "arn:aws:iam::170387992571:role/sns-lambda-moreDraw"
             },
             "Metadata": {
                 "SamResourceId": "putUsersVerifyFunction"
@@ -461,7 +458,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/fa6968deb66c210acc17c23e7be5dbe9",
+                "CodeUri": "s3://moredraw/deploy/0de525d3976736b317bbb8a050d6a73a",
                 "Handler": "handler.PutUsersHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -567,7 +564,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/d08a96936b99c2afa0810a867f321341",
+                "CodeUri": "s3://moredraw/deploy/8b1e6af6552541135d79f4b084ed30be",
                 "Handler": "handler.PostUsersForgetPasswordHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -675,7 +672,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/76916d7671358676ca9063593bf567ca",
+                "CodeUri": "s3://moredraw/deploy/4d3e854414f15f554b770d154f664da5",
                 "Handler": "handler.PostUsersVerifyPasswordHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -780,7 +777,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/7b831994d877950308d72ea054366eee",
+                "CodeUri": "s3://moredraw/deploy/a17aa5e74f092ded0d822dffbb15ad50",
                 "Handler": "handler.DeleteUsersHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -874,7 +871,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-getImage"
+                            "-getimage"
                         ]
                     ]
                 },
@@ -885,7 +882,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/efffb58c0f1c6f27062db76e335f82c3",
+                "CodeUri": "s3://moredraw/deploy/1e0c964bd036e1b769bc2cce12e4a7aa",
                 "Handler": "handler.GetImageHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -999,7 +996,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-postImage"
+                            "-postimage"
                         ]
                     ]
                 },
@@ -1010,7 +1007,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/7f16d27d5a573370ffd32ec85ad0b806",
+                "CodeUri": "s3://moredraw/deploy/e8e2295461f65ea1f686218fde4ef6f6",
                 "Handler": "handler.PostImageHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -1036,9 +1033,13 @@
                                     "dynamodb:Query",
                                     "dynamodb:PutItem",
                                     "dynamodb:UpdateItem",
-                                    "dynamodb:BatchWriteItem"
+                                    "dynamodb:BatchWriteItem",
+                                    "s3:GetObject",
+                                    "s3:PutObject",
+                                    "s3:DeleteObject"
                                 ],
                                 "Resource": [
+                                    "arn:aws:s3:::moredraw",
                                     {
                                         "Fn::Join": [
                                             "",
@@ -1109,6 +1110,135 @@
                 "SamResourceId": "postImageFunction"
             }
         },
+        "putImagePictureFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-putimagePicture"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/eab6cd09ce718aa4e69b7b7a80068b84",
+                "Handler": "handler.PutImagePictureHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "Api",
+                        "Properties": {
+                            "Path": "/image/picture/{imageId}",
+                            "Method": "PUT",
+                            "RestApiId": {
+                                "Ref": "RestApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:PutItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:UpdateItem",
+                                    "s3:GetObject",
+                                    "s3:PutObject",
+                                    "s3:DeleteObject"
+                                ],
+                                "Resource": [
+                                    "arn:aws:s3:::moredraw",
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_image/index/createdBy-created"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_image"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "putImagePictureFunction"
+            }
+        },
         "putImageFunction": {
             "Type": "AWS::Serverless::Function",
             "Properties": {
@@ -1125,7 +1255,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-putImage"
+                            "-putimage"
                         ]
                     ]
                 },
@@ -1136,7 +1266,7 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/60573746fedea72c6f99f1c7de005b7d",
+                "CodeUri": "s3://moredraw/deploy/30a9e34dae8dd91cf47b6a4fee445fb2",
                 "Handler": "handler.PutImageHandler::handleRequest",
                 "Events": {
                     "List": {
@@ -1235,7 +1365,7 @@
                 "SamResourceId": "putImageFunction"
             }
         },
-        "putImagePictureFunction": {
+        "deleteImageFunction": {
             "Type": "AWS::Serverless::Function",
             "Properties": {
                 "Architectures": [
@@ -1251,7 +1381,7 @@
                             {
                                 "Ref": "Stage"
                             },
-                            "-putImagePicture"
+                            "-deleteimage"
                         ]
                     ]
                 },
@@ -1262,14 +1392,14 @@
                         }
                     }
                 },
-                "CodeUri": "s3://moredraw/deploy/59570b8759849c999c1ade13161efde9",
-                "Handler": "handler.PostImagesPictureHandler::handleRequest",
+                "CodeUri": "s3://moredraw/deploy/525a2a046fe195ef48d84efa1c7bf8f6",
+                "Handler": "handler.DeleteImageHandler::handleRequest",
                 "Events": {
                     "List": {
                         "Type": "Api",
                         "Properties": {
-                            "Path": "/picture",
-                            "Method": "PUT",
+                            "Path": "/image/{imageId}",
+                            "Method": "Delete",
                             "RestApiId": {
                                 "Ref": "RestApi"
                             }
@@ -1283,17 +1413,19 @@
                             {
                                 "Effect": "Allow",
                                 "Action": [
-                                    "dynamodb:PutItem",
                                     "dynamodb:GetItem",
                                     "dynamodb:Scan",
+                                    "dynamodb:DeleteItem",
                                     "dynamodb:Query",
+                                    "dynamodb:PutItem",
                                     "dynamodb:UpdateItem",
+                                    "dynamodb:BatchWriteItem",
                                     "s3:GetObject",
                                     "s3:PutObject",
                                     "s3:DeleteObject"
                                 ],
                                 "Resource": [
-                                    "arn:aws:s3:::docs.moreDraw.com.br",
+                                    "arn:aws:s3:::moredraw",
                                     {
                                         "Fn::Join": [
                                             "",
@@ -1333,26 +1465,6 @@
                                                 "_image"
                                             ]
                                         ]
-                                    },
-                                    {
-                                        "Fn::Join": [
-                                            "",
-                                            [
-                                                "arn:aws:dynamodb:",
-                                                {
-                                                    "Ref": "Region"
-                                                },
-                                                ":",
-                                                {
-                                                    "Ref": "AwsId"
-                                                },
-                                                ":table/",
-                                                {
-                                                    "Ref": "Env"
-                                                },
-                                                "_user"
-                                            ]
-                                        ]
                                     }
                                 ]
                             }
@@ -1361,7 +1473,7 @@
                 ]
             },
             "Metadata": {
-                "SamResourceId": "putImagePictureFunction"
+                "SamResourceId": "deleteImageFunction"
             }
         }
     }

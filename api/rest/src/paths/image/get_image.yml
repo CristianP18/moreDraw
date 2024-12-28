@@ -8,7 +8,7 @@ security:
 tags:
   - Image
 x-amazon-apigateway-integration:
-  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:576199001204:function:${stageVariables.Stage}-getImage/invocations"
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-getImage/invocations"
   payloadFormatVersion: "2.0"
   type: "aws_proxy"
   httpMethod: "POST"
