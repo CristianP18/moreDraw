@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class PutImagePictureFacade {
-    String bucket = "...../image";
+    String bucket = "moredraw/pictures";
 
     /**
      * Atualiza Imagem.

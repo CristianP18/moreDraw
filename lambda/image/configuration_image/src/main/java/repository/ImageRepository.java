@@ -28,7 +28,7 @@ public final class ImageRepository {
 
     private static final DynamoDbTable<Image> table =
             DynamoService.table(
-                    DB_PREFIX + DynamoDBTables.IMAGEYARD,
+                    DB_PREFIX + DynamoDBTables.IMAGE_TABLE,
                     TableSchema.fromBean(Image.class));
 
     /**
@@ -36,7 +36,7 @@ public final class ImageRepository {
      */
     public Iterator<Page<Image>> getImage(String createdBy) {
         DynamoDbIndex<Image> createdByCreatedGlobalSecondIndex =
-                table.index(DynamoDBIndexes.GSI_IMAGEYARD_CREATED_BY_CREATED);
+                table.index(DynamoDBIndexes.GSI_IMAGE_CREATED_BY_CREATED);
 
         Key key = Key.builder()
                 .partitionValue(createdBy)

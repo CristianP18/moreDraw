@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class PostImageFacade {
 
-    String bucket = "......./image";
+    String bucket = "moredraw/pictures";;
 
     public Response<?> facade(APIGatewayProxyRequestEvent event, Context context, String userId, String locale) throws NotFound, Conflict, InvalidRequest, IOException {
         Image image = postImage(event, context, userId, locale);

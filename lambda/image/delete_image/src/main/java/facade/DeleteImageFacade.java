@@ -12,7 +12,7 @@ import service.ImageService;
 
 public class DeleteImageFacade {
 
-    String bucket = "docs.tracebox.com.br/imageyard";
+    String bucket = "moredraw/pictures";
 
     /**
      * Atualiza localidade de armazenagem.'
