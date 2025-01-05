@@ -1,0 +1,15 @@
+type: object
+properties:
+  mobilePhone:
+    description: Telefone celular do usuário
+    example: "5500912345678"
+    type: string
+  password:
+    description: Senha do usuário
+    example: Senh@Exemplo123
+    type: string
+    format: password
+  type:
+    description: Tipo do dispositivo
+    example: "mob/web"
+    type: string

@@ -1,0 +1,48 @@
+### USER ###
+User:
+  "$ref": "../schemas/users/user.yml"
+UpdateUser:
+  "$ref": "../schemas/users/update_user.yml"
+UserResponse:
+  "$ref": "../schemas/users/user_response.yml"
+CreateUser:
+  "$ref": "../schemas/users/create_user.yml"
+VerifyUser:
+  "$ref": "../schemas/users/verify_user.yml"
+GenerateOneTimePassword:
+  "$ref": "../schemas/users/generate_one_time_password.yml"
+VerifyPassword:
+  "$ref": "../schemas/users/verify_password.yml"
+
+### LOGIN ###
+LoginUser:
+  "$ref": "../schemas/login/login_user.yml"
+LoginClient:
+  "$ref": "../schemas/login/login_client.yml"
+Token:
+  "$ref": "../schemas/login/token.yml"
+
+CreatePodPic:
+  "$ref": "../schemas/docs/create_pod_pic.yml"
+
+Image:
+  "$ref": "../schemas/image/image.yml"
+
+### RESPONSES ###
+Message:
+  "$ref": "../schemas/responses/message.yml"
+Ok:
+  "$ref": "../schemas/responses/ok.yml"
+BadRequest:
+  "$ref": "../schemas/responses/bad_request.yml"
+Unauthorized:
+  "$ref": "../schemas/responses/unauthorized.yml"
+Forbidden:
+  "$ref": "../schemas/responses/forbidden.yml"
+NotFound:
+  "$ref": "../schemas/responses/not_found.yml"
+Conflict:
+  "$ref": "../schemas/responses/conflict.yml"
+InternalServer:
+  "$ref": "../schemas/responses/internal_server.yml"
+

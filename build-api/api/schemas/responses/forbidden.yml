@@ -1,0 +1,16 @@
+properties:
+  message:
+    properties:
+      text:
+        description: Texto de retorno
+        example: Texto de retorno exemplo AVISO - FORBIDDEN.
+        type: string
+      type:
+        description: Tipo da mensagem
+        example: warning
+        type: string
+      status:
+        description: Status complementar ao tipo.
+        example: 403
+        type: number
+        format: int-32

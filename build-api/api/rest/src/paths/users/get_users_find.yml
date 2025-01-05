@@ -1,0 +1,77 @@
+description:
+  |-
+  Esta API é utilizada para capturar os detalhes de um usuário ou cliente em específico por intermédio do CPF/CNPJ, Telefone/Celular ou Nome do mesmo.
+  Necessário informar o CPF/CNPJ, telefone celular ou nome no caminho da requisição.
+operationId: getUsersFind
+summary: Captura usuário ou cliente pelo CPF/CNPJ, Telefone/Celular ou Nome
+security:
+  - LambdaAuthorizer: []
+tags:
+  - Usuários
+parameters:
+  - name: federalTax
+    description: CPF ou CNPJ do respectivo usuario ou cliente.
+    example: "12345678900"
+    in: query
+    required: false
+    schema:
+      type: string
+  - name: mobilePhone
+    description: Telefone celular do respectivo usuario ou cliente.
+    example: "5500912345678"
+    in: query
+    required: false
+    schema:
+      type: string
+  - name: name
+    description: Nome da razão social, fantasia da empresa, pessoa fisica ou jurídica
+    example: "Nome exemplo"
+    in: query
+    required: false
+    schema:
+      type: string
+x-amazon-apigateway-integration:
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-getUsersFind/invocations"
+  passthroughBehavior: "when_no_match"
+  httpMethod: "POST"
+  type: "aws_proxy"
+responses:
+  '200':
+    description: Usuário capturado com sucesso
+    content:
+      application/json:
+        schema:
+          oneOf:
+            - $ref: '#/components/schemas/UserResponse'
+            - $ref: '#/components/schemas/ClientResponse'
+    headers:
+      Access-Control-Allow-Origin:
+        $ref: '#/components/headers/Access-Control-Allow-Origin'
+      Access-Control-Allow-Methods:
+        $ref: '#/components/headers/Access-Control-Allow-Methods'
+      Access-Control-Allow-Headers:
+        $ref: '#/components/headers/Access-Control-Allow-Headers'
+  '400':
+    description: BadRequest
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/BadRequest'
+  '401':
+    description: Unauthorized
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Unauthorized'
+  '404':
+    description: NotFound
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/NotFound'
+  '500':
+    description: InternalServer
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InternalServer'

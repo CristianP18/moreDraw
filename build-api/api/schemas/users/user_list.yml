@@ -1,0 +1,10 @@
+type: object
+properties:
+  message:
+    $ref: '#/components/schemas/Message'
+  content:
+    description: Usuários / Clientes
+    type: array
+    items:
+      type: object
+      $ref: '#/components/schemas/User'

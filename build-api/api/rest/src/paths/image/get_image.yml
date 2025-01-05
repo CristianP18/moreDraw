@@ -1,0 +1,47 @@
+description: |
+  Esta API é utilizada para capturar os detalhes de um image.
+  Ao informar "all" como parâmetro retorna todas as imagens
+operationId: getImage
+summary: Captura detalhes das imagens
+security:
+  - LambdaAuthorizer: []
+tags:
+  - Image
+x-amazon-apigateway-integration:
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-getImage/invocations"
+  payloadFormatVersion: "2.0"
+  type: "aws_proxy"
+  httpMethod: "POST"
+
+responses:
+  '200':
+    description: Imagea capturado com sucesso
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Image'
+    headers:
+      Access-Control-Allow-Origin:
+        $ref: '#/components/headers/Access-Control-Allow-Origin'
+      Access-Control-Allow-Methods:
+        $ref: '#/components/headers/Access-Control-Allow-Methods'
+      Access-Control-Allow-Headers:
+        $ref: '#/components/headers/Access-Control-Allow-Headers'
+  '401':
+    description: Não autorizado
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Unauthorized'
+  '404':
+    description: Não encontrado
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/NotFound'
+  '500':
+    description: Erro interno do servidor
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InternalServer'
