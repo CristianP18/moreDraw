@@ -1,8 +1,0 @@
-- name: login
-  method: post
-  body:
-    mobilePhone: 55549996227442
-    password: teste123
-  tests:
-    - name: status_code_is_200
-      assert: ${{ response.status_code == 200 }}
