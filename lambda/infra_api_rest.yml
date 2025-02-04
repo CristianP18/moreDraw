@@ -18,22 +18,66 @@ Parameters:
     Type: String
 
 Resources:
-#  RestApi:
-#    Type: AWS::ApiGateway::RestApi
-#    Properties:
-#      Name: !Sub "${Stage} - moreDraw - REST"
-#      FailOnWarnings: true
-#      Body:
-#        'Fn::Transform':
-#          Name: 'AWS::Include'
-#          Parameters:
-#            Location: s3://moredraw/deploy/api_rest.json
+  RestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub "${Stage} - moreDraw - REST"
+      FailOnWarnings: true
+      Body:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: s3://moredraw/deploy/api_rest.json
 
   HttpApi:
     Type: AWS::ApiGatewayV2::Api
     Properties:
       ProtocolType: HTTP
       Name: !Sub "${Stage} - moreDraw - HTTP"
+#
+#  #  User
+#  getUsersFindFunction:
+#    Type: AWS::Serverless::Function
+#    Properties:
+#      Architectures:
+#        - x86_64
+#      SnapStart:
+#        ApplyOn: PublishedVersions
+#      MemorySize: 4096
+#      FunctionName:
+#        Fn::Join: [ "", [ !Ref Stage, "-getUsersFind" ] ]
+#      Environment:
+#        Variables:
+#          ENV: !Ref Env
+#      CodeUri: users/get_users_find/target/get_users_find-1.0.jar
+#      Handler: handler.GetUsersFindHandler::handleRequest
+#      Events:
+#        List:
+#          Type: Api
+#          Properties:
+#            Path: /users/find
+#            Method: GET
+#            RestApiId:
+#              Ref: RestApi
+#      Policies:
+#        - Version: "2012-10-17"
+#          Statement:
+#            - Effect: "Allow"
+#              Action:
+#                - "dynamodb:GetItem"
+#                - "dynamodb:Scan"
+#                - "dynamodb:Query"
+#              Resource:
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user/index/federalTax" ] ]
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_client/index/federalTax" ] ]
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_client/index/apiKey" ] ]
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_client" ] ]
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_address" ] ]
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user_favorite" ] ]
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_vehicle" ] ]
+#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_vehicle_type" ] ]
+
 
   postUserFunction:
     Type: AWS::Serverless::Function
@@ -355,47 +399,47 @@ Resources:
 #                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
 #                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
 #                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
-#  postImageFunction:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Architectures:
-#        - x86_64
-#      SnapStart:
-#        ApplyOn: PublishedVersions
-#      FunctionName:
-#        Fn::Join: [ "", [ !Ref Stage, "-postImage" ] ]
-#      Environment:
-#        Variables:
-#          ENV: !Ref Env
-#      CodeUri: image/post_image/target/post_image-1.0.jar
-#      Handler: handler.PostImageHandler::handleRequest
-#      Events:
-#        List:
-#          Type: Api
-#          Properties:
-#            Path: /image
-#            Method: POST
-#            RestApiId:
-#              Ref: RestApi
-#      Policies:
-#        - Version: "2012-10-17"
-#          Statement:
-#            - Effect: "Allow"
-#              Action:
-#                - "dynamodb:GetItem"
-#                - "dynamodb:Scan"
-#                - "dynamodb:Query"
-#                - "dynamodb:PutItem"
-#                - "dynamodb:UpdateItem"
-#                - "dynamodb:BatchWriteItem"
-#                - "s3:GetObject"
-#                - "s3:PutObject"
-#                - "s3:DeleteObject"
-#              Resource:
-#                - "arn:aws:s3:::moredraw"
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
+  postImageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - x86_64
+      SnapStart:
+        ApplyOn: PublishedVersions
+      FunctionName:
+        Fn::Join: [ "", [ !Ref Stage, "-postImage" ] ]
+      Environment:
+        Variables:
+          ENV: !Ref Env
+      CodeUri: image/post_image/target/post_image-1.0.jar
+      Handler: handler.PostImageHandler::handleRequest
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /image
+            Method: POST
+            RestApiId:
+              Ref: RestApi
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - "dynamodb:GetItem"
+                - "dynamodb:Scan"
+                - "dynamodb:Query"
+                - "dynamodb:PutItem"
+                - "dynamodb:UpdateItem"
+                - "dynamodb:BatchWriteItem"
+                - "s3:GetObject"
+                - "s3:PutObject"
+                - "s3:DeleteObject"
+              Resource:
+                - "arn:aws:s3:::moredraw"
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
 #  putImagePictureFunction:
 #    Type: AWS::Serverless::Function
 #    Properties:

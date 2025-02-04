@@ -1,0 +1,12 @@
+Access-Control-Allow-Origin:
+  schema:
+    description: Acesso à origem
+    type: string
+Access-Control-Allow-Methods:
+  schema:
+    description: Acesso aos metodos
+    type: string
+Access-Control-Allow-Headers:
+  schema:
+    description: Acesso aos cabeçalhos
+    type: string

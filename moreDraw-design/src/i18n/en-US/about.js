@@ -1,0 +1,15 @@
+export const about = {
+    title: 'Software Details',
+    description: 'This software is a comprehensive application for managing and tracking shipments. It allows managing unit loads, shipment events, documents, and clients, and offers advanced search and reporting functionalities.',
+    features: 'Features',
+    featureList: 'Unit Load Management, Shipment Events, Transport Documents, Detailed Client Reports, Advanced Search Features, API Integration for Data Retrieval and Cleanup',
+    architecture: 'Architecture',
+    architectureDescription: 'The software is built using a modular architecture, where different components are responsible for different parts of the system. The main components are:',
+    mainComponents: 'DataStorage: Manages the storage of shipment data, clients, documents, and events. Entities: Entity definitions such as Shipment, Client, Doc, Unitload, and ShipmentEvent. API: Layer responsible for communication with external servers for data retrieval and cleanup.',
+    technologiesUsed: 'Technologies Used',
+    technologyList: 'Frontend: Vue.js with Quasar Framework, Backend: Java with Spring Boot, Communication: Axios for HTTP calls',
+    installation: 'Installation',
+    installationSteps: 'Clone the project repository. Build the backend using Maven: mvn clean install. Start the backend: java -jar target/your-backend.jar. Start the frontend using Quasar: quasar dev. Access the application via browser at http://localhost:9000',
+    usage: 'Usage',
+    usageDescription: 'Load shipment and client data, Search data by date or type, View and clear loaded data, Generate detailed reports',
+};

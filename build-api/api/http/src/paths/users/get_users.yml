@@ -1,0 +1,47 @@
+description:
+  |-
+  Esta API é utilizada para capturar os detalhes de um usuário em específico.
+operationId: getUsers
+summary: Captura usuário
+security:
+  - bearerAuth: []
+tags:
+  - Usuários
+x-amazon-apigateway-integration:
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-getUsers/invocations"
+  payloadFormatVersion: "2.0"
+  type: "aws_proxy"
+  httpMethod: "POST"
+  connectionType: "INTERNET"
+responses:
+  '200':
+    description: Usuário capturado com sucesso
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/UserHistory'
+    headers:
+      Access-Control-Allow-Origin:
+        $ref: '#/components/headers/Access-Control-Allow-Origin'
+      Access-Control-Allow-Methods:
+        $ref: '#/components/headers/Access-Control-Allow-Methods'
+      Access-Control-Allow-Headers:
+        $ref: '#/components/headers/Access-Control-Allow-Headers'
+  '401':
+    description: Unauthorized
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Unauthorized'
+  '404':
+    description: NotFound
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/NotFound'
+  '500':
+    description: InternalServer
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InternalServer'

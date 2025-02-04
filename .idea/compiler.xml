@@ -28,5 +28,8 @@
         <module name="get_image" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="get_users_find" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

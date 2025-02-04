@@ -1,0 +1,17 @@
+export const drawer = {
+    expenses: 'Expenses',
+    reports: 'Reports',
+    settings: 'Settings',
+    user: 'User',
+    client: 'Client',
+    expensesType: 'Expenses type',
+    functions: 'Functions',
+    management: 'Management',
+    approval: 'Approval',
+    dashboard: 'Dashboard',
+    reportClient: 'Report Client',
+    reportRefundable: 'Report Refundable',
+    historic: 'Historic',
+    timestamp: 'Timestamp',
+    managerApproval: 'Manager Approval',
+};

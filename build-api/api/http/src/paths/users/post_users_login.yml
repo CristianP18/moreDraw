@@ -1,0 +1,66 @@
+description:
+  |-
+  | Tipo | Dispositivo |
+  | -- | -- |
+  | mob | mobile |
+  | web | navegador |
+
+  Esta API é utilizada para realizar a entrada de um usuário na aplicação.
+  Necessário informar as credenciais no corpo da requisição.
+  Necessário informar o tipo do dispositivo no corpo da requisição.
+
+  | Atributo | Descrição | Tipo(tamanho) | Obrigatório
+  |--|--|--|--|
+  | mobilePhone | Telefone celular do usuário | String(14) | Sim |
+  | password | Senha do usuário | String(6,255) | Sim |
+  | federalTax | CNPJ da empresa | String(14) | Mobile Não, Web Sim |
+  | type | Tipo do dispositivo | String(3) | Sim |
+operationId: postLoginUsers
+summary: Login
+tags:
+  - Usuários
+x-amazon-apigateway-integration:
+  uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:170387992571:function:${stageVariables.Stage}-postUsersLogin/invocations"
+  payloadFormatVersion: "2.0"
+  type: "aws_proxy"
+  httpMethod: "POST"
+  connectionType: "INTERNET"
+requestBody:
+  content:
+    application/json:
+      schema:
+        oneOf:
+          - $ref: '#/components/schemas/LoginUser'
+          - $ref: '#/components/schemas/LoginClient'
+responses:
+  '200':
+    description: Login realizado com sucesso
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Token'
+    headers:
+      Access-Control-Allow-Origin:
+        $ref: '#/components/headers/Access-Control-Allow-Origin'
+      Access-Control-Allow-Methods:
+        $ref: '#/components/headers/Access-Control-Allow-Methods'
+      Access-Control-Allow-Headers:
+        $ref: '#/components/headers/Access-Control-Allow-Headers'
+  '400':
+    description: BadRequest
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/BadRequest'
+  '401':
+    description: Unauthorized
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Unauthorized'
+  '500':
+    description: InternalServer
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/InternalServer'

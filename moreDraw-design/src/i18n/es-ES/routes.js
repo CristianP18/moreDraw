@@ -1,0 +1,18 @@
+export const routes = {
+    home: 'Historial TraceBOX',
+    shipments: 'Remesa Json',
+    unitloads: 'Volumen Json',
+    driver: 'Conductor Json',
+    clientOld: 'Cliente Json',
+    shipmentsAndUnitloads: 'Remesas y Volúmenes',
+    client: 'Cliente',
+    user: 'Usuario',
+    logs: 'Registros',
+    about: 'Acerca de',
+    login: 'Iniciar sesión',
+    notFound: 'Página no encontrada',
+    billing: 'Facturación',
+    allBilling: 'Todas las Facturas',
+    design: 'Diseño',
+    yardHome: 'Administrador de Patio',
+};

@@ -1,0 +1,11 @@
+type: object
+properties:
+  mobilePhone:
+    description: Telefone celular do usuário
+    example: "5500912345678"
+    type: string
+  oneTimePassword:
+    description: Codigo de verificação do dispositivo telefone celular do usuário
+    example: "123456"
+    type: string
+    format: string

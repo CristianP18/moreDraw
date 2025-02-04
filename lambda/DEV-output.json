@@ -1,0 +1,989 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Transform": "AWS::Serverless-2016-10-31",
+    "Description": "tracebox",
+    "Globals": {
+        "Function": {
+            "Runtime": "java11",
+            "Timeout": 30,
+            "MemorySize": 512
+        }
+    },
+    "Parameters": {
+        "Stage": {
+            "Type": "String"
+        },
+        "Env": {
+            "Type": "String"
+        },
+        "AwsId": {
+            "Type": "String"
+        },
+        "Region": {
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "RestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+                "Name": {
+                    "Fn::Sub": "${Stage} - moreDraw - REST"
+                },
+                "FailOnWarnings": true,
+                "Body": {
+                    "Fn::Transform": {
+                        "Name": "AWS::Include",
+                        "Parameters": {
+                            "Location": "s3://moredraw/deploy/api_rest.json"
+                        }
+                    }
+                }
+            },
+            "Metadata": {
+                "SamResourceId": "RestApi"
+            }
+        },
+        "HttpApi": {
+            "Type": "AWS::ApiGatewayV2::Api",
+            "Properties": {
+                "ProtocolType": "HTTP",
+                "Name": {
+                    "Fn::Sub": "${Stage} - moreDraw - HTTP"
+                }
+            },
+            "Metadata": {
+                "SamResourceId": "HttpApi"
+            }
+        },
+        "postUserFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "MemorySize": 3008,
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-postUser"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/314c54916501979bf2de41aa2840664b",
+                "Handler": "handler.PostUsersHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "Path": "/users",
+                            "Method": "POST",
+                            "ApiId": {
+                                "Ref": "HttpApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:PutItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem"
+                                ],
+                                "Resource": [
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user/federalTax"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "S3ReadPolicy": {
+                            "BucketName": "moredraw"
+                        }
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "postUserFunction"
+            }
+        },
+        "postUsersLoginFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "MemorySize": 3000,
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-postUsersLogin"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/90346cfd1ec220c5e68f57caa6d0dc5d",
+                "Handler": "handler.PostUsersLoginHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "Path": "/users/login",
+                            "Method": "POST",
+                            "ApiId": {
+                                "Ref": "HttpApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:PutItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem"
+                                ],
+                                "Resource": [
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user/index/federalTax"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "postUsersLoginFunction"
+            }
+        },
+        "postUsersVerifyFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-postUsersVerify"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/73dae31323960fd6023c29d85260c981",
+                "Handler": "handler.PostUsersVerifyHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "Path": "/users/verify",
+                            "Method": "POST",
+                            "ApiId": {
+                                "Ref": "HttpApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:PutItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "sns:Subscribe",
+                                    "sns:Publish",
+                                    "sns:CreateTopic",
+                                    "sns:SetTopicAttributes"
+                                ],
+                                "Resource": [
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user/index/federalTax"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "postUsersVerifyFunction"
+            }
+        },
+        "putUsersVerifyFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-putUsersVerify"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/2f5d41e1900abea47d3d80264eda8a9e",
+                "Handler": "handler.PutUsersVerifyHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "Path": "/users/verify",
+                            "Method": "PUT",
+                            "ApiId": {
+                                "Ref": "HttpApi"
+                            }
+                        }
+                    }
+                }
+            },
+            "Metadata": {
+                "SamResourceId": "putUsersVerifyFunction"
+            }
+        },
+        "putUsersFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-putUsers"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/3779c0c97351335fb115a42b303e7dc9",
+                "Handler": "handler.PutUsersHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "Path": "/users/{userId}",
+                            "Method": "PUT",
+                            "ApiId": {
+                                "Ref": "HttpApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:UpdateItem"
+                                ],
+                                "Resource": [
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user/index/federalTax"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "putUsersFunction"
+            }
+        },
+        "postUsersForgetPasswordFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-postUsersForgetPassword"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/ea4f92e178bf88fedb50918c904f3c93",
+                "Handler": "handler.PostUsersForgetPasswordHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "Path": "/users/password/forget",
+                            "Method": "POST",
+                            "ApiId": {
+                                "Ref": "HttpApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:PutItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:UpdateItem",
+                                    "sns:Publish",
+                                    "sns:CreateTopic",
+                                    "sns:SetTopicAttributes"
+                                ],
+                                "Resource": [
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user/index/federalTax"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "postUsersForgetPasswordFunction"
+            }
+        },
+        "postUsersVerifyPasswordFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-postUsersVerifyPassword"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/51f782941f4de037f25abd017116b0fe",
+                "Handler": "handler.PostUsersVerifyPasswordHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "Path": "/users/password/verify",
+                            "Method": "POST",
+                            "ApiId": {
+                                "Ref": "HttpApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:PutItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:UpdateItem"
+                                ],
+                                "Resource": [
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user/index/federalTax"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "postUsersVerifyPasswordFunction"
+            }
+        },
+        "deleteUsersFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-deleteUsers"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/6f3a48235ee3a040f13f1efb0d044faf",
+                "Handler": "handler.DeleteUsersHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "Path": "/users",
+                            "Method": "DELETE",
+                            "ApiId": {
+                                "Ref": "HttpApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query"
+                                ],
+                                "Resource": [
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user/index/federalTax"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "deleteUsersFunction"
+            }
+        },
+        "postImageFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "Architectures": [
+                    "x86_64"
+                ],
+                "SnapStart": {
+                    "ApplyOn": "PublishedVersions"
+                },
+                "FunctionName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "Stage"
+                            },
+                            "-postImage"
+                        ]
+                    ]
+                },
+                "Environment": {
+                    "Variables": {
+                        "ENV": {
+                            "Ref": "Env"
+                        }
+                    }
+                },
+                "CodeUri": "s3://moredraw/deploy/e8e2295461f65ea1f686218fde4ef6f6",
+                "Handler": "handler.PostImageHandler::handleRequest",
+                "Events": {
+                    "List": {
+                        "Type": "Api",
+                        "Properties": {
+                            "Path": "/image",
+                            "Method": "POST",
+                            "RestApiId": {
+                                "Ref": "RestApi"
+                            }
+                        }
+                    }
+                },
+                "Policies": [
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "s3:GetObject",
+                                    "s3:PutObject",
+                                    "s3:DeleteObject"
+                                ],
+                                "Resource": [
+                                    "arn:aws:s3:::moredraw",
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_image/index/createdBy-created"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_image"
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:dynamodb:",
+                                                {
+                                                    "Ref": "Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AwsId"
+                                                },
+                                                ":table/",
+                                                {
+                                                    "Ref": "Env"
+                                                },
+                                                "_user"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Metadata": {
+                "SamResourceId": "postImageFunction"
+            }
+        }
+    }
+}

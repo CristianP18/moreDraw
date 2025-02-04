@@ -1,0 +1,44 @@
+INVALID_API_KEY:
+  statusCode: 403
+  responseParameters:
+    gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Methods: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+  responseTemplates:
+    application/json: "{\n    \"message\": {\n        \"text\": \"Api Key inválida.\",\n        \"type\": \"error\",\n        \"status\": 403\n    }\n}"
+
+RESOURCE_NOT_FOUND:
+  statusCode: 405
+  responseParameters:
+    gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Methods: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+  responseTemplates:
+    application/json: "{\n    \"message\": {\n        \"text\": \"Recurso não encontrado, favor conferir a documentação.\",\n        \"type\": \"error\",\n        \"status\": 405\n    }\n}"
+
+QUOTA_EXCEEDED:
+  statusCode: 429
+  responseParameters:
+    gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Methods: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+  responseTemplates:
+    application/json: "{\n    \"message\": {\n        \"text\": \"Limite de requisições atingido.\",\n        \"type\": \"error\",\n        \"status\": 429\n    }\n}"
+
+API_CONFIGURATION_ERROR:
+  statusCode: 502
+  responseParameters:
+    gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Methods: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+  responseTemplates:
+    application/json: "{\n    \"message\": {\n        \"text\": \"Endpoint não encontrado, favor conferir a documentação.\",\n        \"type\": \"error\",\n        \"status\": 502\n    }\n}"
+
+INTEGRATION_TIMEOUT:
+  statusCode: 504
+  responseParameters:
+    gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Methods: "'*'"
+    gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+  responseTemplates:
+    application/json: "{\n    \"message\": {\n        \"text\": \"Tempo limite de integração atingido, por favor tente novamente.\",\n        \"type\": \"error\",\n        \"status\": 504\n    }\n}"

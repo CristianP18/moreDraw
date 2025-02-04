@@ -1,0 +1,18 @@
+export const routes = {
+    home: 'TraceBOX History',
+    shipments: 'Shipment Json',
+    unitloads: 'Volume Json',
+    driver: 'Driver Json',
+    clientOld: 'Client Json',
+    shipmentsAndUnitloads: 'Shipments and Unitloads',
+    client: 'Client',
+    user: 'User',
+    logs: 'Logs',
+    about: 'About',
+    login: 'Login',
+    notFound: 'Page not found',
+    billing: 'Billing',
+    allBilling: 'All Billing',
+    design: 'Design',
+    yardHome: 'Yard Manager',
+};

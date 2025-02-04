@@ -1,0 +1,15 @@
+export const expenseTable = {
+    date: 'Fecha',
+    type: 'Tipo',
+    description: 'Descripción',
+    kilometers: 'Kilómetros',
+    report: 'Informe',
+    user: 'Usuario',
+    value: 'Valor',
+    openExpense: 'Gasto abierto',
+    aboveTheLimit: 'Excedió el valor límite',
+    withinTheLimit: 'Dentro del límite',
+    nonRefundable: 'No reembolsable',
+    expensePerTrip: 'Gasto por viaje',
+    invoiceImage: 'Imagen de factura',
+};

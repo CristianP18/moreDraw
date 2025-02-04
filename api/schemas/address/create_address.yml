@@ -1,0 +1,76 @@
+type: object
+properties:
+  country:
+    description: País do endereço
+    example: Pais
+    type: string
+  stateName:
+    description: Nome do estado do endereço
+    example: Estado
+    type: string
+  stateUF:
+    description: UF do estado do endereço
+    example: UF
+    type: string
+  city:
+    description: Cidade do endereço
+    example: Cidade
+    type: string
+  street:
+    description: Rua do endereço
+    example: Rua Exemplo
+    type: string
+  addressNumber:
+    description: Número do endereço
+    example: "123"
+    type: string
+  neighborhood:
+    description: Bairro do endereço
+    example: Bairro Exemplo
+    type: string
+  reference:
+    description: Ponto de referência do endereço
+    example: Referencia Exemplo
+    type: string
+  additional:
+    description: Descrição adicional do endereço
+    example: Descrição adicional de Exemplo
+    type: string
+  zip:
+    description: CEP do endereço
+    example: "12345789"
+    type: string
+  locationName:
+    description: Nome da localidade/local que nao possui endereço formal
+    example: Localidade Exemplo - 12345
+    type: string
+  restrictions:
+    description: Restrição de entrega/coleta de um endereço
+    example: Trajeto/Localização/Endereço com restrição de entrega/coleta
+    type: string
+  latitude:
+    description: Latitude do endereço
+    example: "-28.793043370422325"
+    type: string
+  longitude:
+    description: Longitude do endereço
+    example: "-51.605825771273764"
+    type: string
+  plusCode:
+    description: Google plus code do endereço
+    example: 583C694V+RP
+    type: string
+  created:
+    example: "2020-07-15T20:45:23.506-0300"
+    format: date-time
+    type: string
+required:
+  - userId
+  - country
+  - stateName
+  - stateUF
+  - city
+  - street
+  - addressNumber
+  - neighborhood
+  - zip

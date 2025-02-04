@@ -15,6 +15,8 @@
     <file url="file://$PROJECT_DIR$/lambda/users/configuration_users/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda/users/delete_users/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda/users/delete_users/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lambda/users/get_users_find/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lambda/users/get_users_find/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda/users/post_user/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda/users/post_user/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lambda/users/post_users_forget_password/src/main/java" charset="UTF-8" />

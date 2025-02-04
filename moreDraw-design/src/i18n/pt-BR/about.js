@@ -1,0 +1,15 @@
+export const about = {
+    title: 'Detalhes do Software',
+    description: 'Este software é uma aplicação completa para gerenciamento e rastreamento de remessas. Ele permite gerenciar unidades de carga, eventos de remessa, documentos e clientes, e oferece funcionalidades avançadas de busca e relatórios.',
+    features: 'Recursos',
+    featureList: 'Gerenciamento de Unidades de Carga, Eventos de Remessa, Documentos de Transporte, Relatórios Detalhados de Clientes, Funcionalidades Avançadas de Busca, Integração com APIs para obtenção e limpeza de dados',
+    architecture: 'Arquitetura',
+    architectureDescription: 'O software é construído utilizando uma arquitetura modular, onde diferentes componentes são responsáveis por diferentes partes do sistema. Os principais componentes são:',
+    mainComponents: 'DataStorage: Gerencia o armazenamento dos dados de remessas, clientes, documentos e eventos. Entities: Definições de entidades como Shipment, Client, Doc, Unitload e ShipmentEvent. API: Camada responsável pela comunicação com servidores externos para obtenção e limpeza de dados.',
+    technologiesUsed: 'Tecnologias Usadas',
+    technologyList: 'Frontend: Vue.js com Quasar Framework, Backend: Java com Spring Boot, Comunicação: Axios para chamadas HTTP',
+    installation: 'Instalação',
+    installationSteps: 'Clone o repositório do projeto. Construa o backend utilizando Maven: mvn clean install. Inicie o backend: java -jar target/your-backend.jar. Inicie o frontend utilizando Quasar: quasar dev. Acesse a aplicação via navegador em http://localhost:9000',
+    usage: 'Uso',
+    usageDescription: 'Carregar dados de remessas e clientes, Buscar dados por data ou tipo, Visualizar e limpar dados carregados, Gerar relatórios detalhados',
+};
