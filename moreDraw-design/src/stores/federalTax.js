@@ -5,6 +5,7 @@ export const useFederalTaxStore = defineStore('federalTax', {
     state: () => ({
         federalTax: localStorage.getItem('federalTax') || '',
         clientData: null,
+        oi: 'support traceBOX',
     }),
     actions: {
         setFederalTax(value) {
@@ -20,6 +21,9 @@ export const useFederalTaxStore = defineStore('federalTax', {
             if (data) {
                 this.clientData = JSON.parse(data);
             }
+        },
+        updateOi(newOi) {
+            this.oi = newOi;
         },
     },
 });

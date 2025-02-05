@@ -1,126 +1,57 @@
 <template>
     <div class="col-3 storloc-list">
-        <q-btn
-            :label="$t('storlocManagement.newStorloc')"
-            color="primary"
-            class="q-mt-md"
-            @click="openCreateDialog"
-        />
+        <q-card class="q-pa-md">
+            <q-btn
+                label="Cadastrar Novo Storloc"
+                color="primary"
+                class="q-mt-md"
+                @click="openDialog"
+            />
+        </q-card>
 
         <!-- Diálogo para criação/edição -->
         <q-dialog v-model="showDialog">
             <q-card>
                 <q-card-section>
                     <div class="text-h6">
-                        {{ isEditing ? $t('storlocManagement.editStorloc') : $t('storlocManagement.newStorloc') }}
+                        {{ isEditing ? 'Editar Storloc' : 'Cadastrar Novo Storloc' }}
                     </div>
                 </q-card-section>
                 <q-card-section>
                     <q-input
-                        v-model="storloc.zoneId"
-                        :label="$t('storlocManagement.zone')"
-                        outlined
-                        dense
+                        v-model="storloc.ean"
+                        label="EAN"
                     />
                     <q-input
-                        v-model="storloc.riskClass"
-                        :label="$t('storlocManagement.riskClass')"
-                        outlined
-                        dense
-                    />
-                    <q-input
-                        v-model="storloc.area"
-                        :label="$t('storlocManagement.area')"
-                        :disable="true"
-                        outlined
-                        dense
-                    />
-                    <q-select
                         v-model="storloc.type"
-                        :label="$t('storlocManagement.type')"
-                        :options="typeOptions"
-                        option-value="value"
-                        option-label="label"
-                        emit-value
-                        outlined
-                        dense
-                    />
-                    <q-input
-                        v-model="storloc.field"
-                        :label="$t('storlocManagement.field')"
-                        outlined
-                        dense
-                    />
-                    <q-input
-                        v-model="storloc.rack"
-                        :label="$t('storlocManagement.rack')"
-                        outlined
-                        dense
-                    />
-                    <q-input
-                        v-model="storloc.street"
-                        :label="$t('storlocManagement.street')"
-                        outlined
-                        dense
+                        label="Tipo de Veículo"
                     />
                     <q-input
                         v-model="storloc.index"
-                        :label="$t('storlocManagement.index')"
-                        outlined
-                        dense
+                        label="Índice"
                     />
                     <q-input
-                        v-model="storloc.xPos"
-                        :label="$t('storlocManagement.xPos')"
-                        outlined
-                        dense
+                        v-model="storloc.area"
+                        label="Área"
                     />
                     <q-input
-                        v-model="storloc.yPos"
-                        :label="$t('storlocManagement.yPos')"
-                        outlined
-                        dense
+                        v-model="storloc.rack"
+                        label="Rack"
                     />
                     <q-input
-                        v-model="storloc.zPos"
-                        :label="$t('storlocManagement.zPos')"
-                        outlined
-                        dense
-                    />
-                    <q-input
-                        v-model="storloc.description"
-                        :label="$t('storlocManagement.description')"
-                        outlined
-                        dense
-                    />
-                    <q-input
-                        v-model="storloc.classStorloc"
-                        :label="$t('storlocManagement.classStorloc')"
-                        outlined
-                        dense
-                    />
-                    <q-input
-                        v-model="storloc.classStorlocType"
-                        :label="$t('storlocManagement.classStorlocType')"
-                        outlined
-                        dense
-                    />
-                    <q-input
-                        v-model="storloc.operadorLogistico"
-                        :label="$t('storlocManagement.operadorLogistico')"
-                        outlined
-                        dense
+                        v-model="storloc.zoneId"
+                        label="Zona"
                     />
                 </q-card-section>
                 <q-card-actions align="right">
                     <q-btn
                         flat
-                        :label="$t('storlocManagement.cancel')"
+                        label="Cancelar"
                         @click="showDialog = false"
                     />
                     <q-btn
                         flat
-                        :label="$t('storlocManagement.save')"
+                        label="Salvar"
                         color="primary"
                         @click="saveStorloc"
                     />
@@ -137,75 +68,28 @@ import { createAxiosInstance } from '../../api/axiosInstance';
 const axiosInstance = createAxiosInstance('dev2');
 const showDialog = ref(false);
 const isEditing = ref(false);
-const typeOptions = [
-    { label: 'Portaria', value: '20' },
-    { label: 'Pátio', value: '30' },
-    { label: 'Doca', value: '40' },
-];
-const storloc = reactive({
-    zoneId: '',
-    riskClass: '',
-    area: '{"x":149.296875,"y":-56.40625}',
-    type: '',
-    field: '',
-    rack: '',
-    street: '',
-    index: '',
-    xPos: '',
-    yPos: '',
-    zPos: '',
-    description: '',
-    classStorloc: '',
-    classStorlocType: '',
-    operadorLogistico: '',
-});
-const emit = defineEmits(['storloc-saved']);
+const storloc = reactive({ ean: '', type: '', index: '', area: '', rack: '', zoneId: '' });
+const emit = defineEmits(['storloc-saved', 'edit-storloc']);
 
-// Abre o diálogo para cadastro
-function openCreateDialog() {
-    isEditing.value = false;
-    resetStorloc(); // Limpa os campos e aplica valores padrão
-    showDialog.value = true;
-}
-
-// Abre o diálogo para edição
-function openEditDialog(storlocToEdit = null) {
-    isEditing.value = true;
+// Abre o diálogo de cadastro/edição
+function openDialog(storlocToEdit = null) {
     if (storlocToEdit) {
+        isEditing.value = true;
         Object.assign(storloc, storlocToEdit);
+    } else {
+        isEditing.value = false;
+        Object.assign(storloc, { ean: '', type: '', index: '', area: '', rack: '', zoneId: '' });
     }
     showDialog.value = true;
-}
-
-// Reseta os campos do formulário
-function resetStorloc() {
-    Object.assign(storloc, {
-        zoneId: '',
-        riskClass: '',
-        area: '{"x":149.296875,"y":-56.40625}',
-        type: '',
-        field: '',
-        rack: '',
-        street: '',
-        index: '',
-        xPos: '',
-        yPos: '',
-        zPos: '',
-        description: '',
-        classStorloc: '',
-        classStorlocType: '',
-        operadorLogistico: '',
-    });
 }
 
 // Salva o storloc
 async function saveStorloc() {
     try {
-        const payload = { storlocs: [storloc] }; // Adapta o JSON ao formato esperado
         if (isEditing.value) {
-            await axiosInstance.put(`/rest/storloc/${storloc.index}`, payload);
+            await axiosInstance.put(`/rest/storloc/${storloc.ean}`, storloc);
         } else {
-            await axiosInstance.post('/rest/storloc', payload);
+            await axiosInstance.post('/rest/storloc', storloc);
         }
         showDialog.value = false;
         emit('storloc-saved');

@@ -5,13 +5,17 @@
             :available-storlocs="availableStorlocs"
             @save-positions="savePositions"
         />
+        <upload-image />
+        <crud-component />
     </q-page>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import CrudComponent from './CreateComponent.vue';
 import MapComponent from './MapComfig02.vue';
 import { createAxiosInstance } from '../../api/axiosInstance';
+import uploadImage from './UploadImage.vue';
 
 const axiosInstance = createAxiosInstance('dev2');
 

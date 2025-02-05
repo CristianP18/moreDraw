@@ -1,12 +1,13 @@
 DesignComponent.vue
 <template>
-    <q-page class="page q-px-lg">
-        <design />
-    </q-page>
+  <q-page class="page q-px-lg">
+    olá
+    <design />
+  </q-page>
 </template>
 
 <script setup>
-import design from 'src/components/design/DesignConponent/DesignComponent.vue';
+import design from "src/components/design/DesignConponent/DesignComponent.vue";
 </script>
 
 <style>

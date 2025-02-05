@@ -1,4 +1,4 @@
-# Quasar App (support-tracebox)
+# Quasar App (patio)
 
 A Quasar Project
 
@@ -20,6 +20,14 @@ quasar dev
 yarn lint
 # or
 npm run lint
+```
+
+
+### Format the files
+```bash
+yarn format
+# or
+npm run format
 ```
 
 

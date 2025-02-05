@@ -1,18 +1,18 @@
-import { boot } from 'quasar/wrappers';
-import { createI18n } from 'vue-i18n';
-import messages from 'src/i18n';
-import { getCookie } from 'src/utils/getCookie';
+import { boot } from "quasar/wrappers";
+import { createI18n } from "vue-i18n";
+import messages from "src/i18n";
+import { getCookie } from "src/utils/getCookie";
 
 const i18n = createI18n({
-    globalInjection: true,
-    legacy: false,
-    locale: (getCookie('SpkLanguage') || 'pt-BR'), // initial language
-    messages,
+  globalInjection: true,
+  legacy: false,
+  locale: getCookie("language") || "pt-BR", // initial language
+  messages,
 });
 
 export default boot(({ app }) => {
-    // Set i18n instance on app
-    app.use(i18n);
+  // Set i18n instance on app
+  app.use(i18n);
 });
 
 export { i18n };
