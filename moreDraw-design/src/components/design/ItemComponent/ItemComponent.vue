@@ -1884,30 +1884,20 @@ function onMouseMoveRotate(event) {
   if (!isRotating.value) return;
 
   let centerX, centerY;
+  let targetElement = document.querySelector(`[data-id="${props.item.id}"]`);
 
-  if (props.item.type === "image" || props.item.type === "icon") {
-    // Para imagens, pegar a posição do próprio elemento HTML
-    const img = document.querySelector(`[data-id="${props.item.id}"] img`);
-    if (!img) {
-      console.error("Image element not found!");
-      return;
-    }
-    const rect = img.getBoundingClientRect();
-    centerX = rect.left + rect.width / 2;
-    centerY = rect.top + rect.height / 2;
-  } else {
-    // Para figuras geométricas (SVG)
-    const svg = svgRef.value;
-    if (!svg) {
-      console.error("SVG element not found!");
-      return;
-    }
-    const rect = svg.getBoundingClientRect();
-    centerX = rect.left + rect.width / 2;
-    centerY = rect.top + rect.height / 2;
+  if (!targetElement) {
+    console.error(
+      `Graphic element not found for rotation! ID=${props.item.id}, Type=${props.item.type}`
+    );
+    return;
   }
 
-  // Cálculo do ângulo de rotação
+  const rect = targetElement.getBoundingClientRect();
+  centerX = rect.left + rect.width / 2;
+  centerY = rect.top + rect.height / 2;
+
+  // 📐 Calcula a rotação
   const angleRad = Math.atan2(event.clientY - centerY, event.clientX - centerX);
   const degrees = angleRad * (180 / Math.PI);
   const newRotation = degrees - initialRotation.value;
