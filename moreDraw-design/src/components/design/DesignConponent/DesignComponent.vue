@@ -1,5 +1,4 @@
 <template>
-  sera q vai
   <!-- Mostra o nome do projeto selecionado -->
   <q-card v-if="selectedProjectName" class="q-ma-md project-name-box">
     <div class="q-pa-sm">

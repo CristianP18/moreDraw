@@ -1883,15 +1883,31 @@ function onRotateMouseDown(event, axis) {
 function onMouseMoveRotate(event) {
   if (!isRotating.value) return;
 
-  const svg = svgRef.value;
-  if (!svg) {
-    console.error("SVG element not found!");
-    return;
+  let centerX, centerY;
+
+  if (props.item.type === "image" || props.item.type === "icon") {
+    // Para imagens, pegar a posição do próprio elemento HTML
+    const img = document.querySelector(`[data-id="${props.item.id}"] img`);
+    if (!img) {
+      console.error("Image element not found!");
+      return;
+    }
+    const rect = img.getBoundingClientRect();
+    centerX = rect.left + rect.width / 2;
+    centerY = rect.top + rect.height / 2;
+  } else {
+    // Para figuras geométricas (SVG)
+    const svg = svgRef.value;
+    if (!svg) {
+      console.error("SVG element not found!");
+      return;
+    }
+    const rect = svg.getBoundingClientRect();
+    centerX = rect.left + rect.width / 2;
+    centerY = rect.top + rect.height / 2;
   }
 
-  const rect = svg.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
+  // Cálculo do ângulo de rotação
   const angleRad = Math.atan2(event.clientY - centerY, event.clientX - centerX);
   const degrees = angleRad * (180 / Math.PI);
   const newRotation = degrees - initialRotation.value;
