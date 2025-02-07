@@ -1,7 +1,6 @@
 DesignComponent.vue
 <template>
   <q-page class="page q-px-lg">
-    olá
     <design />
   </q-page>
 </template>
