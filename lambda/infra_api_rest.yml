@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: tracebox
+Description: moreDraw
 Globals:
   Function:
     Runtime: java11
@@ -19,65 +19,18 @@ Parameters:
 
 Resources:
   RestApi:
-    Type: AWS::ApiGateway::RestApi
+    Type: AWS::Serverless::Api
     Properties:
       Name: !Sub "${Stage} - moreDraw - REST"
-      FailOnWarnings: true
-      Body:
-        'Fn::Transform':
-          Name: 'AWS::Include'
-          Parameters:
-            Location: s3://moredraw/deploy/api_rest.json
+      StageName: !Ref Stage  # Propriedade obrigatória adicionada
 
   HttpApi:
-    Type: AWS::ApiGatewayV2::Api
+    Type: AWS::Serverless::HttpApi
     Properties:
-      ProtocolType: HTTP
-      Name: !Sub "${Stage} - moreDraw - HTTP"
-#
-#  #  User
-#  getUsersFindFunction:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Architectures:
-#        - x86_64
-#      SnapStart:
-#        ApplyOn: PublishedVersions
-#      MemorySize: 4096
-#      FunctionName:
-#        Fn::Join: [ "", [ !Ref Stage, "-getUsersFind" ] ]
-#      Environment:
-#        Variables:
-#          ENV: !Ref Env
-#      CodeUri: users/get_users_find/target/get_users_find-1.0.jar
-#      Handler: handler.GetUsersFindHandler::handleRequest
-#      Events:
-#        List:
-#          Type: Api
-#          Properties:
-#            Path: /users/find
-#            Method: GET
-#            RestApiId:
-#              Ref: RestApi
-#      Policies:
-#        - Version: "2012-10-17"
-#          Statement:
-#            - Effect: "Allow"
-#              Action:
-#                - "dynamodb:GetItem"
-#                - "dynamodb:Scan"
-#                - "dynamodb:Query"
-#              Resource:
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user/index/federalTax" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_client/index/federalTax" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_client/index/apiKey" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_client" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_address" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user_favorite" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_vehicle" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_vehicle_type" ] ]
+      Name: !Sub "${Stage} - moreDraw - HTTP"  # Propriedade Variables removida
 
+
+  #   Funções Lambda
 
   postUserFunction:
     Type: AWS::Serverless::Function
@@ -100,6 +53,11 @@ Resources:
             Path: /users
             Method: POST
             ApiId: !Ref HttpApi
+      #          WarmingSchedule:
+      #            Type: Schedule
+      #            Properties:
+      #              Schedule: rate(6 minutes)
+      #              Input: '{"headers": {"x-api-key": "your_api_key_here"}}'
       Policies:
         - Version: "2012-10-17"
           Statement:
@@ -114,8 +72,7 @@ Resources:
               Resource:
                 - !Join ["", ["arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user/federalTax"]]
                 - !Join ["", ["arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user"]]
-        - S3ReadPolicy: # Use uma política pré-definida para acessar objetos no bucket S3
-            BucketName: moredraw
+  #                - "arn:aws:sns:*:*:*"
 
 
   postUsersLoginFunction:
@@ -139,11 +96,11 @@ Resources:
             Path: /users/login
             Method: POST
             ApiId: !Ref HttpApi
-#        WarmingSchedule:
-#          Type: Schedule
-#          Properties:
-#            Schedule: rate(6 minutes)
-#            Input: '{"headers": {"x-api-key": "your_api_key_here"}}'
+      #        WarmingSchedule:
+      #          Type: Schedule
+      #          Properties:
+      #            Schedule: rate(6 minutes)
+      #            Input: '{"headers": {"x-api-key": "your_api_key_here"}}'
       Policies:
         - Version: "2012-10-17"
           Statement:
@@ -218,7 +175,7 @@ Resources:
             Path: /users/verify
             Method: PUT
             ApiId: !Ref HttpApi
-#      Role: "arn:aws:iam::170387992571:role/sns-lambda-moreDraw"
+  #      Role: "arn:aws:iam::170387992571:role/sns-lambda-moreDraw"
 
   putUsersFunction:
     Type: AWS::Serverless::Function
@@ -254,7 +211,7 @@ Resources:
               Resource:
                 - !Join ["", ["arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user/index/federalTax"]]
                 - !Join ["", ["arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user"]]
-#      Role: "arn:aws:iam::170387992571:role/sns-lambda-moreDraw"
+  #      Role: "arn:aws:iam::170387992571:role/sns-lambda-moreDraw"
 
   postUsersForgetPasswordFunction:
     Type: AWS::Serverless::Function
@@ -292,7 +249,7 @@ Resources:
               Resource:
                 - !Join ["", ["arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user/index/federalTax"]]
                 - !Join ["", ["arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user"]]
-#      Role: "arn:aws:iam::170387992571:role/sns-lambda-moreDraw"
+  #      Role: "arn:aws:iam::170387992571:role/sns-lambda-moreDraw"
 
   postUsersVerifyPasswordFunction:
     Type: AWS::Serverless::Function
@@ -362,43 +319,43 @@ Resources:
                 - !Join ["", ["arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user/index/federalTax"]]
                 - !Join ["", ["arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user"]]
 
-#  ### image ###
-#  getImageFunction:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Architectures:
-#        - x86_64
-#      SnapStart:
-#        ApplyOn: PublishedVersions
-#      FunctionName:
-#        Fn::Join: [ "", [ !Ref Stage, "-getImage" ] ]
-#      Environment:
-#        Variables:
-#          ENV: !Ref Env
-#      CodeUri: image/get_image/target/get_image-1.0.jar
-#      Handler: handler.GetImageHandler::handleRequest
-#      Events:
-#        List:
-#          Type: Api
-#          Properties:
-#            Path: /image/{imageId}
-#            Method: GET
-#            RestApiId:
-#              Ref: RestApi
-#      Policies:
-#        - Version: "2012-10-17"
-#          Statement:
-#            - Effect: "Allow"
-#              Action:
-#                - "dynamodb:GetItem"
-#                - "dynamodb:Scan"
-#                - "dynamodb:Query"
-#                - "dynamodb:PutItem"
-#                - "dynamodb:UpdateItem"
-#              Resource:
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
+  ### Image ###
+  getImageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - x86_64
+      SnapStart:
+        ApplyOn: PublishedVersions
+      FunctionName:
+        Fn::Join: [ "", [ !Ref Stage, "-getImage" ] ]
+      Environment:
+        Variables:
+          ENV: !Ref Env
+      CodeUri: image/get_image/target/get_image-1.0.jar
+      Handler: handler.GetImageHandler::handleRequest
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /image/{imageId}
+            Method: GET
+            RestApiId:
+              Ref: RestApi
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - "dynamodb:GetItem"
+                - "dynamodb:Scan"
+                - "dynamodb:Query"
+                - "dynamodb:PutItem"
+                - "dynamodb:UpdateItem"
+              Resource:
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
   postImageFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -432,132 +389,85 @@ Resources:
                 - "dynamodb:PutItem"
                 - "dynamodb:UpdateItem"
                 - "dynamodb:BatchWriteItem"
+              Resource:
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
+
+  putImageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - x86_64
+      SnapStart:
+        ApplyOn: PublishedVersions
+      FunctionName:
+        Fn::Join: [ "", [ !Ref Stage, "-putImage" ] ]
+      Environment:
+        Variables:
+          ENV: !Ref Env
+      CodeUri: image/put_image/target/put_image-1.0.jar
+      Handler: handler.PutImageHandler::handleRequest
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /image/{imageId}
+            Method: PUT
+            RestApiId:
+              Ref: RestApi
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - "dynamodb:GetItem"
+                - "dynamodb:Scan"
+                - "dynamodb:Query"
+                - "dynamodb:PutItem"
+                - "dynamodb:UpdateItem"
+                - "dynamodb:BatchWriteItem"
+              Resource:
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
+  putImagePictureFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - x86_64
+      SnapStart:
+        ApplyOn: PublishedVersions
+      FunctionName:
+        Fn::Join: [ "", [ !Ref Stage, "-putImagePicture" ] ]
+      Environment:
+        Variables:
+          ENV: !Ref Env
+      CodeUri: image/put_image_picture/target/put_image_picture-1.0.jar
+      Handler: handler.PostImagesPictureHandler::handleRequest
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /picture
+            Method: PUT
+            RestApiId:
+              Ref: RestApi
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - "dynamodb:PutItem"
+                - "dynamodb:GetItem"
+                - "dynamodb:Scan"
+                - "dynamodb:Query"
+                - "dynamodb:UpdateItem"
                 - "s3:GetObject"
                 - "s3:PutObject"
                 - "s3:DeleteObject"
               Resource:
-                - "arn:aws:s3:::moredraw"
+                - "arn:aws:s3:::docs.moreDraw.com.br"
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
-#  putImagePictureFunction:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Architectures:
-#        - x86_64
-#      SnapStart:
-#        ApplyOn: PublishedVersions
-#      FunctionName:
-#        Fn::Join: [ "", [ !Ref Stage, "-putImagePicture" ] ]
-#      Environment:
-#        Variables:
-#          ENV: !Ref Env
-#      CodeUri: image/put_image_picture/target/put_image_picture-1.0.jar
-#      Handler: handler.PutImagePictureHandler::handleRequest
-#      Events:
-#        List:
-#          Type: Api
-#          Properties:
-#            Path: /image/picture/{imageId}
-#            Method: PUT
-#            RestApiId:
-#              Ref: RestApi
-#      Policies:
-#        - Version: "2012-10-17"
-#          Statement:
-#            - Effect: "Allow"
-#              Action:
-#                - "dynamodb:PutItem"
-#                - "dynamodb:GetItem"
-#                - "dynamodb:Scan"
-#                - "dynamodb:Query"
-#                - "dynamodb:UpdateItem"
-#                - "s3:GetObject"
-#                - "s3:PutObject"
-#                - "s3:DeleteObject"
-#              Resource:
-#                - "arn:aws:s3:::moredraw"
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
-#
-#  putImageFunction:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Architectures:
-#        - x86_64
-#      SnapStart:
-#        ApplyOn: PublishedVersions
-#      FunctionName:
-#        Fn::Join: [ "", [ !Ref Stage, "-putImage" ] ]
-#      Environment:
-#        Variables:
-#          ENV: !Ref Env
-#      CodeUri: image/put_image/target/put_image-1.0.jar
-#      Handler: handler.PutImageHandler::handleRequest
-#      Events:
-#        List:
-#          Type: Api
-#          Properties:
-#            Path: /image/{imageId}
-#            Method: PUT
-#            RestApiId:
-#              Ref: RestApi
-#      Policies:
-#        - Version: "2012-10-17"
-#          Statement:
-#            - Effect: "Allow"
-#              Action:
-#                - "dynamodb:GetItem"
-#                - "dynamodb:Scan"
-#                - "dynamodb:Query"
-#                - "dynamodb:PutItem"
-#                - "dynamodb:UpdateItem"
-#                - "dynamodb:BatchWriteItem"
-#              Resource:
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
-#
-#  deleteImageFunction:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Architectures:
-#        - x86_64
-#      SnapStart:
-#        ApplyOn: PublishedVersions
-#      FunctionName:
-#        Fn::Join: [ "", [ !Ref Stage, "-deleteImage" ] ]
-#      Environment:
-#        Variables:
-#          ENV: !Ref Env
-#      CodeUri: image/delete_image/target/delete_image-1.0.jar
-#      Handler: handler.DeleteImageHandler::handleRequest
-#      Events:
-#        List:
-#          Type: Api
-#          Properties:
-#            Path: /image/{imageId}
-#            Method: Delete
-#            RestApiId:
-#              Ref: RestApi
-#      Policies:
-#        - Version: "2012-10-17"
-#          Statement:
-#            - Effect: "Allow"
-#              Action:
-#                - "dynamodb:GetItem"
-#                - "dynamodb:Scan"
-#                - "dynamodb:DeleteItem"
-#                - "dynamodb:Query"
-#                - "dynamodb:PutItem"
-#                - "dynamodb:UpdateItem"
-#                - "dynamodb:BatchWriteItem"
-#                - "s3:GetObject"
-#                - "s3:PutObject"
-#                - "s3:DeleteObject"
-#              Resource:
-#                - "arn:aws:s3:::moredraw"
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
-#                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
-#
