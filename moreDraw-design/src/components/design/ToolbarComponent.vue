@@ -1147,7 +1147,7 @@ function openImageBackgroundSelectionDialog() {
 async function loadImagesYard() {
   loadingAPIImages.value = true;
   try {
-    const response = await axiosInstance.get("/rest/imageYard/add");
+    const response = await axiosInstance.get("/image/add");
     apiImages.value = response.data.content.imageYards;
   } catch (error) {
     console.error("Erro ao carregar imagens:", error);
@@ -1200,7 +1200,7 @@ async function loadProjects() {
   loadingManage.value = true;
   loadingImages.value = true;
   try {
-    const response = await axiosInstance.get("/rest/imageYard/add");
+    const response = await axiosInstance.get("/image/add");
     images.value = response.data.content.imageYards;
   } catch (error) {
     console.error("Erro ao carregar imagens:", error);

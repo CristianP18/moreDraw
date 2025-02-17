@@ -437,7 +437,7 @@ const loadImages = async () => {
     loadingManage.value = true;
     loadingImages.value = true;
     try {
-        const response = await axiosInstance.get('/rest/imageYard/add');
+        const response = await axiosInstance.get('/image/add');
         images.value = response.data.content.imageYards;
     } catch (error) {
         console.error('Erro ao carregar imagens:', error);
@@ -488,7 +488,7 @@ const createImageYard = async () => {
     }));
 
     try {
-        await axiosInstance.post('/rest/imageYard', fd, {
+        await axiosInstance.post('/image', fd, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
         $q.notify({ message: 'ImageYard criado com sucesso!', color: 'positive' });
@@ -520,7 +520,7 @@ const editImageAttributes = (img) => {
 const updateImageYard = async () => {
     loadingUpdate.value = true;
     try {
-        await axiosInstance.put(`/rest/imageYard/${editForm.value.imageId}`, {
+        await axiosInstance.put(`/image/${editForm.value.imageId}`, {
             imageName: editForm.value.imageName,
             groupBy: editForm.value.groupBy,
             description: editForm.value.description,
@@ -573,7 +573,7 @@ const updateImageYardImage = async () => {
     }));
 
     try {
-        await axiosInstance.put(`/rest/imageYard/picture/${imageToEditImage.value.imageId}`, fd, {
+        await axiosInstance.put(`/image/picture/${imageToEditImage.value.imageId}`, fd, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
         $q.notify({ message: 'Imagem atualizada com sucesso!', color: 'positive' });
@@ -603,7 +603,7 @@ const deleteImage = async () => {
         return;
     }
     try {
-        await axiosInstance.delete(`/rest/imageYard/${imageToDelete.value.imageId}`);
+        await axiosInstance.delete(`/image/${imageToDelete.value.imageId}`);
         $q.notify({ message: 'Imagem excluída com sucesso!', color: 'positive' });
         dialogDeleteVisible.value = false;
         imageToDelete.value = null;

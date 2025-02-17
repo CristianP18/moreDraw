@@ -1200,7 +1200,7 @@ async function createImageYard() {
 
   try {
     console.log("createImageYard: Enviando requisição para criar ImageYard");
-    await axiosInstance.post("/rest/imageYard", fd, {
+    await axiosInstance.post("/image", fd, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     $q.notify({ message: "ImageYard criado com sucesso!", color: "positive" });
@@ -1291,7 +1291,7 @@ async function updateProject() {
       `updateProject: Enviando requisição para atualizar ImageYard com ID=${createForm.value.imageId}`
     );
     await axiosInstance.put(
-      `/rest/imageYard/${createForm.value.imageId}`,
+      `/image/${createForm.value.imageId}`,
       payload,
       {
         headers: { "Content-Type": "application/json" },
