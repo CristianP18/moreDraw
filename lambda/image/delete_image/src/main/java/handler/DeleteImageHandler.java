@@ -32,7 +32,7 @@ public class DeleteImageHandler extends GenericRequestHandler {
             throws Unauthorized, NotFound {
 
             return deleteImageFacade.facade(
-                    request.getPathParameters().get(DynamoDBImage.IMAGEYARDID),
+                    request.getPathParameters().get(DynamoDBImage.IMAGEID),
                     locale);
         }
 }

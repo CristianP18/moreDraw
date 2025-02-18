@@ -436,6 +436,44 @@ Resources:
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
+  deleteImageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - x86_64
+      SnapStart:
+        ApplyOn: PublishedVersions
+      FunctionName:
+        Fn::Join: [ "", [ !Ref Stage, "-deleteImage" ] ]
+      Environment:
+        Variables:
+          ENV: !Ref Env
+      CodeUri: image/delete_image/target/delete_image-1.0.jar
+      Handler: handler.DeleteImageHandler::handleRequest
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /image/{imageId}
+            Method: Delete
+            RestApiId:
+              Ref: RestApi
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - "dynamodb:GetItem"
+                - "dynamodb:Scan"
+                - "dynamodb:DeleteItem"
+                - "dynamodb:Query"
+                - "dynamodb:PutItem"
+                - "dynamodb:UpdateItem"
+                - "dynamodb:BatchWriteItem"
+              Resource:
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_yard_image/index/createdBy-created" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_yard_image" ] ]
+
   putImagePictureFunction:
     Type: AWS::Serverless::Function
     Properties:

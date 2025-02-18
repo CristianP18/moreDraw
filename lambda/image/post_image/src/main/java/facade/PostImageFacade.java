@@ -1,6 +1,5 @@
 package facade;
 
-
 import bundles.Bundle;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -22,14 +21,12 @@ import service.ImageService;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;
 
 public class PostImageFacade {
 
-    String bucket = "moredraw/pictures";;
+    String bucket = "moredraw/pictures";
 
     public Response<?> facade(APIGatewayProxyRequestEvent event, Context context, String userId, String locale) throws NotFound, Conflict, InvalidRequest, IOException {
         Image image = postImage(event, context, userId, locale);
@@ -41,26 +38,27 @@ public class PostImageFacade {
     private Image postImage(APIGatewayProxyRequestEvent event, Context context, String clientId, String locale)
             throws NotFound, Conflict, InvalidRequest, IOException {
         LambdaLogger logger = context.getLogger();
-
-        // Obter o cabeçalho Content-Type
         String contentType = event.getHeaders().getOrDefault("Content-Type", event.getHeaders().getOrDefault("content-type", null));
+
         if (contentType == null || !contentType.startsWith("multipart/form-data")) {
             throw new InvalidRequest("O tipo de conteúdo da requisição não é multipart/form-data.");
         }
 
-        // Extrair o boundary
         String[] boundaryArray = contentType.split("=");
         if (boundaryArray.length < 2) {
             throw new InvalidRequest("Boundary não encontrado no Content-Type.");
         }
-        byte[] boundaryBytes = boundaryArray[1].getBytes(StandardCharsets.UTF_8);
+        byte[] boundaryBytes = boundaryArray[1].getBytes();
 
-        // Decodificar o corpo da requisição
-        byte[] body = Base64.getDecoder().decode(event.getBody());
+        byte[] body;
+        try {
+            body = Base64.getDecoder().decode(event.getBody());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidRequest("Falha ao decodificar Base64: " + e.getMessage());
+        }
+
         ByteArrayInputStream content = new ByteArrayInputStream(body);
         MultipartStream multipartStream = new MultipartStream(content, boundaryBytes, body.length, null);
-
-        // Parsing multipart
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         String jsonMetadata = null;
         ByteArrayOutputStream imageOut = new ByteArrayOutputStream();
@@ -69,18 +67,14 @@ public class PostImageFacade {
         while (nextPart) {
             String headers = multipartStream.readHeaders();
             logger.log("Headers: " + headers);
-
             out.reset();
             multipartStream.readBodyData(out);
 
             if (headers.contains("filename=")) {
-                // É um arquivo
                 imageOut.write(out.toByteArray());
             } else if (headers.contains("name=\"jsonImage\"")) {
-                // É o JSON
-                jsonMetadata = new String(out.toByteArray(), StandardCharsets.UTF_8);
+                jsonMetadata = new String(out.toByteArray());
             }
-
             nextPart = multipartStream.readBoundary();
         }
 
@@ -91,36 +85,18 @@ public class PostImageFacade {
             throw new InvalidRequest("Arquivo de imagem não encontrado na requisição.");
         }
 
-        // Parse do JSON para o modelo
         ImageRequestModel request = GsonHelper.getInstance().getGson().fromJson(jsonMetadata, ImageRequestModel.class);
-
-        // Obter o cliente
-
-
-        // Criar o objeto Image
         Image image = new Image(request, clientId);
-
-        // Fazer o upload da imagem
         String imageUrl = postPicture(event, context, locale);
         image.setImageUrl(imageUrl);
 
-        // Salvar no serviço
         ImageService.postImage(image);
-
         return image;
     }
 
-
-    /**
-     * Upload da foto no bucket.
-     *
-     * @param event Corpo e cabeçalho da requisição.
-     */
-    private String postPicture(APIGatewayProxyRequestEvent event, Context context, String locale)
-            throws IOException, InvalidRequest {
+    private String postPicture(APIGatewayProxyRequestEvent event, Context context, String locale) throws IOException, InvalidRequest {
         String key = UUID.randomUUID() + ".jpg";
         DocService.getInstance().uploadS3(bucket, key, event, context, locale);
-
         return S3.link(bucket, key);
     }
 }

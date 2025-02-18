@@ -36,7 +36,7 @@ public class GetImageHandler extends GenericRequestHandler {
             throws Unauthorized, NotFound {
         if (JWTHelper.isValidJwt(JWTHelper.getToken(request))) {
             return getImageFacade.facade(
-                    request.getPathParameters().get(DynamoDBImage.IMAGEYARDID),
+                    request.getPathParameters().get(DynamoDBImage.IMAGEID),
                     JWTHelper.decodeRequestId(JWTHelper.getToken(request)),
                     locale);
         } else

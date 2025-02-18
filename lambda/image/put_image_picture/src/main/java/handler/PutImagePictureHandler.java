@@ -38,7 +38,7 @@ public class PutImagePictureHandler extends GenericRequestHandler {
 
         if (JWTHelper.isValidJwt(JWTHelper.getToken(request))) {
             return putImagePictureFacade.facade(
-                    request.getPathParameters().get(DynamoDBImage.IMAGEYARDID),
+                    request.getPathParameters().get(DynamoDBImage.IMAGEID),
                     request,
                     context,
                     JWTHelper.decodeRequestId(JWTHelper.getToken(request)),

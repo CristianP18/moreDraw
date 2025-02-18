@@ -33,7 +33,7 @@ public class PutImageHandler extends GenericRequestHandler {
             throws Unauthorized, NotFound {
         if (JWTHelper.isValidJwt(JWTHelper.getToken(request))) {
             return putImageFacade.facade(
-                    request.getPathParameters().get(DynamoDBImage.IMAGEYARDID),
+                    request.getPathParameters().get(DynamoDBImage.IMAGEID),
                     request.getBody(),
                     locale);
         }
