@@ -43,7 +43,7 @@ export default {
         console.log("Senha:", password);
 
         const response = await axios.post(
-          "https://api.tracebox.com.br/dev/http/users/login",
+          "https://wsr4iquk8l.execute-api.us-east-1.amazonaws.com/users/login",
           {
             mobilePhone: phoneNumber,
             password,

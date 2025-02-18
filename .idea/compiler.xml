@@ -6,26 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="put_image_picture" />
-        <module name="post_users_verify_password" />
-        <module name="post_image" />
-        <module name="configuration_bucketS3" />
-        <module name="configuration" />
-        <module name="delete_image" />
-        <module name="put_image" />
-        <module name="post_user" />
-        <module name="post_users_login" />
-        <module name="delete_users" />
-        <module name="put_users_verify" />
-        <module name="post_users_forget_password" />
-        <module name="apigateway" />
-        <module name="configuration_image" />
-        <module name="configuration_users" />
-        <module name="helper" />
-        <module name="put_users" />
-        <module name="post_users_verify" />
-        <module name="sns" />
-        <module name="get_image" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

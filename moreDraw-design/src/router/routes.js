@@ -17,6 +17,19 @@ const routes = [
           label: "Design",
         },
       },
+      {
+        path: "login",
+        name: "login",
+        component: () => import("src/pages/LoginPage.vue"),
+        meta: {
+          showDrawer: true,
+          title: "login",
+          icon: "mdi-package-variant",
+          iconColor: "orange",
+          requiresAuth: true,
+          label: "Login",
+        },
+      },
     ],
   },
   {

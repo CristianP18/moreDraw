@@ -6,17 +6,17 @@ export function createAxiosInstance(env = "local") {
 
   // Define o baseURL com base no ambiente
   if (env === "local") {
-    baseURL = "https://iqe2tos81e.execute-api.us-east-1.amazonaws.com/";
+    baseURL = "https://yo8jfiqw3e.execute-api.us-east-1.amazonaws.com/DEV/";
   } else if (env === "V1") {
-    baseURL = "https://iqe2tos81e.execute-api.us-east-1.amazonaws.com/";
+    baseURL = "https://yo8jfiqw3e.execute-api.us-east-1.amazonaws.com/DEV/";
   } else if (env === "dev") {
-    baseURL = "https://iqe2tos81e.execute-api.us-east-1.amazonaws.com/";
+    baseURL = "https://yo8jfiqw3e.execute-api.us-east-1.amazonaws.com/DEV/";
   } else if (env === "dev2") {
-    baseURL = "https://iqe2tos81e.execute-api.us-east-1.amazonaws.com/";
+    baseURL = "https://yo8jfiqw3e.execute-api.us-east-1.amazonaws.com/DEV/";
   } else {
     // Se o ambiente não corresponder a nenhum caso,
     // use local sem emitir warning
-    baseURL = "https://iqe2tos81e.execute-api.us-east-1.amazonaws.com/";
+    baseURL = "https://yo8jfiqw3e.execute-api.us-east-1.amazonaws.com/DEV/";
   }
 
   console.log("Using baseURL:", baseURL);
@@ -26,7 +26,7 @@ export function createAxiosInstance(env = "local") {
     baseURL,
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmZWRlcmFsVGF4IjoiMTIzNDU2Nzg5MTAiLCJpc3MiOiJtb3JlRHJhdyIsImV4cCI6MTczOTkyNDcxNiwidXNlcklkIjoiNzM3ZTkxZDQtNjc5Ni00MDVlLWIzMDMtNGRmNjBmN2YzMzY3IiwiaWF0IjoxNzM5ODg4NzE2fQ.GOxMHZ5a_0gVejK4uYBliLOc_oy6Aom1pu7bzXhzba4`,
     },
     crossDomain: true,
   });
