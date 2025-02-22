@@ -22,7 +22,7 @@ public class GetImageFacade {
                     Bundle.getInstance().getString("Image", locale),
                     ResponseType.SUCCESS, ResponseStatusCode.OK);
         }else{
-//            imageList = ImageService.getInstance().getImage(userId, locale);
+            imageList = ImageService.getInstance().getImage(userId, locale);
 
             return ImageService.getInstance().responseList(imageList,
                     Bundle.getInstance().getString("ListImage", locale),

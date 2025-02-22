@@ -381,11 +381,14 @@ Resources:
           Properties:
             Path: /image
             Method: POST
-            RestApiId:
-              Ref: RestApi
+            RestApiId: !Ref RestApi
+
       Policies:
         - Version: "2012-10-17"
           Statement:
+            # =====================================
+            # Permissões para DynamoDB
+            # =====================================
             - Effect: "Allow"
               Action:
                 - "dynamodb:GetItem"
@@ -398,6 +401,18 @@ Resources:
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
                 - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_user" ] ]
+
+            # =====================================
+            # Permissões para S3
+            # =====================================
+            - Effect: "Allow"
+              Action:
+                - "s3:PutObject"
+                - "s3:GetObject"
+                - "s3:ListBucket"
+              Resource:
+                # Caso queira liberar acesso a um bucket específico e seus objetos:
+                - "arn:aws:s3:::moredraw/*"
 
   putImageFunction:
     Type: AWS::Serverless::Function

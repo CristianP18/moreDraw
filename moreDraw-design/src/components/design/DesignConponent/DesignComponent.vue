@@ -1290,13 +1290,9 @@ async function updateProject() {
     console.log(
       `updateProject: Enviando requisição para atualizar ImageYard com ID=${createForm.value.imageId}`
     );
-    await axiosInstance.put(
-      `/image/${createForm.value.imageId}`,
-      payload,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    await axiosInstance.put(`/image/${createForm.value.imageId}`, payload, {
+      headers: { "Content-Type": "application/json" },
+    });
 
     $q.notify({
       message: "ImageYard atualizado com sucesso!",

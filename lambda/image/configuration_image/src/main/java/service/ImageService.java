@@ -53,25 +53,32 @@ public final class ImageService extends Service {
         MESSAGE.setType(type);
         MESSAGE.setText(text);
 
-        Page<Image> storlocPage = images.next();
+        Page<Image> storlocPage = images.hasNext() ? images.next() : new Page<>(Collections.emptyList(), null);
 
         ArrayList<ImageResponseModel> imageResponseModelArray = new ArrayList<>();
-        for (Image image : storlocPage.items()) {
-            ImageResponseModel imageResponseModel = new ImageResponseModel(image);
-            imageResponseModelArray.add(imageResponseModel);
+        if (storlocPage.items() != null) {
+            for (Image image : storlocPage.items()) {
+                ImageResponseModel imageResponseModel = new ImageResponseModel(image);
+                imageResponseModelArray.add(imageResponseModel);
+            }
         }
 
-        String next;
+        String next = null;
         if (storlocPage.lastEvaluatedKey() != null) {
-            String createdBy = storlocPage.lastEvaluatedKey().get("createdBy").toString().substring(17, 53);
-            next = createdBy.concat(",");
+            Map<String, AttributeValue> lastKey = storlocPage.lastEvaluatedKey();
 
-            if (storlocPage.lastEvaluatedKey().get("created") != null) {
-                String created = storlocPage.lastEvaluatedKey().get("created").toString().substring(17, 41);
-                next = next.concat(created);
+            if (lastKey.containsKey("createdBy")) {
+                String createdBy = lastKey.get("createdBy").toString();
+                createdBy = createdBy.length() > 53 ? createdBy.substring(17, 53) : createdBy;
+                next = createdBy.concat(",");
             }
-        } else
-            next = null;
+
+            if (lastKey.containsKey("created")) {
+                String created = lastKey.get("created").toString();
+                created = created.length() > 41 ? created.substring(17, 41) : created;
+                next = next != null ? next.concat(created) : created;
+            }
+        }
 
         ListImageResponseModel content = new ListImageResponseModel(imageResponseModelArray, next);
         return Response.success(content, MESSAGE);
