@@ -1167,14 +1167,14 @@ function saveCropImage() {
 /* =====================================================
    CRUD DE PROJETOS
 ===================================================== */
-async function createImageYard() {
-  console.log("createImageYard: Iniciando criação de ImageYard");
+async function createImage() {
+  console.log("createImage: Iniciando criação de Image");
   loadingCreate.value = true;
 
   const file = createSelectedFile.value;
   if (!file) {
     $q.notify({ message: "Selecione uma imagem (upload).", color: "warning" });
-    console.warn("createImageYard: Nenhum arquivo selecionado para upload");
+    console.warn("createImage: Nenhum arquivo selecionado para upload");
     loadingCreate.value = false;
     return;
   }
@@ -1188,7 +1188,7 @@ async function createImageYard() {
   const fd = new FormData();
   fd.append("file", file);
   fd.append(
-    "jsonImageYard",
+    "jsonImage",
     JSON.stringify({
       imageName: createForm.value.imageName,
       groupBy: createForm.value.groupBy,
@@ -1199,12 +1199,12 @@ async function createImageYard() {
   );
 
   try {
-    console.log("createImageYard: Enviando requisição para criar ImageYard");
+    console.log("createImage: Enviando requisição para criar Image");
     await axiosInstance.post("/image", fd, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    $q.notify({ message: "ImageYard criado com sucesso!", color: "positive" });
-    console.log("createImageYard: ImageYard criado com sucesso");
+    $q.notify({ message: "Image criado com sucesso!", color: "positive" });
+    console.log("createImage: Image criado com sucesso");
     dialogCreateVisible.value = false;
     createForm.value = { imageName: "", groupBy: "", description: "" };
     createSelectedFile.value = null;
@@ -1212,10 +1212,10 @@ async function createImageYard() {
     await loadImages();
   } catch (error) {
     console.error(
-      "createImageYard: Erro ao criar ImageYard:",
+      "createImage: Erro ao criar Image:",
       error.response ? error.response.data : error
     );
-    $q.notify({ message: "Erro ao criar ImageYard.", color: "negative" });
+    $q.notify({ message: "Erro ao criar Image.", color: "negative" });
   }
 
   loadingCreate.value = false;
@@ -1237,7 +1237,7 @@ function validateFileSize(file) {
   return true;
 }
 
-async function saveProject(jsonImageYard) {
+async function saveProject(jsonImage) {
   console.log("saveProject: Iniciando salvamento do projeto");
   if (drawingAreaRef.value) {
     try {
@@ -1250,9 +1250,9 @@ async function saveProject(jsonImageYard) {
       });
       const file = new File([blob], "screenshot.png", { type: "image/png" });
       createSelectedFile.value = file;
-      createForm.value = { ...jsonImageYard };
+      createForm.value = { ...jsonImage };
       console.log("saveProject: Screenshot capturada e preparada para upload");
-      await createImageYard();
+      await createImage();
     } catch (error) {
       console.error("saveProject: Erro ao salvar o projeto:", error);
     }
@@ -1288,23 +1288,23 @@ async function updateProject() {
     };
 
     console.log(
-      `updateProject: Enviando requisição para atualizar ImageYard com ID=${createForm.value.imageId}`
+      `updateProject: Enviando requisição para atualizar Image com ID=${createForm.value.imageId}`
     );
     await axiosInstance.put(`/image/${createForm.value.imageId}`, payload, {
       headers: { "Content-Type": "application/json" },
     });
 
     $q.notify({
-      message: "ImageYard atualizado com sucesso!",
+      message: "Image atualizado com sucesso!",
       color: "positive",
     });
-    console.log("updateProject: ImageYard atualizado com sucesso");
+    console.log("updateProject: Image atualizado com sucesso");
   } catch (error) {
     console.error(
-      "updateProject: Erro ao atualizar ImageYard:",
+      "updateProject: Erro ao atualizar Image:",
       error.response ? error.response.data : error
     );
-    $q.notify({ message: "Erro ao atualizar ImageYard.", color: "negative" });
+    $q.notify({ message: "Erro ao atualizar Image.", color: "negative" });
   } finally {
     loadingCreate.value = false;
   }
