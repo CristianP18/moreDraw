@@ -787,7 +787,7 @@ const availableIcons = [
   {
     icon: yardIcon,
     name: "yard",
-    label: "Yard",
+    label: "",
     type: "yard",
     category: "infraestrutura",
   },
@@ -1093,7 +1093,7 @@ const availableIcons = [
   {
     icon: yard03Icon,
     name: "yard03",
-    label: "Yard 03",
+    label: " 03",
     type: "yard03",
     category: "outros",
   },
@@ -1137,18 +1137,18 @@ function toggleShowBtnTools() {
 // (7) Selecionar imagens da API
 function openImageSelectionDialog() {
   dialogSelectImagesVisible.value = true;
-  loadImagesYard();
+  loadImages();
 }
 // (7) Selecionar imagens da API
 function openImageBackgroundSelectionDialog() {
   dialogSelectImagesBackgroundVisible.value = true;
-  loadImagesYard();
+  loadImages();
 }
-async function loadImagesYard() {
+async function loadImages() {
   loadingAPIImages.value = true;
   try {
     const response = await axiosInstance.get("/image/add");
-    apiImages.value = response.data.content.imageYards;
+    apiImages.value = response.data.content.images;
   } catch (error) {
     console.error("Erro ao carregar imagens:", error);
     $q.notify({ message: "Erro ao carregar imagens.", color: "negative" });
@@ -1201,7 +1201,7 @@ async function loadProjects() {
   loadingImages.value = true;
   try {
     const response = await axiosInstance.get("/image/add");
-    images.value = response.data.content.imageYards;
+    images.value = response.data.content.images;
   } catch (error) {
     console.error("Erro ao carregar imagens:", error);
     $q.notify({ message: "Erro ao carregar imagens.", color: "negative" });

@@ -26,7 +26,7 @@ export function createAxiosInstance(env = "local") {
     baseURL,
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmZWRlcmFsVGF4IjoiMTIzNDU2Nzg5MTAiLCJpc3MiOiJtb3JlRHJhdyIsImV4cCI6MTc0MDE5MDkzNywidXNlcklkIjoiNzM3ZTkxZDQtNjc5Ni00MDVlLWIzMDMtNGRmNjBmN2YzMzY3IiwiaWF0IjoxNzQwMTU0OTM3fQ.OTK5N8ItoiTZFnz0XLSr5_p3MZmGNET8R2VIs35XOcs`,
+      Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmZWRlcmFsVGF4IjoiMTIzNDU2Nzg5MTAiLCJpc3MiOiJtb3JlRHJhdyIsImV4cCI6MTc0MDM3Nzc5NCwidXNlcklkIjoiNzM3ZTkxZDQtNjc5Ni00MDVlLWIzMDMtNGRmNjBmN2YzMzY3IiwiaWF0IjoxNzQwMzQxNzk0fQ.k5SEOsjXI-liqpWGewfJbq_Iogi3DMXJAslOv_riCZQ`,
     },
     crossDomain: true,
   });
