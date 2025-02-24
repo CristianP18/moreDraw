@@ -23,9 +23,7 @@
     <q-dialog v-model="dialogCreateVisible">
       <q-card class="modal-card">
         <q-card-section class="row items-center justify-between modal-header">
-          <div class="text-h6">
-            {{ $t("image.createTitle") }}
-          </div>
+          <div class="text-h6">{{ $t("image.createTitle") }}</div>
           <q-btn
             flat
             icon="close"
@@ -107,9 +105,7 @@
     <q-dialog v-model="dialogManageVisible" persistent>
       <q-card style="min-width: 500px; min-height: 300px">
         <q-card-section class="row items-center justify-between modal-header">
-          <div class="text-h6">
-            {{ $t("image.manageTitle") }}
-          </div>
+          <div class="text-h6">{{ $t("image.manageTitle") }}</div>
           <q-btn
             flat
             icon="close"
@@ -135,8 +131,7 @@
                   :alt="img.imageName"
                   class="imagem-preview-lista"
                 />
-
-                <!-- Botão de editar imagem, aparece se for a imagem selecionada no double click -->
+                <!-- Botão de editar imagem -->
                 <q-btn
                   v-if="
                     imageToEditImage && imageToEditImage.imageId === img.imageId
@@ -232,7 +227,6 @@
               class="q-mb-md"
               :disable="loadingUpdate"
             />
-
             <q-card-actions align="right">
               <q-btn
                 flat
@@ -286,8 +280,6 @@
                 <q-icon name="image" />
               </template>
             </q-file>
-
-            <!-- Prévia da nova imagem (se houver upload) -->
             <div v-if="previewEditImage" class="q-mb-md">
               <img
                 :src="previewEditImage"
@@ -295,7 +287,6 @@
                 class="imagem-preview"
               />
             </div>
-
             <q-card-actions align="right">
               <q-btn
                 flat
@@ -321,9 +312,7 @@
     <q-dialog v-model="dialogDeleteVisible">
       <q-card>
         <q-card-section class="row items-center justify-between modal-header">
-          <div class="text-h6">
-            {{ $t("image.confirmDelete") }}
-          </div>
+          <div class="text-h6">{{ $t("image.confirmDelete") }}</div>
           <q-btn
             flat
             icon="close"
@@ -331,7 +320,6 @@
             @click="dialogDeleteVisible = false"
           />
         </q-card-section>
-
         <q-card-section>
           <div>
             {{
@@ -341,7 +329,6 @@
             }}
           </div>
         </q-card-section>
-
         <q-card-actions align="right">
           <q-btn
             flat
@@ -422,9 +409,7 @@ const imageToDelete = ref(null);
 // Função auxiliar para montar URL da imagem
 const getImageUrl = (url) => {
   if (!url) return "";
-  if (url.startsWith("http")) {
-    return url;
-  }
+  if (url.startsWith("http")) return url;
   return baseApiUrl + url;
 };
 
@@ -472,17 +457,14 @@ watch(editImageFiles, (newFile) => {
 // Criar Image (POST com form-data)
 const createImage = async () => {
   loadingCreate.value = true;
-
   const file = Array.isArray(createSelectedFile.value)
     ? createSelectedFile.value[0]
     : createSelectedFile.value;
-
   if (!file) {
     $q.notify({ message: "Selecione uma imagem (upload).", color: "warning" });
     loadingCreate.value = false;
     return;
   }
-
   const fd = new FormData();
   fd.append("file", file);
   fd.append(
@@ -493,11 +475,9 @@ const createImage = async () => {
       description: createForm.value.description,
     })
   );
-
   try {
-    await axiosInstance.post("/image", fd, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    // Deixe o axios definir automaticamente o Content-Type
+    await axiosInstance.post("/image", fd);
     $q.notify({ message: "Image criado com sucesso!", color: "positive" });
     dialogCreateVisible.value = false;
     createForm.value = { imageName: "", groupBy: "", description: "" };
@@ -511,7 +491,6 @@ const createImage = async () => {
     );
     $q.notify({ message: "Erro ao criar Image.", color: "negative" });
   }
-
   loadingCreate.value = false;
 };
 
@@ -567,7 +546,6 @@ const openEditImageDialog = (img) => {
 // Atualização da imagem via form-data (PUT)
 const updateImageImage = async () => {
   loadingUpdateImage.value = true;
-
   if (!imageToEditImage.value) {
     $q.notify({
       message: "Nenhuma imagem selecionada para edição.",
@@ -576,12 +554,10 @@ const updateImageImage = async () => {
     loadingUpdateImage.value = false;
     return;
   }
-
   const file =
     editImageFiles.value && Array.isArray(editImageFiles.value)
       ? editImageFiles.value[0]
       : editImageFiles.value;
-
   if (!file) {
     $q.notify({
       message: "Selecione uma imagem para atualizar.",
@@ -590,7 +566,6 @@ const updateImageImage = async () => {
     loadingUpdateImage.value = false;
     return;
   }
-
   const fd = new FormData();
   fd.append("file", file);
   fd.append(
@@ -599,14 +574,10 @@ const updateImageImage = async () => {
       imageId: imageToEditImage.value.imageId,
     })
   );
-
   try {
     await axiosInstance.put(
       `/image/picture/${imageToEditImage.value.imageId}`,
-      fd,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
+      fd
     );
     $q.notify({ message: "Imagem atualizada com sucesso!", color: "positive" });
     dialogEditImageVisible.value = false;

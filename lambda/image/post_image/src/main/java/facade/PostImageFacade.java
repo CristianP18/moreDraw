@@ -15,24 +15,36 @@ import model.Image;
 import model.ImageRequestModel;
 import org.apache.commons.fileupload.MultipartStream;
 import repository.S3;
-import service.DocService;
+import service.BucketS3Service;
 import service.ImageService;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.UUID;
+import javax.imageio.ImageIO;
 
+/**
+ * Classe responsável por receber uma requisição multipart/form-data
+ * contendo um arquivo de imagem e um JSON (jsonImage).
+ * Extrai as duas partes (arquivo + JSON), faz uma validação simples
+ * de que o arquivo é uma imagem, salva no S3 e persiste os dados.
+ */
 public class PostImageFacade {
 
-    // Ajuste o nome do seu bucket se necessário
-    String bucket = "moredraw/pictures";
+    private static final String BUCKET_NAME = "moredraw/pictures";
 
-    public Response<?> facade(APIGatewayProxyRequestEvent event, Context context, String userId, String locale)
-            throws NotFound, Conflict, InvalidRequest, IOException {
+    public Response<?> facade(
+            APIGatewayProxyRequestEvent event,
+            Context context,
+            String clientId,
+            String locale
+    ) throws NotFound, Conflict, InvalidRequest, IOException {
 
-        Image image = postImage(event, context, userId, locale);
+        Image image = postImage(event, context, clientId, locale);
 
         return ImageService.getInstance().response(
                 image,
@@ -42,45 +54,60 @@ public class PostImageFacade {
         );
     }
 
-    private Image postImage(APIGatewayProxyRequestEvent event, Context context, String clientId, String locale)
-            throws NotFound, Conflict, InvalidRequest, IOException {
+    private Image postImage(
+            APIGatewayProxyRequestEvent event,
+            Context context,
+            String clientId,
+            String locale
+    ) throws NotFound, Conflict, InvalidRequest, IOException {
 
         LambdaLogger logger = context.getLogger();
 
         // 1) Verifica se é multipart/form-data
-        String contentType = event.getHeaders().getOrDefault("Content-Type",
-                event.getHeaders().getOrDefault("content-type", null));
+        String contentType = event.getHeaders().getOrDefault(
+                "Content-Type",
+                event.getHeaders().getOrDefault("content-type", null)
+        );
         if (contentType == null || !contentType.startsWith("multipart/form-data")) {
             throw new InvalidRequest("O tipo de conteúdo da requisição não é multipart/form-data.");
         }
 
-        // 2) Extrai o boundary do header
+        // 2) Extrai o boundary e remove aspas, se houver
         String[] boundaryArray = contentType.split("=");
         if (boundaryArray.length < 2) {
             throw new InvalidRequest("Boundary não encontrado no Content-Type.");
         }
-        byte[] boundaryBytes = boundaryArray[1].getBytes(StandardCharsets.UTF_8);
+        String boundary = boundaryArray[1].trim();
+        if (boundary.startsWith("\"") && boundary.endsWith("\"")) {
+            boundary = boundary.substring(1, boundary.length() - 1);
+        }
+        byte[] boundaryBytes = boundary.getBytes(StandardCharsets.UTF_8);
 
-        // 3) Converte o corpo em bytes SEM decodificar em Base64
-        //    (o front está enviando multipart puro, então não há Base64).
-        //    Caso o API Gateway envie em Base64 (com isBase64Encoded=true), adapte aqui se necessário.
-        String bodyString = event.getBody() != null ? event.getBody() : "";
-        byte[] body = bodyString.getBytes(StandardCharsets.UTF_8);
+        // 3) Obter o body de acordo com isBase64Encoded
+        byte[] body;
+        if (Boolean.TRUE.equals(event.getIsBase64Encoded())) {
+            logger.log("Requisição com isBase64Encoded=true");
+            body = Base64.getDecoder().decode(event.getBody());
+        } else {
+            logger.log("Requisição com isBase64Encoded=false");
+            String bodyString = event.getBody() != null ? event.getBody() : "";
+            body = bodyString.getBytes(StandardCharsets.UTF_8);
+        }
 
-        // 4) Configura o MultipartStream
-        ByteArrayInputStream content = new ByteArrayInputStream(body);
+        // 4) Usa MultipartStream para separar as partes do multipart
+        ByteArrayInputStream input = new ByteArrayInputStream(body);
         MultipartStream multipartStream = new MultipartStream(
-                content,
+                input,
                 boundaryBytes,
                 body.length,
                 null
         );
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        String jsonMetadata = null;
         ByteArrayOutputStream imageOut = new ByteArrayOutputStream();
+        String jsonMetadata = null;
 
-        // 5) Lê cada parte do multipart
+        // 5) Itera nas partes
         boolean nextPart = multipartStream.skipPreamble();
         while (nextPart) {
             String headers = multipartStream.readHeaders();
@@ -88,20 +115,21 @@ public class PostImageFacade {
 
             out.reset();
             multipartStream.readBodyData(out);
+            byte[] partData = out.toByteArray();
 
-            // Se for a parte do arquivo (filename=...), grava no imageOut
+            // Se essa parte for o arquivo (contém filename=)
             if (headers.contains("filename=")) {
-                imageOut.write(out.toByteArray());
+                imageOut.write(partData);
             }
-            // Se for a parte do JSON (name="jsonImageYard"), converte em String
-            else if (headers.contains("name=\"jsonImageYard\"")) {
-                jsonMetadata = new String(out.toByteArray(), StandardCharsets.UTF_8);
+            // Se for o JSON (procura por name="jsonImage")
+            else if (headers.contains("name=\"jsonImage\"") || headers.contains("name=\"jsonImageYard\"")) {
+                jsonMetadata = new String(partData, StandardCharsets.UTF_8);
             }
 
             nextPart = multipartStream.readBoundary();
         }
 
-        // 6) Valida se temos o JSON e o arquivo
+        // 6) Valida se pegamos JSON e arquivo
         if (jsonMetadata == null || jsonMetadata.isEmpty()) {
             throw new InvalidRequest("Metadados (JSON) não encontrados na requisição.");
         }
@@ -109,33 +137,61 @@ public class PostImageFacade {
             throw new InvalidRequest("Arquivo de imagem não encontrado na requisição.");
         }
 
-        // 7) Converte o JSON em objeto
-        ImageRequestModel request = GsonHelper.getInstance().getGson().fromJson(jsonMetadata, ImageRequestModel.class);
+        // 7) Verifica se é realmente uma imagem (usando ImageIO)
+        if (!isValidImage(imageOut.toByteArray())) {
+            throw new InvalidRequest("O arquivo enviado não é uma imagem válida ou está corrompido.");
+        }
 
-        // 8) Cria o objeto Image
+        // 8) Converte JSON -> objeto ImageRequestModel
+        ImageRequestModel request = GsonHelper.getInstance()
+                .getGson()
+                .fromJson(jsonMetadata, ImageRequestModel.class);
+
+        // 9) Cria objeto Image
         Image image = new Image(request, clientId);
 
-        // Exemplo de upload S3 (pode ser ajustado conforme sua lógica)
-        String imageUrl = postPicture(event, context, locale);
+        // 10) Faz upload no S3
+        String imageUrl = uploadToS3(imageOut.toByteArray(), context);
         image.setImageUrl(imageUrl);
 
-        // 9) Salva no banco (ou em outro lugar)
+        // 11) Persiste no serviço (banco)
         ImageService.postImage(image);
 
         return image;
     }
 
-    private String postPicture(APIGatewayProxyRequestEvent event, Context context, String locale)
+    /**
+     * Tenta ler os bytes da imagem usando ImageIO.
+     * Retorna true se conseguir decodificar a imagem (não for null).
+     */
+    private boolean isValidImage(byte[] imageBytes) {
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes)) {
+            BufferedImage bufferedImage = ImageIO.read(bais);
+            return bufferedImage != null;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Faz upload dos bytes do arquivo para o S3 e retorna a URL do arquivo.
+     */
+    private String uploadToS3(byte[] fileBytes, Context context)
             throws IOException, InvalidRequest {
 
-        // Gera um nome único para o arquivo
+        // Gera uma chave única para o arquivo
         String key = UUID.randomUUID() + ".jpg";
 
-        // Sobrescreva este método ou a lógica interna para usar os bytes do arquivo
-        // se necessário. Aqui, supostamente, o DocService.getInstance().uploadS3()
-        // já consegue extrair do event algo ou do body. Ajuste conforme necessidade.
+        // Envia os bytes para o S3 via BucketS3Service
+        BucketS3Service.getInstance().uploadS3(
+                BUCKET_NAME,
+                key,
+                fileBytes,
+                "application/octet-stream",
+                context
+        );
 
-        DocService.getInstance().uploadS3(bucket, key, event, context, locale);
-        return S3.link(bucket, key);
+        // Retorna a URL do arquivo no S3
+        return S3.link(BUCKET_NAME, key);
     }
 }
