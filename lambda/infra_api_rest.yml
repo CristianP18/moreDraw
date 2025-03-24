@@ -489,9 +489,13 @@ Resources:
                 - "dynamodb:UpdateItem"
                 - "dynamodb:BatchWriteItem"
               Resource:
-                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_yard_image/index/createdBy-created" ] ]
-                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_yard_image" ] ]
-
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image/index/createdBy-created" ] ]
+                - Fn::Join: [ "", [ "arn:aws:dynamodb:", !Ref Region, ":", !Ref AwsId, ":table/", !Ref Env, "_image" ] ]
+            - Effect: "Allow"
+              Action:
+                - "s3:DeleteObject"
+              Resource:
+                - "arn:aws:s3:::moredraw/*"
   putImagePictureFunction:
     Type: AWS::Serverless::Function
     Properties:
