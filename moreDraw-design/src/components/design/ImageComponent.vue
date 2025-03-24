@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md container-imagem-yard">
+  <div class="q-pa-md container-imagem">
     <!-- Botões Principais -->
     <div class="botoes-acoes">
       <q-btn
@@ -31,7 +31,6 @@
             @click="dialogCreateVisible = false"
           />
         </q-card-section>
-
         <q-card-section>
           <q-form @submit.prevent="createImage">
             <q-input
@@ -59,7 +58,6 @@
               class="q-mb-md"
               :disable="loadingCreate"
             />
-
             <!-- Upload da Imagem -->
             <q-file
               v-model="createSelectedFile"
@@ -74,12 +72,10 @@
                 <q-icon name="image" />
               </template>
             </q-file>
-
             <!-- Preview da Imagem -->
             <div v-if="previewImage">
               <img :src="previewImage" alt="Preview" class="imagem-preview" />
             </div>
-
             <q-card-actions align="right">
               <q-btn
                 flat
@@ -113,7 +109,6 @@
             @click="dialogManageVisible = false"
           />
         </q-card-section>
-
         <q-card-section>
           <div v-if="loadingImages" class="text-center q-pa-md">
             <q-spinner size="50px" />
@@ -199,7 +194,6 @@
             @click="dialogEditVisible = false"
           />
         </q-card-section>
-
         <q-card-section>
           <q-form @submit.prevent="updateImage">
             <q-input
@@ -263,7 +257,6 @@
             @click="dialogEditImageVisible = false"
           />
         </q-card-section>
-
         <q-card-section>
           <q-form @submit.prevent="updateImageImage">
             <q-file
@@ -342,7 +335,7 @@
             color="negative"
             :loading="loadingDelete"
             :disable="loadingDelete"
-            @click="deleteImage"
+            @click.stop="deleteImage"
           />
         </q-card-actions>
       </q-card>
@@ -476,7 +469,6 @@ const createImage = async () => {
     })
   );
   try {
-    // Deixe o axios definir automaticamente o Content-Type
     await axiosInstance.post("/image", fd);
     $q.notify({ message: "Image criado com sucesso!", color: "positive" });
     dialogCreateVisible.value = false;
@@ -608,22 +600,78 @@ const deleteImage = async () => {
     loadingDelete.value = false;
     return;
   }
+  const deletedImageName = imageToDelete.value.imageName;
   try {
     await axiosInstance.delete(`/image/${imageToDelete.value.imageId}`);
-    $q.notify({ message: "Imagem excluída com sucesso!", color: "positive" });
-    dialogDeleteVisible.value = false;
-    imageToDelete.value = null;
+    $q.notify({
+      message: `Imagem "${deletedImageName}" excluída com sucesso!`,
+      color: "positive",
+    });
     await loadImages();
   } catch (error) {
     console.error("Erro ao excluir imagem:", error);
     $q.notify({ message: "Erro ao excluir imagem.", color: "negative" });
+  } finally {
+    loadingDelete.value = false;
+    dialogDeleteVisible.value = false;
+    imageToDelete.value = null;
   }
-  loadingDelete.value = false;
+};
+
+// ===== ATALHOS DE TECLADO =====
+const handleKeyDown = (event) => {
+  console.log(
+    `handleKeyDown: Tecla pressionada - ${event.key}, ctrlKey=${event.ctrlKey}`
+  );
+  if (event.key === "Delete" && selectedItem.value) {
+    console.log(
+      `handleKeyDown: Removendo item com ID=${selectedItem.value.imageId}`
+    );
+    deleteImage();
+  } else if (event.ctrlKey && event.key === "c") {
+    if (selectedItem.value) {
+      copyItem(selectedItem.value);
+      console.log(
+        `handleKeyDown: Item copiado com ID=${selectedItem.value.imageId}`
+      );
+    }
+  } else if (event.ctrlKey && event.key === "v") {
+    pasteItem();
+    console.log("handleKeyDown: Colando item copiado");
+  } else if (event.ctrlKey && event.key === "z") {
+    event.preventDefault();
+    undo();
+    console.log("handleKeyDown: Executando undo");
+  }
+};
+
+const removeItem = (item) => {
+  console.log(`removeItem: Removendo item com ID=${item.imageId}`);
+  const index = images.value.findIndex((i) => i.imageId === item.imageId);
+  if (index !== -1) {
+    images.value.splice(index, 1);
+    selectedItem.value = null;
+    console.log(`removeItem: Item com ID=${item.imageId} removido`);
+  } else {
+    console.warn(`removeItem: Item com ID=${item.imageId} não encontrado`);
+  }
+};
+
+const copyItem = (item) => {
+  // Implementar se necessário
+};
+
+const pasteItem = () => {
+  // Implementar se necessário
+};
+
+const undo = () => {
+  // Implementar se necessário
 };
 </script>
 
 <style scoped>
-.container-imagem-yard {
+.container-imagem {
   background: #f5f5f5;
   border-radius: 8px;
   padding: 16px;
