@@ -732,23 +732,38 @@ function handleImageUploadInItemBackground(imageUrl) {
 }
 
 function addImageToCanvas(fileUrl) {
-  console.log(`addImageToCanvas: Adicionando imagem com URL=${fileUrl}`);
   const modelExtensions = [".obj", ".gltf", ".glb"];
   const is3DModel = modelExtensions.some((ext) =>
     fileUrl.toLowerCase().endsWith(ext)
   );
 
   if (is3DModel) {
-    showNotification("Modelo 3D adicionado!", "success");
     add3DModelToCanvas(fileUrl);
-  } else {
+    return;
+  }
+
+  // 1) Cria <img> com crossOrigin
+  const img = new Image();
+  img.crossOrigin = "anonymous"; // define ANTES de atribuir .src
+  img.onload = () => {
+    // 2) Desenha no canvas
+    const c = document.createElement("canvas");
+    c.width = img.width;
+    c.height = img.height;
+    const ctx = c.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    // 3) Converte para dataURL
+    const base64 = c.toDataURL("image/png");
+
+    // 4) Cria item com base64 em vez da URL remota
     const newItem = {
       id: currentId++,
       type: "image",
-      imageUrl: fileUrl,
+      imageUrl: base64,
       position: { x: 100, y: 100 },
-      width: 200,
-      height: 200,
+      width: img.width > 200 ? 200 : img.width, // ajusta se quiser
+      height: img.height > 200 ? 200 : img.height,
       rotation: 0,
       skewX: 0,
       skewY: 0,
@@ -757,10 +772,15 @@ function addImageToCanvas(fileUrl) {
     };
     items.push(newItem);
     selectedItem.value = newItem;
-    console.log(`addImageToCanvas: Imagem 2D adicionada com ID=${newItem.id}`);
-    showNotification("Imagem adicionada com sucesso!", "success");
     saveState();
-  }
+  };
+
+  img.onerror = (err) => {
+    console.error("Erro ao carregar a imagem:", err);
+  };
+
+  // Só depois de crossOrigin = "anonymous"
+  img.src = fileUrl;
 }
 
 function add3DModelToCanvas(modelUrl) {
