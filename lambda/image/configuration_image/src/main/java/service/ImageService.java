@@ -8,9 +8,13 @@ import repository.ImageRepository;
 import repository.S3;
 import repository.UserRepository;
 import software.amazon.awssdk.enhanced.dynamodb.model.Page;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
 
 public final class ImageService extends Service {
     private static ImageService INSTANCE;
@@ -25,38 +29,16 @@ public final class ImageService extends Service {
         ImageRepository.getInstance().postImage(image);
     }
 
-    public Response<?> response(User user, String text, String type, int status) {
-        MESSAGE.setStatus(status);
-        MESSAGE.setType(type);
-        MESSAGE.setText(text);
-
-        if (user != null) {
-            UserResponseModel content = new UserResponseModel(user);
-            return Response.success(content, MESSAGE);
-        }
-
-        return Response.success(MESSAGE);
-    }
-
-
-
-    public Iterator<Page<Image>> getImage(String createdBy, String locale) throws NotFound {
-        Iterator<Page<Image>> storloc = ImageRepository.getInstance().getImage(createdBy);
-        if (storloc == null)
-            throw new NotFound(Bundle.getInstance().getString("StorlocNotFound", locale));
-
-        return storloc;
-    }
-
     public Response<?> responseList(Iterator<Page<Image>> images, String text, String type, int status) {
         MESSAGE.setStatus(status);
         MESSAGE.setType(type);
         MESSAGE.setText(text);
 
-        Page<Image> storlocPage = images.hasNext() ? images.next() : new Page<>(Collections.emptyList(), null);
+        // Check if the iterator has a next page
+        Page<Image> storlocPage = images.hasNext() ? images.next() : null;
 
         ArrayList<ImageResponseModel> imageResponseModelArray = new ArrayList<>();
-        if (storlocPage.items() != null) {
+        if (storlocPage != null && storlocPage.items() != null) {
             for (Image image : storlocPage.items()) {
                 ImageResponseModel imageResponseModel = new ImageResponseModel(image);
                 imageResponseModelArray.add(imageResponseModel);
@@ -64,7 +46,7 @@ public final class ImageService extends Service {
         }
 
         String next = null;
-        if (storlocPage.lastEvaluatedKey() != null) {
+        if (storlocPage != null && storlocPage.lastEvaluatedKey() != null) {
             Map<String, AttributeValue> lastKey = storlocPage.lastEvaluatedKey();
 
             if (lastKey.containsKey("createdBy")) {
@@ -84,26 +66,29 @@ public final class ImageService extends Service {
         return Response.success(content, MESSAGE);
     }
 
+    public Iterator<Page<Image>> getImage(String createdBy, String locale) throws NotFound {
+        Iterator<Page<Image>> storloc = ImageRepository.getInstance().getImage(createdBy);
+        if (storloc == null)
+            throw new NotFound(Bundle.getInstance().getString("StorlocNotFound", locale));
+
+        return storloc;
+    }
+
     public Response<?> response(Image image, String text, String type, int status) {
         MESSAGE.setStatus(status);
         MESSAGE.setType(type);
         MESSAGE.setText(text);
         if (image != null) {
             ImageResponseModel imageResponseModel = new ImageResponseModel(image);
-
-            // Criar o modelo de resposta contendo o modelo de resposta do image e o próximo token
-            ImageResponseModel content = new ImageResponseModel(image);
-            return Response.success(content, MESSAGE);
+            return Response.success(imageResponseModel, MESSAGE);
         }
-        // Caso não haja images, retorne uma resposta indicando que não foi encontrado
         return Response.error(MESSAGE);
     }
 
-
     public Image getImageById(String imageId, String locale) throws NotFound {
-        Image image =  ImageRepository.getInstance().getImageById(imageId);
+        Image image = ImageRepository.getInstance().getImageById(imageId);
 
-        if(image == null)
+        if (image == null)
             throw new NotFound(Bundle.getInstance().getString("ImageNotFound", locale));
         return image;
     }
@@ -119,7 +104,7 @@ public final class ImageService extends Service {
         ImageRepository.getInstance().deleteImage(image);
     }
 
-    public String getFilenameFromAvatar(String oldPhoto){
+    public String getFilenameFromAvatar(String oldPhoto) {
         // extrai nome da foto dentro da URL
         return oldPhoto.substring(56);
     }
