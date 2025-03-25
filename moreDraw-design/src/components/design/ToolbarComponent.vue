@@ -1214,8 +1214,8 @@ function selectProject(proj) {
 }
 function emitOpenProject() {
   if (selectedProject.value) {
-    emits("open-project", selectedProject.value);
     dialogSelectProjectVisible.value = false;
+    emits("open-project", selectedProject.value);
     selectedProject.value = null;
   }
 }
