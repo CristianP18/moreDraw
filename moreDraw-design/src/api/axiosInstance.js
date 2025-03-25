@@ -14,28 +14,28 @@ export function createAxiosInstance(env = "local") {
   } else if (env === "dev2") {
     baseURL = "https://04lg3w3swi.execute-api.us-east-1.amazonaws.com/DEV/";
   } else {
-    // Se o ambiente não corresponder a nenhum caso,
-    // use local sem emitir warning
+    // Se o ambiente não corresponder a nenhum caso, usa local
     baseURL = "https://04lg3w3swi.execute-api.us-east-1.amazonaws.com/DEV/";
   }
 
   console.log("Using baseURL:", baseURL);
 
-  // Retorna a instância do axios configurada
+  // Cria a instância do axios sem header Authorization fixo
   const instance = axios.create({
     baseURL,
-    headers: {
-      // "Content-Type": "application/json;charset=UTF-8",
-      Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmZWRlcmFsVGF4IjoiMTIzNDU2Nzg5MTAiLCJpc3MiOiJtb3JlRHJhdyIsImV4cCI6MTc0Mjk1NjUxMCwidXNlcklkIjoiNzM3ZTkxZDQtNjc5Ni00MDVlLWIzMDMtNGRmNjBmN2YzMzY3IiwiaWF0IjoxNzQyOTIwNTEwfQ.-wAcXpI75kcqnmygc5N6ydG0WiKZ3P4gd6KYOu5iSdU`,
-    },
     crossDomain: true,
   });
 
-  // Função para remover o cabeçalho Content-Type para requisições multipart/form-data
+  // Interceptor para configurar o header Authorization a cada requisição
   instance.interceptors.request.use((config) => {
+    // Se os dados forem do tipo FormData, remove o Content-Type para que o navegador defina o boundary correto
     if (config.data instanceof FormData) {
-      // FormData precisa que o navegador defina o Content-Type com o boundary correto
       delete config.headers["Content-Type"];
+    }
+    // Busca o token atualizado do localStorage e, se existir, define o header Authorization
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   });

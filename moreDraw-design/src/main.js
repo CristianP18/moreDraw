@@ -1,15 +1,20 @@
+// main.js
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createI18n } from "vue-i18n";
-import { language } from "./language/language";
-
-const i18n = createI18n({
-  legacy: false, // para Vue 3
-  locale: "pt-BR", // idioma padrão
-  fallbackLocale: "en-US", // idioma secundário
-  messages: language,
-});
+import { Quasar, Notify } from "quasar";
+import { createPinia } from "pinia";
+import router from "./router";
+import "quasar/dist/quasar.css";
 
 const app = createApp(App);
-app.use(i18n);
+const pinia = createPinia();
+
+app.use(pinia);
+app.use(router);
+
+// Registra o Quasar e seus plugins (incluindo Notify)
+app.use(Quasar, {
+  plugins: { Notify },
+});
+
 app.mount("#app");

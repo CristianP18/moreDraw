@@ -31,11 +31,27 @@ Resources:
         - "multipart/form-data"
         - "image/*"
 
-
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
-      Name: !Sub "${Stage} - moreDraw - HTTP"  # Propriedade Variables removida
+      Name: !Sub "${Stage} - moreDraw - HTTP"
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"  # Permite qualquer origem
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+          - HEAD
+          - PATCH
+        AllowHeaders:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
 
 
   #   Funções Lambda

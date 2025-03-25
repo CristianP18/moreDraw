@@ -1,79 +1,131 @@
 <template>
-  <q-login-page
-    type="default"
-    local-system
-    type-id="phone-number"
-    :loading-btn="loading"
-    @sign-in="auth"
-  >
-    <template #logotipo>
-      <q-img src="~/src/assets/img/homepage.png" style="width: 280px" />
-    </template>
-    <template #svg-image>
-      <q-img src="~/src/assets/img/image.svg" style="width: 600px" />
-    </template>
-  </q-login-page>
+  <div class="q-pa-md flex flex-center" style="min-height: 100vh">
+    <q-card class="q-pa-md" style="width: 400px">
+      <!-- Logotipo -->
+      <div class="text-center">
+        <q-img src="~/src/assets/img/homepage.png" style="width: 280px" />
+      </div>
+      <!-- Imagem ilustrativa -->
+      <div class="q-mt-md text-center">
+        <q-img
+          src="~/src/assets/img/image.svg"
+          style="width: 600px; max-width: 100%"
+        />
+      </div>
+      <!-- Formulário de Login -->
+      <q-form @submit.prevent="auth" class="q-gutter-md q-mt-lg">
+        <q-input v-model="federalTax" label="Federal Tax" outlined required />
+        <q-input
+          v-model="phone"
+          label="Número de Telefone"
+          type="tel"
+          outlined
+          required
+        />
+        <q-input
+          v-model="password"
+          label="Senha"
+          type="password"
+          outlined
+          required
+        />
+        <q-card-actions align="right">
+          <q-btn
+            label="Entrar"
+            color="primary"
+            type="submit"
+            :loading="loading"
+          />
+        </q-card-actions>
+      </q-form>
+    </q-card>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
-import { Notify } from "quasar";
 
 export default {
   name: "LoginPage",
   data() {
     return {
       loading: false,
+      federalTax: "",
+      phone: "",
+      password: "",
     };
   },
   methods: {
-    async auth(data) {
+    async auth() {
+      if (!this.federalTax) {
+        this.$q.notify({
+          type: "negative",
+          message: "Federal Tax não fornecido.",
+        });
+        return;
+      }
+      if (!this.phone) {
+        this.$q.notify({
+          type: "negative",
+          message: "Número de telefone não fornecido.",
+        });
+        return;
+      }
+
       this.loading = true;
+      const federalTax = this.federalTax;
+      const phoneNumber = `+55${this.phone}`;
+      const password = this.password;
+
       try {
-        const phoneNumber = data["phone-number"]
-          ? `55${data["phone-number"]}`
-          : null;
-        const password = data.password;
-
-        if (!phoneNumber) {
-          throw new Error("Número de telefone não fornecido");
-        }
-
-        console.log("Número de telefone:", phoneNumber);
-        console.log("Senha:", password);
-
         const response = await axios.post(
-          "https://wsr4iquk8l.execute-api.us-east-1.amazonaws.com/users/login",
+          "https://ftrrk8b6rb.execute-api.us-east-1.amazonaws.com/users/login",
           {
+            federalTax,
             mobilePhone: phoneNumber,
             password,
-            type: "mob",
+            type: "web",
           }
         );
 
-        if (response.data.message.type === "positive") {
-          console.log("Login bem-sucedido", response.data);
-          this.userData = response.data.content;
-          localStorage.setItem("picture", this.userData.picUser);
-          localStorage.setItem("jwt", this.userData.jwt);
-          localStorage.setItem("apiKey", this.userData.clients[0].apiKey);
+        console.log("Resposta da API:", response.data);
+        if (
+          response.data &&
+          response.data.message &&
+          response.data.message.type === "positive"
+        ) {
+          const userData = response.data.content;
+          localStorage.setItem("picture", userData.picUser);
+          localStorage.setItem("jwt", userData.jwt);
           localStorage.setItem(
             "nameUser",
-            `${response.data.content.firstName} ${response.data.content.lastName}`
+            `${userData.firstName} ${userData.lastName}`
           );
-          const redirectTo = localStorage.getItem("redirectTo") || "/home";
-          localStorage.removeItem("redirectTo");
-          this.$router.push(redirectTo);
+
+          // // Notificação de sucesso
+          // this.$q.notify({
+          //   type: "positive",
+          //   message: "Login realizado com sucesso!",
+          // });
+
+          // Redireciona para a página de design após um pequeno delay
+          setTimeout(() => {
+            this.$router.push("/design");
+          }, 500);
         } else {
-          console.error("Login falhou", response.data.message.text);
-          Notify.create({
-            type: "negative",
-            message: "Login falhou. Verifique suas credenciais.",
-          });
+          const errorMsg =
+            (response.data &&
+              response.data.message &&
+              response.data.message.text) ||
+            "Login falhou. Verifique suas credenciais.";
+          // this.$q.notify({
+          //   type: "negative",
+          //   message: errorMsg,
+          // });
         }
       } catch (error) {
         console.error("Erro ao fazer login", error);
-        Notify.create({
+        this.$q.notify({
           type: "negative",
           message: "Erro ao fazer login. Tente novamente mais tarde.",
         });
@@ -84,3 +136,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.flex {
+  display: flex;
+}
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+</style>
