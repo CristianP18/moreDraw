@@ -9,20 +9,22 @@ public class ImageResponseModel {
     private String description;
     private String imageUrl ;
     private String items;
+    private String type;
     private String created;
     private String createdBy;
     private String modified;
     // Constructors, getters, and setters
-    public ImageResponseModel(Image yard) {
-        this.imageId = yard.getImageId();
-        this.imageName = yard.getImageName() != null ? yard.getImageName() : "";
-        this.groupBy = yard.getGroupBy() != null ? yard.getGroupBy() : "";
-        this.description = yard.getDescription() != null ? yard.getDescription() : "";
-        this.imageUrl = yard.getImageUrl() != null ? yard.getImageUrl() : "";
-        this.items = yard.getItems() != null ? yard.getItems() : null;
-        this.created = yard.getCreated() != null ? yard.getCreated() : "";
-        this.createdBy = yard.getCreatedBy() != null ? yard.getCreatedBy() : "";
-        this.modified = yard.getModified() != null ? yard.getModified() : "";
+    public ImageResponseModel(Image image) {
+        this.imageId = image.getImageId();
+        this.imageName = image.getImageName() != null ? image.getImageName() : "";
+        this.groupBy = image.getGroupBy() != null ? image.getGroupBy() : "";
+        this.description = image.getDescription() != null ? image.getDescription() : "";
+        this.imageUrl = image.getImageUrl() != null ? image.getImageUrl() : "";
+        this.items = image.getItems() != null ? image.getItems() : null;
+        this.type = image.getType() != null ? image.getType() : "";
+        this.created = image.getCreated() != null ? image.getCreated() : "";
+        this.createdBy = image.getCreatedBy() != null ? image.getCreatedBy() : "";
+        this.modified = image.getModified() != null ? image.getModified() : "";
     }
 
     public ImageResponseModel() {
@@ -74,6 +76,14 @@ public class ImageResponseModel {
 
     public void setItems(String items) {
         this.items = items;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCreated() {

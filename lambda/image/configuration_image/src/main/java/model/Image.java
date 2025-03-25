@@ -20,6 +20,7 @@ public class Image {
     private String description;
     private String imageUrl ;
     private String items;
+    private String type;
     private String created;
     private String createdBy;
     private String modified;
@@ -31,6 +32,7 @@ public class Image {
         this.description = request.getDescription();
         this.imageUrl = request.getImageUrl() != null ? request.getImageUrl() : ImageService.image_GRAY;
         this.items = request.getItems() != null ? request.getItems() : null;
+        this.type = request.getType() != null ? request.getType() : null;
         this.created = DateHelper.nowString();
         this.createdBy = clientId;
         this.modified = request.getModified();
@@ -48,6 +50,9 @@ public class Image {
         }
         if (request.getItems() != null) {
             image.setItems(request.getItems());
+        }
+        if (request.getType() != null) {
+            image.setType(request.getType());
         }
         if (request.getModified() != null) {
             image.setModified(request.getModified());
@@ -106,6 +111,14 @@ public class Image {
 
     public void setItems(String items) {
         this.items = items;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @DynamoDbSecondarySortKey(indexNames = { GSI_IMAGE_CREATED_BY_CREATED })

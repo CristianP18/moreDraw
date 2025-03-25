@@ -9,6 +9,7 @@ public class ImageRequestModel {
     private String description;
     private String imageUrl ;
     private String items;
+    private String type;
     private String modified;
 
     public ImageRequestModel() {
@@ -48,6 +49,14 @@ public class ImageRequestModel {
 
     public void setItems(String items) {
         this.items = items;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setGroupBy(String groupBy) {
