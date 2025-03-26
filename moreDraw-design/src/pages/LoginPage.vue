@@ -2,13 +2,15 @@
   <div class="q-pa-md flex flex-center" style="min-height: 100vh">
     <q-card class="q-pa-md" style="width: 400px">
       <!-- Logotipo -->
-      <div class="text-center">
-        <q-img src="~/src/assets/img/homepage.png" style="width: 280px" />
-      </div>
+      <!-- <div class="text-center">
+        <q-img src="~/src/assets/img/home.png" style="width: 280px" />
+      </div> -->
       <!-- Imagem ilustrativa -->
       <div class="q-mt-md text-center">
+        <h1 style="font-size: 40px; font-family: Georgia, 'Times New Roman', Times, serif;">MoreDraw</h1>
+                <div style="margin-top: -70px; margin-bottom: 20px;">__________________________</div>
         <q-img
-          src="~/src/assets/img/image.svg"
+          src="~/src/assets/img/moredraw.png"
           style="width: 600px; max-width: 100%"
         />
       </div>
