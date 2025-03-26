@@ -1,6 +1,13 @@
 const routes = [
   {
     path: "/",
+    redirect: () => {
+      const token = localStorage.getItem("jwt");
+      return token ? "/design" : "/login";
+    },
+  },
+  {
+    path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
@@ -8,12 +15,10 @@ const routes = [
         name: "design",
         component: () => import("src/pages/DesignDrew.vue"),
         meta: {
-          showDrawer: true,
-          title: "design",
-          icon: "mdi-package-variant",
-          iconColor: "orange",
           requiresAuth: true,
-          label: "Design",
+          showDrawer: true, // ✅ indica que pode aparecer no menu
+          icon: "mdi-draw", // ou outro ícone do Quasar/Material Icons
+          label: "Design", // ✅ nome que vai aparecer no menu
         },
       },
     ],
@@ -22,17 +27,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("src/pages/LoginPage.vue"),
-    meta: {
-      label: "routes.login",
-    },
   },
   {
     path: "/:catchAll(.*)*",
     name: "notFound",
     component: () => import("src/pages/ErrorNotFound.vue"),
-    meta: {
-      label: "routes.notFound",
-    },
   },
 ];
 

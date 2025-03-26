@@ -19,13 +19,13 @@
           "
         />
       </div>
+
       <div class="text-subtitle1 q-mt-md q-mb-xs q-ml-sm text-weight-bold">
         {{ translation[locale].changeLanguage }}
       </div>
       <q-select
         v-model="locale"
         :options="localeOptions"
-        :label="localeOptions.label"
         bottom-slots
         dense
         options-dense
@@ -40,7 +40,6 @@
         <template #prepend>
           <q-icon name="mdi-translate" size="xs" @click.stop />
         </template>
-
         <template #option="scope">
           <q-item v-bind="scope.itemProps">
             <q-item-section>
@@ -50,19 +49,25 @@
         </template>
       </q-select>
     </div>
-    <q-separator v-if="showUser" vertical inset class="q-mx-lg" />
-    <div v-if="showUser" class="column items-center justify-center">
+
+    <q-separator v-if="isLoggedIn" vertical inset class="q-mx-lg" />
+
+    <div v-if="isLoggedIn" class="column items-center justify-center">
       <q-avatar color="grey-6" size="72px">
-        <img :src="'src/assets/img/image.svg'" alt="default-image" />
+        <img
+          :src="userInfo?.picUser || 'src/assets/img/image.svg'"
+          alt="Avatar"
+        />
       </q-avatar>
 
       <div class="text-subtitle1 text-center q-mt-sm q-mb-md">
         {{
-          !$q.screen.lt.sm && userInfo.name.length < 19
+          !$q.screen.lt.sm && userInfo?.name?.length < 19
             ? userInfo.name
-            : userInfo.name.split(" ")[0]
+            : userInfo?.name?.split(" ")[0] || ""
         }}
       </div>
+
       <q-btn flat :label="translation[locale].logout" @click="logout" />
     </div>
   </q-card>
@@ -96,18 +101,12 @@ export default {
     QIcon,
   },
   props: {
-    showUser: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
     userInfo: {
       type: Object,
-      required: false,
+      default: () => ({}),
     },
   },
   emits: ["logout", "changeLanguage"],
-
   data() {
     let isDark = getCookie("DarkMode") === "true";
     if (isDark === undefined) isDark = false;
@@ -125,7 +124,11 @@ export default {
       ],
     };
   },
-
+  computed: {
+    isLoggedIn() {
+      return !!localStorage.getItem("jwt");
+    },
+  },
   watch: {
     toggleDark(val) {
       this.$q.dark.set(val);
@@ -142,10 +145,15 @@ export default {
       this.locale = this.languageSystem;
     }
   },
-
   methods: {
     logout() {
+      localStorage.removeItem("jwt");
+      localStorage.removeItem("apiKey");
+      localStorage.removeItem("picture");
+      localStorage.removeItem("nameUser");
       this.$emit("logout");
+      // ✅ Redireciona para a página de login
+      this.$router.push("/login");
     },
     setLanguage() {
       document.cookie = `Language=${this.locale}; domain=${
@@ -156,3 +164,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.flex {
+  display: flex;
+}
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+</style>
